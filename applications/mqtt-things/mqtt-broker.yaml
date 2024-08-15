@@ -21,6 +21,7 @@ spec:
           imagePullPolicy: Always
           ports:
             - containerPort: 1883
+          resources: {}
 ---
 apiVersion: v1
 kind: Service
