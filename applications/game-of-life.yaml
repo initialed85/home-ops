@@ -1,0 +1,21 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: game-of-life
+  namespace: argo-cd
+spec:
+  destination:
+    namespace: game-of-life
+    server: https://kubernetes.default.svc
+  project: default
+  source:
+    path: applications/game-of-life
+    repoURL: https://github.com/initialed85/home-ops
+    targetRevision: HEAD
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+      - ServerSideApply=false
