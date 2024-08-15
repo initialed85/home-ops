@@ -6,6 +6,7 @@ metadata:
   labels:
     name: mqtt-things
 ---
+# kubectl -n mqtt-things create secret generic mqtt-things --dry-run=client --from-literal='hue-api-key=(redacted)' -o yaml | kubeseal --controller-name=sealed-secrets --controller-namespace=kube-system -o yaml
 apiVersion: bitnami.com/v1alpha1
 kind: SealedSecret
 metadata:

@@ -189,6 +189,12 @@ helm upgrade --atomic --install --namespace kube-system nfs-subdir-external-prov
 
 And [bitnami-labs/sealed-secrets](https://github.com/bitnami-labs/sealed-secrets) so we can safely store secrets in this repo:
 
+Usage is something like this:
+
+```shell
+kubectl -n mynamespace create secret generic mysecret --dry-run=client --from-literal='key=value' -o yaml | kubeseal --controller-name=sealed-secrets --controller-namespace=kube-system -o yaml > mysealedsecret.yaml
+```
+
 ```shell
 helm upgrade --atomic --install --namespace kube-system sealed-secrets sealed-secrets/sealed-secrets --version 2.16.1
 ```
