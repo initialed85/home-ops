@@ -48,6 +48,36 @@ That boils down to the following:
 - The server I've picked as the file server has shown to be the most reliable node
 - Prior versions of my home cluster with a single master node cauesd too many outages when that node crashed (so with HA, my pods will reschedule)
 
+### High availability
+
+My router passes on any of the ports I want to expose to `192.168.137.10` which is a virtual IP, handled by Keepalived.
+
+My Keepalived config looks (approximately) like this:
+
+```
+vrrp_instance VI_1 {
+    interface eth0
+    state MASTER  # only one node is MASTER, the rest are BACKUP
+    virtual_router_id 51  # all nodes have the same virtual router ID
+    priority 100  # the master has the numerically highest priority, all nodes have unique priorities for determinism
+    advert_int 1
+    authentication {
+        auth_type PASS
+        auth_pass some-password
+    }
+    unicast_peer {
+        # 192.168.137.34  # don't have yourself as a peer
+        192.168.137.30
+        192.168.137.27
+        192.168.137.28
+        192.168.137.29
+    }
+    virtual_ipaddress {
+        192.168.137.10
+    }
+}
+```
+
 ### Storage
 
 In light of the prior failures, I now dedicate one of the nodes as a file server, running ZFS for two pools (HDD and SDD) and exposing that via NFS (which is then consumed as
@@ -88,6 +118,48 @@ curl -sfL https://get.k3s.io | K3S_TOKEN=some-token K3S_KUBECONFIG_MODE=644 sh -
 
 | FYI, `/etc/rancher/k3s/k3s/yaml` on the first node is basically `~/.kube/config`, it just needs to have the IP changed after copying before you can use it on your own workstation.
 
+I made sure to have the following at `/var/lib/rancher/k3s/server/manifests/traefik-config.yaml` on each node:
+
+```yaml
+apiVersion: helm.cattle.io/v1
+kind: HelmChartConfig
+metadata:
+  name: traefik
+  namespace: kube-system
+spec:
+  valuesContent: |-
+    dashboard:
+      enabled: true
+    podAnnotations:
+      prometheus.io/port: "8082"
+      prometheus.io/scrape: "true"
+    providers:
+      kubernetesIngress:
+        publishedService:
+          enabled: true
+        allowEmptyServices:
+          enabled: true
+        allowExternalNameServices:
+          enabled: true
+    priorityClassName: "system-cluster-critical"
+    image:
+      name: "rancher/mirrored-library-traefik"
+      tag: "2.9.4"
+    tolerations:
+    - key: "CriticalAddonsOnly"
+      operator: "Exists"
+    - key: "node-role.kubernetes.io/control-plane"
+      operator: "Exists"
+      effect: "NoSchedule"
+    - key: "node-role.kubernetes.io/master"
+      operator: "Exists"
+      effect: "NoSchedule"
+    service:
+      ipFamilyPolicy: "PreferDualStack"
+```
+
+The only difference from standard in the changes above is `allowEmptyServices: true` and `allowExternalNameServices: true`.
+
 Then I ensured I had a `/etc/rancher/k3s/registries.yaml` on each node that read as follows:
 
 ```yaml
@@ -107,7 +179,19 @@ This is coupled with an `/etc/hosts` entry on each node that points `kube-regist
 192.168.137.34  kube-registry
 ```
 
-We haven't yet deployed Argo, but once we do, it'll deploy the private registry.
+Now we need to deploy the NFS provisioner:
+
+```shell
+helm repo add nfs-subdir-external-provisioner https://kubernetes-sigs.github.io/nfs-subdir-external-provisioner/
+helm upgrade --atomic --install --namespace kube-system nfs-subdir-external-provisioner-ssd nfs-subdir-external-provisioner/nfs-subdir-external-provisioner --set nfs.server=192.168.137.253 --set nfs.path=/storage-ssd --set storageClass.name=nfs-ssd
+helm upgrade --atomic --install --namespace kube-system nfs-subdir-external-provisioner-hdd nfs-subdir-external-provisioner/nfs-subdir-external-provisioner --set nfs.server=192.168.137.253 --set nfs.path=/storage-hdd --set storageClass.name=nfs-hdd
+```
+
+And [bitnami-labs/sealed-secrets](https://github.com/bitnami-labs/sealed-secrets) so we can safely store secrets in this repo:
+
+```shell
+helm upgrade --atomic --install --namespace kube-system sealed-secrets sealed-secrets/sealed-secrets --version 2.16.1
+```
 
 ### SSL certificate vending
 
@@ -133,4 +217,9 @@ helm repo add argo https://argoproj.github.io/argo-helm
 
 # came from helm show values argo/argo-cd > 3-argocd-values.yaml (which needed some edits)
 helm upgrade --atomic --install --namespace argo-cd --create-namespace argo-cd argo/argo-cd --version 7.0.0 --values 3-argocd-values.yaml
+
+# dump out the secret
+kubectl -n argo-cd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d
 ```
+
+At this point I needed to log in to the Argo UI and add this repo, and also add the `cluster` folder in this repo as the catalyst for the IaC.
