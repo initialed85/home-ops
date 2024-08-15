@@ -46,7 +46,7 @@ That boils down to the following:
 
 - Prior versions of my home cluster used Ceph and then Longhorn (for clustered storage) a few times, all were fine until they failed catastrophically and (more or less) unrecoverably
 - The server I've picked as the file server has shown to be the most reliable node
-- Prior versions of my home cluster with a single master node cauesd too many outages when that node crashed (so with HA, my pods will reschedule)
+- Prior versions of my home cluster with a single master node caused too many outages when that node crashed (so with HA, my pods will reschedule)
 
 ### High availability
 
@@ -89,6 +89,8 @@ ZFS provisioning was something like this (once all drives had been freshly parti
 sudo zpool create -o ashift=12 storage-hdd /dev/sdb /dev/sde /dev/sdh
 sudo zpool create -o ashift=12 storage-ssd /dev/sdf1 /dev/sdg1
 ```
+
+This is a RAID0 setup btw, so maximum storage (and I think speed?) and zero redundancy- my drives are slow and garbage and small and my data is unimportant so this gives me what I need.
 
 I can't recall the exact commands I ran to install the NFS server (pretty standard stuff though), but `/etc/exports` looks like this:
 
