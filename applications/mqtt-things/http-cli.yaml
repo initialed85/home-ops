@@ -46,6 +46,7 @@ spec:
           command: ["/srv/entrypoint", "-host", "$(MQTT_BROKER_HOST)", "-port", "$(PORT)"]
           ports:
             - containerPort: 8079
+          resources: {}
 ---
 apiVersion: v1
 kind: Service

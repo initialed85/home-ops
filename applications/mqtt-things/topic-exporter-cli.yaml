@@ -36,6 +36,7 @@ spec:
                 configMapKeyRef:
                   name: topic-exporter-cli
                   key: MQTT_BROKER_HOST
+          resources: {}
           command: ["/srv/entrypoint", "-host", "$(MQTT_BROKER_HOST)"]
           ports:
             - containerPort: 9137

@@ -66,6 +66,7 @@ spec:
                 configMapKeyRef:
                   name: sprinklers-cli
                   key: RELAY_2_INDEX
+          resources: {}
           command:
             [
               "/srv/entrypoint",

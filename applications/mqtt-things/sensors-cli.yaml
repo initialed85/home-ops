@@ -49,6 +49,7 @@ spec:
                 configMapKeyRef:
                   name: sensors-cli
                   key: BRIDGE_HOST
+          resources: {}
           command:
             [
               "/srv/entrypoint",

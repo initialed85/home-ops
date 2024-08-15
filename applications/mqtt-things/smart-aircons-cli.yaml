@@ -114,6 +114,7 @@ spec:
                 configMapKeyRef:
                   name: smart-aircons-cli
                   key: AIRCON_CODES_NAME_4
+          resources: {}
           command:
             [
               "/srv/entrypoint",
