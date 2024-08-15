@@ -1,0 +1,38 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: quake
+  name: quake-wasm
+  labels:
+    app: quake-wasm
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: quake-wasm
+  template:
+    metadata:
+      labels:
+        app: quake-wasm
+    spec:
+      containers:
+        - name: quake-wasm
+          image: kube-registry:5000/quake-wasm:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 80
+          resources: {}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: quake-wasm
+  namespace: quake
+spec:
+  selector:
+    app: quake-wasm
+  ports:
+    - name: quake-wasm
+      port: 80
+      targetPort: 80
