@@ -49,6 +49,7 @@ spec:
           protocol: UDP
         - containerPort: 138
           protocol: UDP
+        resources: {}
         command: ["bash", "-c", "set -xm; samba.sh -p -s 'Scanner;/srv/scanner;yes;no;yes;all' & sleep 1 && sed -i 's/force group = users/force group = smbuser/g' /etc/samba/smb.conf && pkill -9 -f smb && pkill -9 -f samba && samba.sh -p -s 'Scanner;/srv/scanner;yes;no;yes;all'"]
 ---
 apiVersion: v1

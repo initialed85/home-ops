@@ -61,6 +61,7 @@ spec:
           mountPath: /srv/scanner
         ports:
         - containerPort: 80
+        resources: {}
 ---
 apiVersion: v1
 kind: Service

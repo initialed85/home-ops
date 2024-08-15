@@ -52,6 +52,7 @@ spec:
           mountPath: /srv/scanner/srv/scanner
         ports:
         - containerPort: 80
+        resources: {}
         command: ["/filebrowser", "--disable-preview-resize", "--disable-thumbnails"]
 ---
 apiVersion: v1
