@@ -36,6 +36,10 @@ spec:
       labels:
         app: nginx
     spec:
+      hostAliases:
+      - ip: "nginx"
+        hostnames:
+        - "does-this-work-buddy"
       volumes:
       - name: docker-entrypoint-d
         emptyDir: {}
