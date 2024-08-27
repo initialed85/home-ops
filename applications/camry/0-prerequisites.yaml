@@ -42,6 +42,7 @@ metadata:
 data:
   API_URL: http://api:7070
   BASE_URL: /
+  DESTINATION_URL: rtsp://mediamtx:8554/streams
   DJANGOLANG_NODE_NAME: api
   DJANGOLANG_PROFILE: "1"
   ENABLE_PASSTHROUGH: "1"

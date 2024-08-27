@@ -30,8 +30,26 @@ spec:
                 name: api
                 port:
                   number: 7070
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  namespace: camry
+  name: camry-stream
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt
+spec:
+  ingressClassName: traefik
+  tls:
+    - hosts:
+        - camry-stream.initialed85.cc
+      secretName: camry
+  rules:
+    - host: camry-stream.initialed85.cc
+      http:
+        paths:
           - pathType: Prefix
-            path: /streams
+            path: /
             backend:
               service:
                 name: mediamtx
