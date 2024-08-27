@@ -1,0 +1,69 @@
+# ---
+# apiVersion: apps/v1
+# kind: StatefulSet
+# metadata:
+#   namespace: camry
+#   name: object-detector-driveway
+#   labels:
+#     app: object-detector-driveway
+#     service: object-detector
+# spec:
+#   serviceName: object-detector-driveway
+#   replicas: 1
+#   selector:
+#     matchLabels:
+#       app: object-detector-driveway
+#       service: object-detector
+#   template:
+#     metadata:
+#       labels:
+#         app: object-detector-driveway
+#         service: object-detector
+#     spec:
+#       nodeSelector:
+#         gpu: nvidia
+#         gpu-era: contemporary
+#         kubernetes.io/hostname: adonis
+#       runtimeClassName: "nvidia"
+#       volumes:
+#         - name: hdd
+#           persistentVolumeClaim:
+#             claimName: hdd
+#             readOnly: false
+#       containers:
+#         - name: object-detector-driveway
+#           image: kube-registry:5000/camry-object-detector:latest
+#           imagePullPolicy: Always
+#           ports:
+#             - containerPort: 7070
+#           volumeMounts:
+#             - name: hdd
+#               subPath: media
+#               mountPath: /srv/media
+#           envFrom:
+#             - configMapRef:
+#                 name: config
+#             - secretRef:
+#                 name: secret
+#           env:
+#             - name: NET_CAM_URL
+#               valueFrom:
+#                 configMapKeyRef:
+#                   name: config
+#                   key: NET_CAM_URL_1
+#             - name: CAMERA_NAME
+#               valueFrom:
+#                 configMapKeyRef:
+#                   name: config
+#                   key: CAMERA_NAME_1
+#             - name: NVIDIA_VISIBLE_DEVICES
+#               value: all
+#             - name: NVIDIA_DRIVER_CAPABILITIES
+#               value: all
+#           # resources:
+#           #   requests:
+#           #     memory: "6144Mi"
+#           #     cpu: "1000m"
+#           #   limits:
+#           #     memory: "6144Mi"
+#           #     cpu: "1000m"
