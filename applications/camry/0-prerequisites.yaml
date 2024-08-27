@@ -41,17 +41,12 @@ metadata:
   namespace: camry
 data:
   API_URL: http://api:7070
-  BASE_IMAGE: pytorch/pytorch:2.4.0-cuda11.8-cudnn9-runtime
   BASE_URL: /
-  CAMERA_NAME_1: Driveway
-  CAMERA_NAME_2: Front door
-  CAMERA_NAME_3: Side gate
   DJANGOLANG_NODE_NAME: api
   DJANGOLANG_PROFILE: "1"
   ENABLE_PASSTHROUGH: "1"
-  NET_CAM_URL_1: rtsp://192.168.137.31:554/Streaming/Channels/101
-  NET_CAM_URL_2: rtsp://192.168.137.32:554/Streaming/Channels/101
-  NET_CAM_URL_3: rtsp://192.168.137.33:554/Streaming/Channels/101
+  MTX_PROTOCOLS: tcp
+  MTX_WEBRTCADDITIONALHOSTS: camry.initialed85.cc
   PAGER: "cat"
   POSTGIS_GDAL_ENABLED_DRIVERS: "ENABLE_ALL"
   POSTGRES_DB: camry
