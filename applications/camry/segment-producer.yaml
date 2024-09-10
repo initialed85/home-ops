@@ -9,7 +9,7 @@ metadata:
     service: segment-producer
 spec:
   serviceName: segment-producer
-  replicas: 0
+  replicas: 3
   selector:
     matchLabels:
       app: segment-producer
