@@ -9,7 +9,7 @@ metadata:
     service: stream-producer
 spec:
   serviceName: stream-producer
-  replicas: 0
+  replicas: 3
   selector:
     matchLabels:
       app: stream-producer
