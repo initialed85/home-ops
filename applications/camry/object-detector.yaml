@@ -52,8 +52,9 @@ spec:
               value: all
           resources:
             requests:
-              memory: "5387778Ki"
+              memory: "5120m"
               # cpu: "1000m"
             limits:
-              memory: "5387778Ki"
+              memory: "5120m"
               # cpu: "1000m"
+
