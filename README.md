@@ -243,4 +243,6 @@ cd applications
 mkdir argo-workflows
 cd argo-workflows
 wget https://github.com/argoproj/argo-workflows/releases/download/v3.5.11/install.yaml
+sed -i.bak 's/namespace: argo$/namespace: argo-workflows/g' applications/argo-workflows/install.yaml
+rm -fv ./install.yaml.bak
 ```
