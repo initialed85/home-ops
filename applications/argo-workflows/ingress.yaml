@@ -2,7 +2,7 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  namespace: argoci
+  namespace: argo-workflows
   name: argoci
   annotations:
     cert-manager.io/cluster-issuer: letsencrypt
