@@ -19,15 +19,14 @@ rules:
   - apiGroups:
       - argoproj.io
     resources:
-      - eventsources
-      - sensors
-      - workflows
-      - workfloweventbindings
-      - workflowtemplates
       - clusterworkflowtemplates
       - cronworkflows
-      - cronworkflows
+      - eventsources
+      - sensors
+      - workfloweventbindings
+      - workflows
       - workflowtaskresults
+      - workflowtemplates
     verbs:
       - create
       - get
