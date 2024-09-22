@@ -242,7 +242,12 @@ I've used a lot of CI systems and haven't really found on that I liked- so let's
 cd applications
 mkdir argo-workflows
 cd argo-workflows
-wget https://github.com/argoproj/argo-workflows/releases/download/v3.5.11/install.yaml
-sed -i.bak 's/namespace: argo$/namespace: argo-workflows/g' applications/argo-workflows/install.yaml
-rm -fv ./install.yaml.bak
+
+wget https://github.com/argoproj/argo-workflows/releases/download/v3.5.11/install.yaml -O applications/argo-workflows/install-argo-workflows.yaml
+sed -i.bak 's/namespace: argo$/namespace: argo-workflows/g' applications/argo-workflows/install-argo-workflows.yaml
+rm -fv applications/argo-workflows/install-argo-workflows.yaml.bak
+
+wget https://github.com/argoproj/argo-events/releases/download/v1.9.2/install.yaml -O install-argo-events.yaml
+sed -i.bak 's/namespace: argo$/namespace: argo-workflows/g' applications/argo-workflows/install-argo-events.yaml
+rm -fv applications/argo-workflows/install-argo-events.yaml.bak
 ```
