@@ -247,7 +247,11 @@ wget https://github.com/argoproj/argo-workflows/releases/download/v3.5.11/instal
 sed -i.bak 's/namespace: argo$/namespace: argo-workflows/g' applications/argo-workflows/install-argo-workflows.yaml
 rm -fv applications/argo-workflows/install-argo-workflows.yaml.bak
 
-wget https://github.com/argoproj/argo-events/releases/download/v1.9.2/install.yaml -O install-argo-events.yaml
+wget https://github.com/argoproj/argo-events/releases/download/v1.9.2/install.yaml -O applications/argo-workflows/install-argo-events.yaml
 sed -i.bak 's/namespace: argo$/namespace: argo-workflows/g' applications/argo-workflows/install-argo-events.yaml
 rm -fv applications/argo-workflows/install-argo-events.yaml.bak
+
+wget https://github.com/argoproj/argo-events/releases/download/v1.9.2/install.yaml -O applications/argo-workflows/install-validating-webhook-argo-events.yaml
+sed -i.bak 's/namespace: argo$/namespace: argo-workflows/g' applications/argo-workflows/install-validating-webhook-argo-events.yaml
+rm -fv applications/argo-workflows/install-validating-webhook-argo-events.yaml.bak
 ```
