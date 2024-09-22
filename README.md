@@ -249,4 +249,6 @@ rm -fv applications/argo-workflows/install-argo-workflows.yaml.bak
 wget https://github.com/argoproj/argo-events/releases/download/v1.9.2/install.yaml -O applications/argo-events/install-argo-events.yaml
 
 wget https://github.com/argoproj/argo-events/releases/download/v1.9.2/install.yaml -O applications/argo-events/install-validating-webhook-argo-events.yaml
+
+wget https://raw.githubusercontent.com/argoproj/argo-events/stable/examples/eventbus/native.yaml -O applications/argo-events/install-native.yaml
 ```
