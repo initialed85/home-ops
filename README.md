@@ -233,22 +233,4 @@ At this point I needed to log in to the Argo UI and add this repo, and also add 
 
 ### Continuous Integration
 
-I've used a lot of CI systems and haven't really found on that I liked- so let's give Argo Workflows a go.
-
-(These instructions were just to get the folder populated)
-
-```shell
-cd applications
-mkdir argo-workflows
-cd argo-workflows
-
-wget https://github.com/argoproj/argo-workflows/releases/download/v3.5.11/install.yaml -O applications/argo-workflows/install-argo-workflows.yaml
-sed -i.bak 's/namespace: argo$/namespace: argo-workflows/g' applications/argo-workflows/install-argo-workflows.yaml
-rm -fv applications/argo-workflows/install-argo-workflows.yaml.bak
-
-wget https://github.com/argoproj/argo-events/releases/download/v1.9.2/install.yaml -O applications/argo-events/install-argo-events.yaml
-
-wget https://github.com/argoproj/argo-events/releases/download/v1.9.2/install.yaml -O applications/argo-events/install-validating-webhook-argo-events.yaml
-
-wget https://raw.githubusercontent.com/argoproj/argo-events/stable/examples/eventbus/native.yaml -O applications/argo-events/install-native.yaml
-```
+TODO
