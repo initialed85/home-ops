@@ -231,3 +231,16 @@ kubectl -n argo-cd get secret argocd-initial-admin-secret -o jsonpath="{.data.pa
 ```
 
 At this point I needed to log in to the Argo UI and add this repo, and also add the `cluster` folder in this repo as the catalyst for the IaC.
+
+### Continuous Integration
+
+I've used a lot of CI systems and haven't really found on that I liked- so let's give Argo Workflows a go.
+
+(These instructions were just to get the folder populated)
+
+```shell
+cd applications
+mkdir argo-workflows
+cd argo-workflows
+wget https://github.com/argoproj/argo-workflows/releases/download/v3.5.11/install.yaml
+```
