@@ -210,7 +210,6 @@ cd _cluster
 
 # came from curl -L https://github.com/cert-manager/cert-manager/releases/download/v1.14.5/cert-manager.yaml
 kubectl apply -f 1-cert-manager.yaml
-
 kubectl apply -f 2-clusterissuer.yaml
 ```
 
