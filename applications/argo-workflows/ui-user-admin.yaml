@@ -1,3 +1,4 @@
+---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
 metadata:
@@ -35,3 +36,11 @@ rules:
       - update
       - patch
       - delete
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: admin
+  annotations:
+    kubernetes.io/service-account.name: admin
+type: kubernetes.io/service-account-token
