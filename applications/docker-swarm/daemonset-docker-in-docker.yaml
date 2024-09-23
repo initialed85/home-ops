@@ -91,4 +91,4 @@ spec:
             - name: DOCKER_BUILDKIT
               value: "1"
           workingDir: /srv/bootstrap
-          command: ["sh", "-c", "chmod +x ./bootstrap.sh && ./bootstrap.sh"]
+          command: ["sh", "./bootstrap.sh"]
