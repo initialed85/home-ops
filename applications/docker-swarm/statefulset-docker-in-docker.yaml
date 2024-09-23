@@ -8,7 +8,7 @@ metadata:
     app: docker-in-docker
 spec:
   serviceName: docker-in-docker
-  replicas: 6
+  replicas: 0
   selector:
     matchLabels:
       app: docker-in-docker
