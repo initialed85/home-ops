@@ -20,21 +20,21 @@ data:
 
     set -e
 
-    ip=""
+    IP=""
     for x in $(hostname -i); do
       if echo ${x} | grep -oE '^127.*$' >/dev/null 2>&1; then
         continue
       fi
 
-      ip="${x}"
+      IP="${x}"
       break
     done
 
-    if [[ "${ip}" == "" ]]; then
-      echo "error: failed to work out ip"
+    if [[ "${IP}" == "" ]]; then
+      echo "error: failed to work out IP"
       exit 1
     fi
 
-    echo "ip: ${ip}"
+    echo "IP=${IP}"
 
     tail -F /dev/null
