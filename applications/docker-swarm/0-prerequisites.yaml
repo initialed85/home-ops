@@ -5,3 +5,17 @@ metadata:
   name: docker-swarm
   labels:
     name: docker-swarm
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: shared
+  namespace: camry
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 1Gi
+  storageClassName: nfs-ssd
+  volumeMode: Filesystem
