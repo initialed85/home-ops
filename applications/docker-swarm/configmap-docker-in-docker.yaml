@@ -20,6 +20,12 @@ data:
 
     set -e
 
+    if ! docker info | grep -i 'Swarm: inactive' >/dev/null 2>&1; then
+      echo "warning: it looks like docker swarm is already running; doing nothing"
+      tail -F /dev/null
+      exit 0
+    fi
+
     IP=""
     for x in $(hostname -i); do
       if echo ${x} | grep -oE '^127.*$' >/dev/null 2>&1; then
@@ -36,5 +42,20 @@ data:
     fi
 
     echo "IP=${IP}"
+
+    POD_ID=$(echo "${POD_NAME}" | grep -oE '\d+')
+
+    if [[ "${POD_ID}" == "0" ]]; then
+      echo "i am the master; time for docker swarm init..."
+      docker swarm init "${IP}" > /srv/shared/master-docker-swarm-init.txt
+    else
+      while true; do
+        echo "waiting for master to finish docker swarm init..."
+        if ! test -e /srv/shared/master-docker-swarm-init.txt; then
+          sleep 1
+          continue
+        fi
+      done
+    fi
 
     tail -F /dev/null
