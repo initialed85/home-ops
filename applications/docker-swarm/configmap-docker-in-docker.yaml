@@ -8,8 +8,8 @@ data:
   daemon.json: |
     {
       "insecure-registries": [
-        "http://kube-registry:5000",
-        "http://kube-registry.kube-system.svc.cluster.local:5000"
+        "kube-registry:5000",
+        "kube-registry.kube-system.svc.cluster.local:5000"
       ],
       "exec-opts": [
         "native.cgroupdriver=cgroupfs"
