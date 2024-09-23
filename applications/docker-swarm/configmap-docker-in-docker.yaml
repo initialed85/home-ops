@@ -20,6 +20,12 @@ data:
 
     set -e
 
+    echo "waiting for docker to start..."
+    while ! docker info >/dev/null 2>&1; do
+      sleep 1
+    done
+
+    echo "docker started, checking docker swarm status..."
     if ! docker info | grep -i 'Swarm: inactive' >/dev/null 2>&1; then
       echo "warning: it looks like docker swarm is already running; doing nothing"
       tail -F /dev/null
