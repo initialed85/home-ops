@@ -59,10 +59,22 @@ data:
         sleep 1
 
         echo "waiting for master to finish docker swarm init..."
-        if ! test -e /srv/shared/master-docker-swarm-init.txt; then
+
+        if ! test -e /srv/shared/master-docker-swarm-init.txt >/dev/null 2>&1; then
           continue
         fi
+
+        if ! cat /srv/shared/master-docker-swarm-init.txt | grep 'docker swarm join --token' | xargs >/dev/null 2>&1; then
+          continue
+        fi
+
+        break
       done
+
+      echo "okay joining docker swarm..."
+      $(cat /srv/shared/master-docker-swarm-init.txt | grep 'docker swarm join --token' | xargs)
     fi
+
+    echo "done."
 
     tail -F /dev/null
