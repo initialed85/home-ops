@@ -1,53 +1,53 @@
----
-apiVersion: apps/v1
-kind: DaemonSet
-metadata:
-  namespace: docker-swarm
-  name: docker-in-docker
-  labels:
-    app: docker-in-docker
-spec:
-  selector:
-    matchLabels:
-      app: docker-in-docker
-  template:
-    metadata:
-      labels:
-        app: docker-in-docker
-    spec:
-      nodeSelector:
-        kubernetes.io/arch: amd64
-      hostNetwork: true
-      dnsPolicy: ClusterFirstWithHostNet
-      volumes:
-        - name: etc-docker
-          configMap:
-            name: docker-in-docker
-            items:
-              - key: daemon.json
-                path: daemon.json
-        - name: var-run
-          hostPath:
-            path: /var/run
-            type: DirectoryOrCreate
-        - name: var-lib-docker
-          hostPath:
-            path: /var/lib/docker
-            type: DirectoryOrCreate
-      containers:
-        - name: docker-in-docker
-          image: docker:27.3.1-dind
-          securityContext:
-            privileged: true
-          volumeMounts:
-            - name: var-run
-              mountPath: /var/run
-            - name: var-lib-docker
-              mountPath: /var/lib/docker
-            - name: etc-docker
-              mountPath: /etc/docker
-          env:
-            - name: COMPOSE_DOCKER_CLI_BUILD
-              value: "1"
-            - name: DOCKER_BUILDKIT
-              value: "1"
+# ---
+# apiVersion: apps/v1
+# kind: DaemonSet
+# metadata:
+#   namespace: docker-swarm
+#   name: docker-in-docker
+#   labels:
+#     app: docker-in-docker
+# spec:
+#   selector:
+#     matchLabels:
+#       app: docker-in-docker
+#   template:
+#     metadata:
+#       labels:
+#         app: docker-in-docker
+#     spec:
+#       nodeSelector:
+#         kubernetes.io/arch: amd64
+#       hostNetwork: true
+#       dnsPolicy: ClusterFirstWithHostNet
+#       volumes:
+#         - name: etc-docker
+#           configMap:
+#             name: docker-in-docker
+#             items:
+#               - key: daemon.json
+#                 path: daemon.json
+#         - name: var-run
+#           hostPath:
+#             path: /var/run
+#             type: DirectoryOrCreate
+#         - name: var-lib-docker
+#           hostPath:
+#             path: /var/lib/docker
+#             type: DirectoryOrCreate
+#       containers:
+#         - name: docker-in-docker
+#           image: docker:27.3.1-dind
+#           securityContext:
+#             privileged: true
+#           volumeMounts:
+#             - name: var-run
+#               mountPath: /var/run
+#             - name: var-lib-docker
+#               mountPath: /var/lib/docker
+#             - name: etc-docker
+#               mountPath: /etc/docker
+#           env:
+#             - name: COMPOSE_DOCKER_CLI_BUILD
+#               value: "1"
+#             - name: DOCKER_BUILDKIT
+#               value: "1"
