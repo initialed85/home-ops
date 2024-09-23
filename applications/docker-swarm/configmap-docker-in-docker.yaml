@@ -53,12 +53,13 @@ data:
 
     if [[ "${POD_ID}" == "0" ]]; then
       echo "i am the master; time for docker swarm init..."
-      docker swarm init "${IP}" > /srv/shared/master-docker-swarm-init.txt
+      docker swarm init > /srv/shared/master-docker-swarm-init.txt
     else
       while true; do
+        sleep 1
+
         echo "waiting for master to finish docker swarm init..."
         if ! test -e /srv/shared/master-docker-swarm-init.txt; then
-          sleep 1
           continue
         fi
       done
