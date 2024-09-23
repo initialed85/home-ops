@@ -22,7 +22,7 @@ spec:
       volumes:
         - name: etc-docker
           configMap:
-            name: docker-swarm
+            name: docker-in-docker
             items:
               - key: daemon.json
                 path: daemon.json
