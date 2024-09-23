@@ -20,6 +20,21 @@ data:
 
     set -e
 
-    env
+    ip=""
+    for x in $(hostname -i); do
+      if echo ${x} | grep -oE '^127.*$' >/dev/null 2>&1; then
+        continue
+      fi
+
+      ip="${x}"
+      break
+    done
+
+    if [[ "${ip}" == "" ]]; then
+      echo "error: failed to work out ip"
+      exit 1
+    fi
+
+    echo "ip: ${ip}"
 
     tail -F /dev/null
