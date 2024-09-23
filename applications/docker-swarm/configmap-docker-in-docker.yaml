@@ -21,3 +21,5 @@ data:
     set -e
 
     env
+
+    tail -F /dev/null
