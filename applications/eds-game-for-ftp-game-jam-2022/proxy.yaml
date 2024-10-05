@@ -33,6 +33,8 @@ kind: Service
 metadata:
   name: proxy
   namespace: eds-game-for-ftp-game-jam-2022
+  labels:
+    monitoring: "true"
 spec:
   selector:
     app: proxy

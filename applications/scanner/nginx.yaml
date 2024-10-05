@@ -68,6 +68,8 @@ kind: Service
 metadata:
   name: nginx
   namespace: scanner
+  labels:
+    monitoring: "true"
 spec:
   selector:
     app: nginx

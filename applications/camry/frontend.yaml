@@ -47,6 +47,8 @@ kind: Service
 metadata:
   name: frontend
   namespace: camry
+  labels:
+    monitoring: "true"
 spec:
   selector:
     app: frontend

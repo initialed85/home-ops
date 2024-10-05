@@ -46,6 +46,8 @@ kind: Service
 metadata:
   name: topic-exporter-cli
   namespace: mqtt-things
+  labels:
+    monitoring: "true"
 spec:
   selector:
     app: topic-exporter-cli

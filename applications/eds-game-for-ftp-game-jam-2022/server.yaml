@@ -53,6 +53,8 @@ kind: Service
 metadata:
   name: server
   namespace: eds-game-for-ftp-game-jam-2022
+  labels:
+    monitoring: "true"
 spec:
   selector:
     app: server

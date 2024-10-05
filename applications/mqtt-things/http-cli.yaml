@@ -53,6 +53,8 @@ kind: Service
 metadata:
   name: http-cli
   namespace: mqtt-things
+  labels:
+    monitoring: "true"
 spec:
   selector:
     app: http-cli

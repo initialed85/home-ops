@@ -28,6 +28,8 @@ kind: Service
 metadata:
   name: nginx
   namespace: nginx-router
+  labels:
+    monitoring: "true"
 spec:
   selector:
     app: nginx

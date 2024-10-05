@@ -29,6 +29,8 @@ kind: Service
 metadata:
   name: quake-wasm-glquake
   namespace: quake
+  labels:
+    monitoring: "true"
 spec:
   selector:
     app: quake-wasm-glquake

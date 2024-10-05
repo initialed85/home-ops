@@ -52,6 +52,8 @@ kind: Service
 metadata:
   name: mediamtx
   namespace: camry
+  labels:
+    monitoring: "true"
 spec:
   selector:
     app: mediamtx

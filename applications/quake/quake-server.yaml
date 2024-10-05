@@ -40,6 +40,8 @@ kind: Service
 metadata:
   name: quake-server-and-proxy
   namespace: quake
+  labels:
+    monitoring: "true"
 spec:
   selector:
     app: quake-server-and-proxy

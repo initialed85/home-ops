@@ -75,6 +75,8 @@ kind: Service
 metadata:
   name: weather-cli
   namespace: mqtt-things
+  labels:
+    monitoring: "true"
 spec:
   selector:
     app: weather-cli

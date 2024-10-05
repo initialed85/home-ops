@@ -76,6 +76,8 @@ kind: Service
 metadata:
   name: postgres
   namespace: fred
+  labels:
+    monitoring: "true"
 spec:
   selector:
     app: postgres

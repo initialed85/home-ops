@@ -55,6 +55,8 @@ kind: Service
 metadata:
   name: redis
   namespace: fred
+  labels:
+    monitoring: "true"
 spec:
   selector:
     app: redis

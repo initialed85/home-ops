@@ -40,6 +40,8 @@ kind: Ingress
 metadata:
   namespace: game-of-life
   name: server
+  labels:
+    monitoring: "true"
   annotations:
     cert-manager.io/cluster-issuer: letsencrypt
 spec:
