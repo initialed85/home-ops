@@ -11,7 +11,7 @@ spec:
   endpoints:
     - port: web
     - port: websecure
----
+# ---
 # apiVersion: operator.victoriametrics.com/v1beta1
 # kind: VMProbe
 # metadata:
@@ -27,3 +27,17 @@ spec:
 #       targets:
 #         - http://topic-exporter-cli.mqtt-things.svc.cluster.local:9137
 #   interval: 10s
+---
+apiVersion: operator.victoriametrics.com/v1beta1
+kind: VMScrapeConfig
+metadata:
+  name: topic-exporter-cli
+  namespace: monitoring
+  labels:
+    prometheus: system-monitoring-prometheus
+spec:
+  staticConfigs:
+    - labels:
+        job: prometheus
+      targets:
+        - topic-exporter-cli.mqtt-things.svc.cluster.local:9137
