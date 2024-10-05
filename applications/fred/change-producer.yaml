@@ -1,0 +1,55 @@
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  namespace: fred
+  name: change-producer
+  labels:
+    app: change-producer
+    service: change-producer
+spec:
+  serviceName: change-producer
+  replicas: 1
+  selector:
+    matchLabels:
+      app: change-producer
+      service: change-producer
+  template:
+    metadata:
+      labels:
+        app: change-producer
+        service: change-producer
+    spec:
+      volumes:
+        - name: ssd
+          persistentVolumeClaim:
+            claimName: ssd
+            readOnly: false
+        - name: root-ssh
+          hostPath:
+            path: /root/.ssh
+            type: DirectoryOrCreate
+      containers:
+        - name: change-producer
+          image: kube-registry:5000/fred-change-producer:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 7070
+          volumeMounts:
+            - name: ssd
+              subPath: media
+              mountPath: /srv/repositories
+            - name: root-ssh
+              mountPath: /root/.ssh
+          envFrom:
+            - configMapRef:
+                name: config
+            - secretRef:
+                name: secret
+          resources:
+            requests:
+              memory: "256Mi"
+              cpu: "200m"
+            limits:
+              memory: "256Mi"
+              cpu: "200m"
