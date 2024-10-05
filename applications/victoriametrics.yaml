@@ -14,7 +14,7 @@ spec:
       selfHeal: true
     syncOptions:
       - CreateNamespace=true
-      - ServerSideApply=false
+      - ServerSideApply=true
   sources:
     - chart: victoria-metrics-k8s-stack
       targetRevision: 0.27.0
