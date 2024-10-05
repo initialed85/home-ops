@@ -25,5 +25,5 @@ spec:
   targets:
     staticConfig:
       targets:
-        - https://topic-exporter-cli.mqtt-things.svc.cluster.local:9137
+        - http://topic-exporter-cli.mqtt-things.svc.cluster.local:9137
   interval: 10s
