@@ -358,8 +358,8 @@ spec:
                       resources:
                         requests:
                           storage: 10Gi
-                resources:
-                  {}
+                # resources:
+                #   {}
                   # limits:
                   #   cpu: "1"
                   #   memory: 1500Mi
@@ -376,8 +376,8 @@ spec:
                       resources:
                         requests:
                           storage: 2Gi
-                resources:
-                  {}
+                # resources:
+                #   {}
                   # limits:
                   #   cpu: "1"
                   #   memory: "1000Mi"
@@ -390,8 +390,8 @@ spec:
                   tag: v1.104.0-cluster
                 replicaCount: 2
                 extraArgs: {}
-                resources:
-                  {}
+                # resources:
+                #   {}
                   # limits:
                   #   cpu: "1"
                   #   memory: 1000Mi
