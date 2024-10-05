@@ -16,7 +16,7 @@ spec:
       - CreateNamespace=true
       - ServerSideApply=false
   sources:
-    - chart: prometheus-prometheus-operator-crds
+    - chart: prometheus-operator-crds
       targetRevision: 15.0.0
       repoURL: https://prometheus-community.github.io/helm-charts
       helm:
