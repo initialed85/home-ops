@@ -871,6 +871,12 @@ spec:
 
             defaultDashboardsTimezone: "Australia/Perth"
 
+            persistence:
+                enabled: true
+                storageClassName: "nfs-ssd"
+                accessModes:
+                    - ReadWriteMany
+
             # Enabling VictoriaMetrics Datasource in Grafana. See more details here: https://github.com/VictoriaMetrics/grafana-datasource/blob/main/README.md#victoriametrics-datasource-for-grafana
             # Note that Grafana will need internet access to install the datasource plugin.
             # Uncomment the block below, if you want to enable VictoriaMetrics Datasource in Grafana:
