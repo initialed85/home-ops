@@ -453,7 +453,7 @@ spec:
               updateMode: Auto
 
           configReloader:
-            enabled: false
+            enabled: true
             containerPort: 8080
             config:
               logFormat: logfmt
