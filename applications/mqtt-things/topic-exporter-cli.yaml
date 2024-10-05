@@ -24,6 +24,8 @@ spec:
       labels:
         app: topic-exporter-cli
     spec:
+      nodeSelector:
+        kubernetes.io/arch: amd64
       containers:
         - name: topic-exporter-cli
           image: initialed85/mqtt-things-topic-exporter-cli:latest
