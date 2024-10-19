@@ -162,7 +162,8 @@ spec:
               path: /-/healthy
               port: http
 
-          nodeSelector: {}
+          nodeSelector:
+              kubernetes.io/arch: amd64
           tolerations: []
           affinity: {}
 

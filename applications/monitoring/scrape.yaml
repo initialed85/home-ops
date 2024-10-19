@@ -2,15 +2,15 @@
 apiVersion: operator.victoriametrics.com/v1beta1
 kind: VMServiceScrape
 metadata:
-  name: external
-  namespace: monitoring
+    name: external
+    namespace: monitoring
 spec:
-  selector:
-    matchLabels:
-      monitoring: "true"
-  endpoints:
-    - port: web
-    - port: websecure
+    selector:
+        matchLabels:
+            monitoring: "true"
+    endpoints:
+        - port: web
+        - port: websecure
 # ---
 # apiVersion: operator.victoriametrics.com/v1beta1
 # kind: VMProbe
@@ -31,13 +31,13 @@ spec:
 apiVersion: operator.victoriametrics.com/v1beta1
 kind: VMScrapeConfig
 metadata:
-  name: topic-exporter-cli
-  namespace: monitoring
-  labels:
-    prometheus: system-monitoring-prometheus
+    name: topic-exporter-cli
+    namespace: monitoring
+    labels:
+        prometheus: system-monitoring-prometheus
 spec:
-  staticConfigs:
-    - labels:
-        job: prometheus
-      targets:
-        - topic-exporter-cli.mqtt-things.svc.cluster.local:9137
+    staticConfigs:
+        - labels:
+              job: prometheus
+          targets:
+              - topic-exporter-cli.mqtt-things.svc.cluster.local:9137
