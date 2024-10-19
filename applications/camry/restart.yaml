@@ -31,7 +31,7 @@ subjects:
 apiVersion: batch/v1
 kind: CronJob
 metadata:
-    name: deleting-pod
+    name: restart
     namespace: camry
 spec:
     concurrencyPolicy: Forbid
