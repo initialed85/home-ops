@@ -28,7 +28,7 @@ subjects:
     - kind: ServiceAccount
       name: restart
 ---
-apiVersion: batch/v1beta1
+apiVersion: batch/v1
 kind: CronJob
 metadata:
     name: deleting-pod
