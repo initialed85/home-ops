@@ -52,5 +52,5 @@ spec:
                               - "-n"
                               - "game-of-life"
                               - "rollout"
-                              - restart"
+                              - "restart"
                               - "statefulset,deployment"

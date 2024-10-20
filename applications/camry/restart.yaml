@@ -52,5 +52,5 @@ spec:
                               - "-n"
                               - "camry"
                               - "rollout"
-                              - restart"
+                              - "restart"
                               - "statefulset,deployment"

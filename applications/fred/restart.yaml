@@ -52,5 +52,5 @@ spec:
                               - "-n"
                               - "fred"
                               - "rollout"
-                              - restart"
+                              - "restart"
                               - "statefulset,deployment"

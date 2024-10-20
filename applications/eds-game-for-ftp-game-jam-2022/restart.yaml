@@ -52,5 +52,5 @@ spec:
                               - "-n"
                               - "eds-game-for-ftp-game-jam-2022"
                               - "rollout"
-                              - restart"
+                              - "restart"
                               - "statefulset,deployment"

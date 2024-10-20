@@ -52,5 +52,5 @@ spec:
                               - "-n"
                               - "mqtt-things"
                               - "rollout"
-                              - restart"
+                              - "restart"
                               - "statefulset,deployment"

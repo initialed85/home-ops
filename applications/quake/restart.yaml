@@ -52,5 +52,5 @@ spec:
                               - "-n"
                               - "quake"
                               - "rollout"
-                              - restart"
+                              - "restart"
                               - "statefulset,deployment"
