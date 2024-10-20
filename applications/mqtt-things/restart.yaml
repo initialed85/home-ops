@@ -11,7 +11,7 @@ metadata:
     name: restart
     namespace: mqtt-things
 rules:
-    - apiGroups: [""]
+    - apiGroups: ["", "apps"]
       resources: ["pods", "statefulsets", "daemonsets"]
       verbs: ["get", "patch", "list", "watch", "delete"]
 ---
