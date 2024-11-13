@@ -17,5 +17,5 @@ spec:
     resources:
         requests:
             storage: 1G
-    storageClassName: nfs-hdd
+    storageClassName: nfs-ssd
     volumeMode: Filesystem
