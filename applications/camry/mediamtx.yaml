@@ -18,7 +18,7 @@ metadata:
         system: camry
 spec:
     serviceName: mediamtx
-    replicas: 0
+    replicas: 1
     selector:
         matchLabels:
             app: mediamtx
