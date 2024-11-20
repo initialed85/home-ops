@@ -9,7 +9,7 @@ metadata:
         service: object-detector
 spec:
     serviceName: object-detector
-    replicas: 3
+    replicas: 0
     selector:
         matchLabels:
             app: object-detector

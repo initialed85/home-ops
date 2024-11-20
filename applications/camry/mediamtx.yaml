@@ -17,7 +17,7 @@ metadata:
         service: mediamtx
 spec:
     serviceName: mediamtx
-    replicas: 1
+    replicas: 0
     selector:
         matchLabels:
             app: mediamtx
