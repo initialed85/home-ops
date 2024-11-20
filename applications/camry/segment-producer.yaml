@@ -7,6 +7,7 @@ metadata:
     labels:
         app: segment-producer
         service: segment-producer
+        system: camry
 spec:
     serviceName: segment-producer
     replicas: 0

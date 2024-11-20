@@ -36,6 +36,10 @@ kind: CronJob
 metadata:
     name: restart
     namespace: camry
+    labels:
+        app: redis
+        service: redis
+        system: camry
 spec:
     concurrencyPolicy: Forbid
     schedule: "0 1 * * *"

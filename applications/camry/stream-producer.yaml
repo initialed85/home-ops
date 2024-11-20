@@ -7,6 +7,7 @@ metadata:
     labels:
         app: stream-producer
         service: stream-producer
+        system: camry
 spec:
     serviceName: stream-producer
     replicas: 0

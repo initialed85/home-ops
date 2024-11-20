@@ -15,6 +15,7 @@ metadata:
     labels:
         app: mediamtx
         service: mediamtx
+        system: camry
 spec:
     serviceName: mediamtx
     replicas: 0
