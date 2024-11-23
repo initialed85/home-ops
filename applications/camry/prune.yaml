@@ -112,5 +112,5 @@ spec:
                 - "-U"
                 - "postgres"
                 - "camry"
-                - "-i"
+                - "-f"
                 - "/tmp/prune.sql"
