@@ -9,7 +9,7 @@ metadata:
         service: trigger-producer
 spec:
     serviceName: trigger-producer
-    replicas: 1
+    replicas: 0
     selector:
         matchLabels:
             app: trigger-producer

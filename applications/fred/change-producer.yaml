@@ -9,7 +9,7 @@ metadata:
         service: change-producer
 spec:
     serviceName: change-producer
-    replicas: 1
+    replicas: 0
     selector:
         matchLabels:
             app: change-producer
