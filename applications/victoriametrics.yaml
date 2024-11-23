@@ -15,34 +15,6 @@ spec:
         syncOptions:
             - CreateNamespace=true
             - ServerSideApply=true
-    ignoreDifferences:
-      - group: apps
-        kind: Deployment
-        jsonPointers:
-          - /spec/template/spec/initContainers/0/resources
-          - /spec/template/spec/initContainers/1/resources
-          - /spec/template/spec/initContainers/2/resources
-          - /spec/template/spec/containers/0/resources
-          - /spec/template/spec/containers/1/resources
-          - /spec/template/spec/containers/2/resources
-      - group: apps
-        kind: StatefulSet
-        jsonPointers:
-          - /spec/template/spec/initContainers/0/resources
-          - /spec/template/spec/initContainers/1/resources
-          - /spec/template/spec/initContainers/2/resources
-          - /spec/template/spec/containers/0/resources
-          - /spec/template/spec/containers/1/resources
-          - /spec/template/spec/containers/2/resources
-      - group: apps
-        kind: DaemonSet
-        jsonPointers:
-          - /spec/template/spec/initContainers/0/resources
-          - /spec/template/spec/initContainers/1/resources
-          - /spec/template/spec/initContainers/2/resources
-          - /spec/template/spec/containers/0/resources
-          - /spec/template/spec/containers/1/resources
-          - /spec/template/spec/containers/2/resources
     sources:
         - chart: victoria-metrics-k8s-stack
           targetRevision: 0.27.0
