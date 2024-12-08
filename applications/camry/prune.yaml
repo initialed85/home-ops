@@ -88,7 +88,21 @@ spec:
             - name: prune
               configMap:
                 name: prune
+            - name: hdd
+              persistentVolumeClaim:
+                claimName: hdd
+                readOnly: false
           containers:
+            - name: prune
+              image: ubuntu:22.04
+              volumeMounts:
+                - name: hdd
+                  subPath: media
+                  mountPath: /srv/media
+              command:
+                - "bash"
+                - "-c"
+                - "cd /srv/media && find . -maxdepth 1 -mtime +7 -type f -delete"
             - name: postgres
               image: postgis/postgis:16-3.4
               volumeMounts:
