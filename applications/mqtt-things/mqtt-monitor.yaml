@@ -25,7 +25,7 @@ spec:
             [
               "sub",
               "-h",
-              "mqtt-broker",
+              "mqtt-broker-internal",
               "-t",
               "+/#",
               "-i",
