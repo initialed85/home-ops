@@ -30,4 +30,5 @@ spec:
               "+/+/#",
               "-i",
               "mqttmonitor",
+              "-T",
             ]
