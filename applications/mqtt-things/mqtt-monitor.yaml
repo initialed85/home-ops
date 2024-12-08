@@ -27,7 +27,7 @@ spec:
               "-h",
               "mqtt-broker-internal",
               "-t",
-              "+/#",
+              "+/+/#",
               "-i",
               "mqttmonitor",
             ]
