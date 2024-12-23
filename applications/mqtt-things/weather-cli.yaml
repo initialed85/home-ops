@@ -1,0 +1,88 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+    namespace: mqtt-things
+    name: weather-cli
+data:
+    MQTT_BROKER_HOST: "192.168.137.251"
+    PORT: "80"
+    LATITUDE: "-31.922928706174076"
+    LONGITUDE: "115.89453950750223"
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+    namespace: mqtt-things
+    name: weather-cli
+    labels:
+        app: weather-cli
+spec:
+    serviceName: weather-cli
+    replicas: 1
+    selector:
+        matchLabels:
+            app: weather-cli
+    template:
+        metadata:
+            labels:
+                app: weather-cli
+        spec:
+            nodeSelector:
+                kubernetes.io/arch: amd64
+            containers:
+                - name: weather-cli
+                  image: initialed85/mqtt-things-weather-cli:latest
+                  imagePullPolicy: Always
+                  env:
+                      - name: MQTT_CLIENT_PROVIDER
+                        value: gmq
+                      - name: MQTT_BROKER_HOST
+                        valueFrom:
+                            configMapKeyRef:
+                                name: weather-cli
+                                key: MQTT_BROKER_HOST
+                      - name: PORT
+                        valueFrom:
+                            configMapKeyRef:
+                                name: weather-cli
+                                key: PORT
+                      - name: LATITUDE
+                        valueFrom:
+                            configMapKeyRef:
+                                name: weather-cli
+                                key: LATITUDE
+                      - name: LONGITUDE
+                        valueFrom:
+                            configMapKeyRef:
+                                name: weather-cli
+                                key: LONGITUDE
+                  ports:
+                      - containerPort: 80
+                  resources: {}
+                  command:
+                      [
+                          "/srv/entrypoint",
+                          "-host",
+                          "$(MQTT_BROKER_HOST)",
+                          "-port",
+                          "$(PORT)",
+                          "-latitude",
+                          "$(LATITUDE)",
+                          "-longitude",
+                          "$(LONGITUDE)",
+                      ]
+---
+apiVersion: v1
+kind: Service
+metadata:
+    name: weather-cli
+    namespace: mqtt-things
+    labels:
+        monitoring: "true"
+spec:
+    selector:
+        app: weather-cli
+    ports:
+        - name: weather-cli
+          port: 80
+          targetPort: 80

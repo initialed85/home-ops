@@ -1,0 +1,42 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+    namespace: quake
+    name: quake-index
+    labels:
+        app: quake-index
+spec:
+    replicas: 1
+    selector:
+        matchLabels:
+            app: quake-index
+    template:
+        metadata:
+            labels:
+                app: quake-index
+        spec:
+            nodeSelector:
+                kubernetes.io/arch: amd64
+            containers:
+                - name: quake-index
+                  image: kube-registry:5000/quake-index:latest
+                  imagePullPolicy: Always
+                  ports:
+                      - containerPort: 80
+                  resources: {}
+---
+apiVersion: v1
+kind: Service
+metadata:
+    name: quake-index
+    namespace: quake
+    labels:
+        monitoring: "true"
+spec:
+    selector:
+        app: quake-index
+    ports:
+        - name: quake-index
+          port: 80
+          targetPort: 80

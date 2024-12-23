@@ -1,0 +1,42 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+    namespace: quake
+    name: quake-wasm-glquake
+    labels:
+        app: quake-wasm-glquake
+spec:
+    replicas: 1
+    selector:
+        matchLabels:
+            app: quake-wasm-glquake
+    template:
+        metadata:
+            labels:
+                app: quake-wasm-glquake
+        spec:
+            nodeSelector:
+                kubernetes.io/arch: amd64
+            containers:
+                - name: quake-wasm-glquake
+                  image: kube-registry:5000/quake-wasm:latest-glquake
+                  imagePullPolicy: Always
+                  ports:
+                      - containerPort: 80
+                  resources: {}
+---
+apiVersion: v1
+kind: Service
+metadata:
+    name: quake-wasm-glquake
+    namespace: quake
+    labels:
+        monitoring: "true"
+spec:
+    selector:
+        app: quake-wasm-glquake
+    ports:
+        - name: quake-wasm-glquake
+          port: 80
+          targetPort: 80

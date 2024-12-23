@@ -1,0 +1,81 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+    namespace: mqtt-things
+    name: sprinklers-cli
+data:
+    MQTT_BROKER_HOST: "mqtt-broker-internal"
+    SERIAL_PORT: "/dev/ttyACM0"
+    RELAY_1_INDEX: "2"
+    RELAY_2_INDEX: "3"
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+    namespace: mqtt-things
+    name: sprinklers-cli
+    labels:
+        app: sprinklers-cli
+spec:
+    serviceName: sprinklers-cli
+    replicas: 0
+    selector:
+        matchLabels:
+            app: sprinklers-cli
+    template:
+        metadata:
+            labels:
+                app: sprinklers-cli
+        spec:
+            nodeSelector:
+                home-role: iot
+                iot-role: sprinklers
+            volumes:
+                - name: dev-ttyacm-0
+                  hostPath:
+                      path: /dev/ttyACM0
+            containers:
+                - name: sprinklers-cli
+                  image: initialed85/mqtt-things-sprinklers-cli:latest
+                  imagePullPolicy: Always
+                  securityContext:
+                      privileged: true
+                  volumeMounts:
+                      - mountPath: /dev/ttyACM0
+                        name: dev-ttyacm-0
+                  env:
+                      - name: MQTT_CLIENT_PROVIDER
+                        value: gmq
+                      - name: MQTT_BROKER_HOST
+                        valueFrom:
+                            configMapKeyRef:
+                                name: sprinklers-cli
+                                key: MQTT_BROKER_HOST
+                      - name: SERIAL_PORT
+                        valueFrom:
+                            configMapKeyRef:
+                                name: sprinklers-cli
+                                key: SERIAL_PORT
+                      - name: RELAY_1_INDEX
+                        valueFrom:
+                            configMapKeyRef:
+                                name: sprinklers-cli
+                                key: RELAY_1_INDEX
+                      - name: RELAY_2_INDEX
+                        valueFrom:
+                            configMapKeyRef:
+                                name: sprinklers-cli
+                                key: RELAY_2_INDEX
+                  resources: {}
+                  command:
+                      [
+                          "/srv/entrypoint",
+                          "-host",
+                          "$(MQTT_BROKER_HOST)",
+                          "-port",
+                          "$(SERIAL_PORT)",
+                          "-relay",
+                          "$(RELAY_1_INDEX)",
+                          "-relay",
+                          "$(RELAY_2_INDEX)",
+                      ]

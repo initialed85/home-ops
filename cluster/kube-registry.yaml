@@ -1,0 +1,121 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: kube-registry
+  namespace: kube-system
+  labels:
+    kubernetes.io/cluster-service: "true"
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 256Gi
+  storageClassName: nfs-ssd
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: kube-registry
+  namespace: kube-system
+  labels:
+    app: kube-registry
+    kubernetes.io/cluster-service: "true"
+data:
+  config.yml: |
+    version: 0.1
+    log:
+      fields:
+        service: registry
+    storage:
+      cache:
+        blobdescriptor: inmemory
+      filesystem:
+        rootdirectory: /var/lib/registry
+      delete:
+        enabled: true
+    http:
+      addr: :5000
+      headers:
+        X-Content-Type-Options: [ nosniff ]
+    health:
+      storagedriver:
+        enabled: true
+        interval: 10s
+        threshold: 3
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kube-registry
+  namespace: kube-system
+  labels:
+    app: kube-registry
+    kubernetes.io/cluster-service: "true"
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: kube-registry
+  template:
+    metadata:
+      labels:
+        app: kube-registry
+        kubernetes.io/cluster-service: "true"
+    spec:
+      nodeSelector:
+          kubernetes.io/arch: amd64
+      volumes:
+        - name: image-store
+          persistentVolumeClaim:
+            claimName: kube-registry
+            readOnly: false
+        - name: config
+          configMap:
+            name: kube-registry
+      containers:
+        - name: registry
+          image: registry:2
+          imagePullPolicy: Always
+          volumeMounts:
+            - name: image-store
+              mountPath: /var/lib/registry
+            - name: config
+              mountPath: /etc/docker/registry/config.yml
+              subPath: config.yml
+          env:
+            - name: REGISTRY_HTTP_ADDR
+              value: :5000
+            - name: REGISTRY_HTTP_SECRET
+              value: "r3g1stry"
+            - name: REGISTRY_STORAGE_FILESYSTEM_ROOTDIRECTORY
+              value: /var/lib/registry
+            - name: REGISTRY_STORAGE_DELETE_ENABLED
+              value: "true"
+          ports:
+            - containerPort: 5000
+              name: registry
+              protocol: TCP
+          livenessProbe:
+            httpGet:
+              path: /
+              port: registry
+          readinessProbe:
+            httpGet:
+              path: /
+              port: registry
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: kube-registry
+  namespace: kube-system
+spec:
+  selector:
+    app: kube-registry
+  ports:
+    - name: registry
+      protocol: TCP
+      port: 5000
+      targetPort: 5000
+  type: LoadBalancer

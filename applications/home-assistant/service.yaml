@@ -1,0 +1,17 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: home-assistant
+  namespace: home-assistant
+  labels:
+    monitoring: "true"
+spec:
+  selector:
+    app: home-assistant
+  type: ExternalName
+  externalName: 192.168.137.251
+  ports:
+    - name: http
+      port: 8123
+      targetPort: 8123

@@ -1,0 +1,61 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+    namespace: camry
+    name: frontend
+    labels:
+        app: frontend
+        service: frontend
+        system: camry
+spec:
+    replicas: 1
+    selector:
+        matchLabels:
+            app: frontend
+            service: frontend
+    template:
+        metadata:
+            labels:
+                app: frontend
+                service: frontend
+        spec:
+            nodeSelector:
+                kubernetes.io/arch: amd64
+            volumes:
+                - name: hdd
+                  persistentVolumeClaim:
+                      claimName: hdd
+                      readOnly: false
+            containers:
+                - name: frontend
+                  image: kube-registry:5000/camry-frontend:latest
+                  imagePullPolicy: Always
+                  ports:
+                      - containerPort: 7070
+                  volumeMounts:
+                      - name: hdd
+                        subPath: media
+                        mountPath: /srv/media
+                  resources:
+                      requests:
+                          memory: "1024Mi"
+                          cpu: "1000m"
+                      limits:
+                          memory: "1024Mi"
+                          cpu: "1000m"
+---
+apiVersion: v1
+kind: Service
+metadata:
+    name: frontend
+    namespace: camry
+    labels:
+        monitoring: "true"
+spec:
+    selector:
+        app: frontend
+    ports:
+        - name: frontend
+          port: 80
+          targetPort: 80

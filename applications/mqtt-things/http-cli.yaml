@@ -1,0 +1,91 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+    namespace: mqtt-things
+    name: http-cli
+data:
+    MQTT_BROKER_HOST: "192.168.137.251"
+    PORT: "8079"
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+    namespace: mqtt-things
+    name: http-cli
+    labels:
+        app: http-cli
+spec:
+    serviceName: http-cli
+    replicas: 1
+    selector:
+        matchLabels:
+            app: http-cli
+    template:
+        metadata:
+            labels:
+                app: http-cli
+        spec:
+            nodeSelector:
+                kubernetes.io/arch: amd64
+            containers:
+                - name: http-cli
+                  image: initialed85/mqtt-things-http-cli:latest
+                  imagePullPolicy: Always
+                  env:
+                      - name: MQTT_CLIENT_PROVIDER
+                        value: gmq
+                      - name: MQTT_BROKER_HOST
+                        valueFrom:
+                            configMapKeyRef:
+                                name: http-cli
+                                key: MQTT_BROKER_HOST
+                      - name: PORT
+                        valueFrom:
+                            configMapKeyRef:
+                                name: http-cli
+                                key: PORT
+                  command: ["/srv/entrypoint", "-host", "$(MQTT_BROKER_HOST)", "-port", "$(PORT)"]
+                  ports:
+                      - containerPort: 8079
+                  resources: {}
+---
+apiVersion: v1
+kind: Service
+metadata:
+    name: http-cli
+    namespace: mqtt-things
+    labels:
+        monitoring: "true"
+spec:
+    selector:
+        app: http-cli
+    ports:
+        - name: http-cli
+          port: 8079
+          targetPort: 8079
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+    namespace: mqtt-things
+    name: http-cli
+    annotations:
+        cert-manager.io/cluster-issuer: letsencrypt
+spec:
+    ingressClassName: traefik
+    tls:
+        - hosts:
+              - http-cli.initialed85.cc
+          secretName: http-cli
+    rules:
+        - host: http-cli.initialed85.cc
+          http:
+              paths:
+                  - pathType: Prefix
+                    path: /
+                    backend:
+                        service:
+                            name: http-cli
+                            port:
+                                number: 8079
