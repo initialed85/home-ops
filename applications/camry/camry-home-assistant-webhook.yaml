@@ -1,0 +1,29 @@
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  namespace: camry
+  name: home-assistant-webhook
+  labels:
+    app: home-assistant-webhook
+    service: home-assistant-webhook
+    system: camry
+spec:
+  serviceName: home-assistant-webhook
+  replicas: 1
+  selector:
+    matchLabels:
+      app: home-assistant-webhook
+      service: home-assistant-webhook
+  template:
+    metadata:
+      labels:
+        app: home-assistant-webhook
+        service: home-assistant-webhook
+    spec:
+      nodeSelector:
+        kubernetes.io/arch: amd64
+      containers:
+        - name: home-assistant-webhook
+          image: kube-registry:5000/camry-home-assistant-webhook:latest
+          imagePullPolicy: Always
