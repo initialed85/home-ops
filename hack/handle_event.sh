@@ -19,7 +19,7 @@ while IFS= read -r line; do
 
     echo -e "event:\n\n${event}\n"
 
-    echo -e "this is a relevant event; processing...\n"
+    echo -e "this is a possibly a relevant event; processing...\n"
 
     id=$(echo "${line}" | jq -r '.object.id')
     started_at=$(echo "$line" | jq -r '.object.started_at')
@@ -42,6 +42,13 @@ while IFS= read -r line; do
     echo "file_url: ${file_url}"
     echo "thumbnail_url: ${thumbnail_url}"
     echo "camera_name: ${camera_name}"
+
+    if [[ "${camera_name}" != "Driveway" ]]; then
+        echo -e "warning: camera name not Driveway; skipping...\n"
+        continue
+    fi
+
+    echo -e "this is a definitely a relevant event; firing webhook...\n"
 
     data="{\"id\": \"${id}\", \"started_at\": \"${started_at}\", \"ended_at\": \"${ended_at}\", \"file_url\": \"${file_url}\", \"thumbnail_url\": \"${thumbnail_url}\", \"camera_name\": \"${camera_name}\"}"
     echo "data: ${data}"

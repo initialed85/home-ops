@@ -29,3 +29,4 @@ spec:
           imagePullPolicy: Always
           stdin: true
           tty: true
+          terminationGracePeriodSeconds: 1
