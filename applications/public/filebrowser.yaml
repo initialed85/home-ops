@@ -1,0 +1,73 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+    namespace: public
+    name: filebrowser
+data:
+    filebrowser.json: |
+        {
+          "port": 80,
+          "baseURL": "/filebrowser",
+          "address": "",
+          "log": "stdout",
+          "database": "/database.db",
+          "root": "/srv"
+        }
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+    namespace: public
+    name: filebrowser
+    labels:
+        app: filebrowser
+spec:
+    replicas: 1
+    selector:
+        matchLabels:
+            app: filebrowser
+    template:
+        metadata:
+            labels:
+                app: filebrowser
+        spec:
+            nodeSelector:
+                kubernetes.io/arch: amd64
+            volumes:
+                - name: filebrowser
+                  configMap:
+                      name: filebrowser
+                - name: shared
+                  persistentVolumeClaim:
+                      claimName: public
+                      readOnly: false
+            containers:
+                - name: filebrowser
+                  image: filebrowser/filebrowser:v2.22.4
+                  imagePullPolicy: Always
+                  volumeMounts:
+                      - name: filebrowser
+                        subPath: filebrowser.json
+                        mountPath: /.filebrowser.json
+                      - name: shared
+                        subPath: public/srv/public
+                        mountPath: /srv/public/srv/public
+                  ports:
+                      - containerPort: 80
+                  resources: {}
+                  command: ["/filebrowser", "--disable-preview-resize", "--disable-thumbnails"]
+---
+apiVersion: v1
+kind: Service
+metadata:
+    name: filebrowser
+    namespace: public
+    labels:
+        monitoring: "true"
+spec:
+    selector:
+        app: filebrowser
+    ports:
+        - name: filebrowser
+          port: 8080
+          targetPort: 80

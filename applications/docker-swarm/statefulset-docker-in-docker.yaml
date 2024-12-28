@@ -1,0 +1,99 @@
+# ---
+# apiVersion: apps/v1
+# kind: StatefulSet
+# metadata:
+#   namespace: docker-swarm
+#   name: docker-in-docker
+#   labels:
+#     app: docker-in-docker
+# spec:
+#   serviceName: docker-in-docker
+#   replicas: 6
+#   selector:
+#     matchLabels:
+#       app: docker-in-docker
+#   template:
+#     metadata:
+#       labels:
+#         app: docker-in-docker
+#     spec:
+#       nodeSelector:
+#         kubernetes.io/arch: amd64
+#       topologySpreadConstraints:
+#         - maxSkew: 1
+#           topologyKey: kubernetes.io/hostname
+#           whenUnsatisfiable: ScheduleAnyway
+#           labelSelector:
+#             matchLabels:
+#               app: docker-in-docker
+#       hostNetwork: true
+#       dnsPolicy: ClusterFirstWithHostNet
+#       terminationGracePeriodSeconds: 1
+#       volumes:
+#         - name: etc-docker
+#           configMap:
+#             name: docker-in-docker
+#             items:
+#               - key: daemon.json
+#                 path: daemon.json
+#         - name: var-run
+#           hostPath:
+#             path: /var/run
+#             type: DirectoryOrCreate
+#         - name: var-lib-docker
+#           hostPath:
+#             path: /var/lib/docker
+#             type: DirectoryOrCreate
+#         - name: shared
+#           persistentVolumeClaim:
+#             claimName: shared
+#             readOnly: false
+#         - name: bootstrap
+#           configMap:
+#             name: docker-in-docker
+#             items:
+#               - key: bootstrap.sh
+#                 path: bootstrap.sh
+#       containers:
+#         - name: docker-in-docker
+#           image: docker:27.3.1-dind
+#           securityContext:
+#             privileged: true
+#           volumeMounts:
+#             - name: var-run
+#               mountPath: /var/run
+#             - name: var-lib-docker
+#               mountPath: /var/lib/docker
+#             - name: etc-docker
+#               mountPath: /etc/docker
+#           env:
+#             - name: COMPOSE_DOCKER_CLI_BUILD
+#               value: "1"
+#             - name: DOCKER_BUILDKIT
+#               value: "1"
+#         - name: bootstrap-docker-swarm
+#           image: docker:27.3.1-dind
+#           securityContext:
+#             privileged: true
+#           volumeMounts:
+#             - name: var-run
+#               mountPath: /var/run
+#             - name: var-lib-docker
+#               mountPath: /var/lib/docker
+#             - name: etc-docker
+#               mountPath: /etc/docker
+#             - name: shared
+#               mountPath: /srv/shared
+#             - name: bootstrap
+#               mountPath: /srv/bootstrap
+#           env:
+#             - name: COMPOSE_DOCKER_CLI_BUILD
+#               value: "1"
+#             - name: DOCKER_BUILDKIT
+#               value: "1"
+#             - name: POD_NAME
+#               valueFrom:
+#                 fieldRef:
+#                   fieldPath: metadata.name
+#           workingDir: /srv/bootstrap
+#           command: ["sh", "./bootstrap.sh"]

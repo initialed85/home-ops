@@ -1,0 +1,57 @@
+---
+apiVersion: bitnami.com/v1alpha1
+kind: SealedSecret
+metadata:
+  name: scanner-basic-auth
+  namespace: scanner
+spec:
+  encryptedData:
+    password: AgCI/vPcQs2Euc+BeC6PU1cZTI/Zq78GE8ps9MeYjcp0/v3hkTSrPdooVQovx+A+vyVbTqV3WuGepsQVveVHoV3PJDjOOf2rVarnMLich0oClcUuYnk3wWEzO0S2i2gwL2n7PDQFMqb7GarHVsnfq9li0H4hztFrq+fkoaAzYF8q6W4G4LfxWcN0fkgo+lvMIPtqjiuJ6KsXF+PVW9YIS+PYgTJ+V4t5ELg/GPI7myG5Q/lv/qKw9E3707FM44+2/Y4rEFEYrOsH2DXziHvwFtgH4LThZeTd2ku6qhDu2U4/YVmT+9DkEImGuJsAxXEgBeVRPGpgN/awOPka9gapcI8ZDi7HezMuwV5QNd0tVtHpL9mPOaIDcneqc2rd7fSv01JKaiijnp/ag4cXbFnVJsv9665Oc/aBejPWyPqj/dsRsL66rbxaW7ayv96QYfzw2KQ6R+2fqm7uvY1AcYVj0swhn5gY2lhK8xviyDRllkVXGWMns6IHMf5vBcjbaEyOhWxVsyp3/6uZNzI/j/8qbQSMI9k6jwdnlS7ush5XdHt2jpjLOlv1CxEGTSvB41CCdKwkztNrq0ALuVsATiQsF5KgkHthRU+cE3U5YJ7M2JAA3PWYOcAYET/KIHTZm4s7xV9xjaP2NdSLPBLOgaQRKhZm80vi4CSef1S8qUzAZ6gQ14X6hy3JeaTSMi5n2NLqaC6hu27a68sh5d/WAOWI
+    username: AgB9XYq/WUIf/mTJWdRxvD/N7PtQCTrBYdHnejGzjSek7V0tdaIAPHLcxXwYiwZeG/1XknUgs5PHCoOScmbwbJU2pn/UuOdwgcw8oS8sEJ5zednAdiJFMF/Jx6uNUbBnx1r62iLHgSUGutYF7hBJMBlb/fi/iEcpahLHzShrJOpXB5Bi5ye8l0rNFquenjh3kUKjSXSp7IivH98vijJ93vUUpVMVQjaW4SPR14/JkhX/QiS1PjxIDe1UX0QTDnZ3Dglbi0o0ZEh8GYew4etka8m2xL64dAuolVLzcv/wCaV1rmXTWIjNj4+d/naKkPVkptWzPCLR5gF/AeCqE+ohtson+oM7qJBHO2Yc/3djnQaSCfwQdz5myod53VrNfV7KtAjbHncujr95Sftu4EQOXPlRDY+SaPM2aLt+PNV3tK65GlUfNRmsooYIG0s35KaW6rzLiYzna29vkKTAGiGsogi5LSs2t4hJYdrV55+9L3iq1OqzieDP4RvcKWBrlPtcgkrqpl1iNOTuonEGTepCKeTgG1UWZ72uibwqlzQiT3pSSi8Lwf0DZWziJSyY2tnt4os+H7ln65GQGloV3+kLb1p0YoCQEeIPduBc34PG5RPkyCY7Kh4dpgW4eLCWJQQIijT0wxKIWPIL9y58H3wuk4T3b7Lf89Ty8tJy6JSWkav/Dm2LPrbzVbgC6CuYYz4WS05jGUHaI15T
+  template:
+    metadata:
+      name: scanner-basic-auth
+      namespace: scanner
+    type: kubernetes.io/basic-auth
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: Middleware
+metadata:
+  namespace: scanner
+  name: scanner-basic-auth
+spec:
+  basicAuth:
+    secret: scanner-basic-auth
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  namespace: scanner
+  name: scanner
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt
+    traefik.ingress.kubernetes.io/router.middlewares: scanner-scanner-basic-auth@kubernetescrd # (namespace)-(name)@kubernetescrd
+spec:
+  ingressClassName: traefik
+  tls:
+    - hosts:
+        - scanner.initialed85.cc
+      secretName: scanner
+  rules:
+    - host: scanner.initialed85.cc
+      http:
+        paths:
+          - pathType: Prefix
+            path: /
+            backend:
+              service:
+                name: nginx
+                port:
+                  number: 80
+          - pathType: Prefix
+            path: /filebrowser
+            backend:
+              service:
+                name: filebrowser
+                port:
+                  number: 8080
