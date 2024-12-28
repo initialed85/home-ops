@@ -51,3 +51,5 @@ while IFS= read -r line; do
         continue
     fi
 done
+
+exit 1
