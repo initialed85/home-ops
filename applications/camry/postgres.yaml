@@ -23,6 +23,7 @@ spec:
         spec:
             nodeSelector:
                 kubernetes.io/arch: amd64
+                kubernetes.io/hostname: ocnus
             volumes:
                 - name: dev-shm
                   emptyDir:
@@ -50,11 +51,11 @@ spec:
                       - containerPort: 5432
                   resources:
                       requests:
-                          memory: "1024Mi"
-                          cpu: "1000m"
+                          memory: "8192Mi"
+                          cpu: "8000m"
                       limits:
-                          memory: "1024Mi"
-                          cpu: "1000m"
+                          memory: "8192Mi"
+                          cpu: "8000m"
                   startupProbe:
                       exec:
                           command:
