@@ -9,7 +9,7 @@ while IFS= read -r line; do
 
     echo -e "line:\n\n${line}\n"
 
-    event=$(echo "${line}" | jq 'select(.object.detection_summary != []) | select(.object.detection_summary[] | select(.class_name == "person" and .average_score >= 0.55 and .detected_frame_count >= 20))')
+    event=$(echo "${line}" | jq 'select(.object.status == "needs tracking") | select(.object.detection_summary != []) | select(.object.detection_summary[] | select(.class_name == "person" and .average_score >= 0.55 and .detected_frame_count >= 20))')
 
     if [[ $(echo "${event}" | xargs) == "" ]]; then
         echo -e "event:\n\n(nil)\n"
