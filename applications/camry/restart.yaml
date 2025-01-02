@@ -31,33 +31,34 @@ subjects:
     - kind: ServiceAccount
       name: restart
 ---
-apiVersion: batch/v1
-kind: CronJob
-metadata:
-    name: restart
-    namespace: camry
-    labels:
-        app: redis
-        service: redis
-        system: camry
-spec:
-    concurrencyPolicy: Forbid
-    schedule: "0 1 * * *"
-    jobTemplate:
-        spec:
-            backoffLimit: 0
-            activeDeadlineSeconds: 600
-            template:
-                spec:
-                    serviceAccountName: restart
-                    restartPolicy: Never
-                    containers:
-                        - name: kubectl
-                          image: bitnami/kubectl
-                          command:
-                              - "kubectl"
-                              - "-n"
-                              - "camry"
-                              - "rollout"
-                              - "restart"
-                              - "statefulset,deployment"
+# TODO: trying without this for a bit- I think I fixed the main thing this watchdog was managing
+# apiVersion: batch/v1
+# kind: CronJob
+# metadata:
+#     name: restart
+#     namespace: camry
+#     labels:
+#         app: redis
+#         service: redis
+#         system: camry
+# spec:
+#     concurrencyPolicy: Forbid
+#     schedule: "0 1 * * *"
+#     jobTemplate:
+#         spec:
+#             backoffLimit: 0
+#             activeDeadlineSeconds: 600
+#             template:
+#                 spec:
+#                     serviceAccountName: restart
+#                     restartPolicy: Never
+#                     containers:
+#                         - name: kubectl
+#                           image: bitnami/kubectl
+#                           command:
+#                               - "kubectl"
+#                               - "-n"
+#                               - "camry"
+#                               - "rollout"
+#                               - "restart"
+#                               - "statefulset,deployment"
