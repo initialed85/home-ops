@@ -1,0 +1,15 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: whatever-ed-is-working-on
+  namespace: whatever-ed-is-working-on
+spec:
+  selector:
+    app: whatever-ed-is-working-on
+  type: ExternalName
+  externalName: 192.168.137.222
+  ports:
+    - name: frontend
+      port: 3000
+      targetPort: 3000
