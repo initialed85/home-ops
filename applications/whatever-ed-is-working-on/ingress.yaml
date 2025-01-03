@@ -20,6 +20,6 @@ spec:
             path: /
             backend:
               service:
-                name: frontend
+                name: whatever-ed-is-working-on
                 port:
                   number: 3000
