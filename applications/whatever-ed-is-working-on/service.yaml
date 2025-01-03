@@ -4,12 +4,31 @@ kind: Service
 metadata:
   name: whatever-ed-is-working-on
   namespace: whatever-ed-is-working-on
+  labels:
+    monitoring: "true"
 spec:
   selector:
-    app: whatever-ed-is-working-on
-  type: ExternalName
-  externalName: 192.168.137.222
+    app: mqtt-broker
+  type: ClusterIP
+  clusterIP: None # headless service
   ports:
-    - name: frontend
-      port: 3000
-      targetPort: 3000
+    - name: mqtt-broker
+      port: 1883
+      targetPort: 1883
+---
+apiVersion: discovery.k8s.io/v1
+kind: EndpointSlice
+metadata:
+  name: whatever-ed-is-working-on
+  namespace: whatever-ed-is-working-on
+  labels:
+    kubernetes.io/service-name: whatever-ed-is-working-on
+addressType: IPv4
+ports:
+  - name: port-1
+    protocol: TCP
+    port: 3000
+endpoints:
+  - addresses:
+      - "192.168.137.222"
+    conditions: {}
