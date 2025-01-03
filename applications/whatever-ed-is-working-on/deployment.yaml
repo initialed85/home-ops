@@ -18,9 +18,6 @@ spec:
       containers:
         - name: whatever-ed-is-working-on
           image: alpine/socat
-          envFrom:
-            - configMapRef:
-                name: config
           ports:
             - containerPort: 3000
               protocol: TCP
