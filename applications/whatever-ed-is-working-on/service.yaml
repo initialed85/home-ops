@@ -8,13 +8,13 @@ metadata:
     monitoring: "true"
 spec:
   selector:
-    app: mqtt-broker
+    app: whatever-ed-is-working-on
   type: ClusterIP
   clusterIP: None # headless service
   ports:
-    - name: mqtt-broker
-      port: 1883
-      targetPort: 1883
+    - name: port-1
+      port: 3000
+      targetPort: 3000
 ---
 apiVersion: discovery.k8s.io/v1
 kind: EndpointSlice
