@@ -1,0 +1,29 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: whatever-ed-is-working-on
+  labels:
+    app: whatever-ed-is-working-on
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: whatever-ed-is-working-on
+  template:
+    metadata:
+      labels:
+        app: whatever-ed-is-working-on
+    spec:
+      containers:
+        - name: whatever-ed-is-working-on
+          image: alpine/socat
+          envFrom:
+            - configMapRef:
+                name: config
+          ports:
+            - containerPort: 3000
+              protocol: TCP
+          args:
+            - tcp-listen:3000,fork,reuseaddr
+            - tcp-connect:192.168.137.222:3000
