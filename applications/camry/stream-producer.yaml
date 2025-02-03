@@ -1,0 +1,52 @@
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+    namespace: camry
+    name: stream-producer
+    labels:
+        app: stream-producer
+        service: stream-producer
+        system: camry
+spec:
+    serviceName: stream-producer
+    replicas: 3
+    selector:
+        matchLabels:
+            app: stream-producer
+            service: stream-producer
+    template:
+        metadata:
+            labels:
+                app: stream-producer
+                service: stream-producer
+        spec:
+            nodeSelector:
+                kubernetes.io/arch: amd64
+            volumes:
+                - name: hdd
+                  persistentVolumeClaim:
+                      claimName: hdd
+                      readOnly: false
+            containers:
+                - name: stream-producer
+                  image: kube-registry:5000/camry-stream-producer:latest
+                  imagePullPolicy: Always
+                  ports:
+                      - containerPort: 7070
+                  volumeMounts:
+                      - name: hdd
+                        subPath: media
+                        mountPath: /srv/media
+                  envFrom:
+                      - configMapRef:
+                            name: config
+                      - secretRef:
+                            name: secret
+                  resources:
+                      requests:
+                          memory: "2048Mi"
+                          cpu: "1000m"
+                      limits:
+                          memory: "2048Mi"
+                          cpu: "1000m"

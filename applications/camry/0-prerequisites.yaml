@@ -1,0 +1,74 @@
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: camry
+  labels:
+    name: camry
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: hdd
+  namespace: camry
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 2T
+  storageClassName: nfs-hdd
+  volumeMode: Filesystem
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: ssd
+  namespace: camry
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 128Gi
+  storageClassName: nfs-ssd
+  volumeMode: Filesystem
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: config
+  namespace: camry
+data:
+  API_URL: http://api:7070
+  BASE_URL: /
+  DESTINATION_URL: rtsp://mediamtx:8554/streams
+  DJANGOLANG_NODE_NAME: api
+  DJANGOLANG_PROFILE: "0"
+  ENABLE_PASSTHROUGH: "1"
+  MTX_PROTOCOLS: tcp
+  MTX_WEBRTCADDITIONALHOSTS: camry.initialed85.cc
+  PAGER: "cat"
+  POSTGIS_GDAL_ENABLED_DRIVERS: "ENABLE_ALL"
+  POSTGRES_DB: camry
+  POSTGRES_HOST: postgres
+  POSTGRES_PORT: "5432"
+  POSTGRES_USER: "postgres"
+  REDIS_URL: redis://redis:6379
+  SWAGGER_JSON_URL: https://camry.initialed85.cc/api/openapi.json
+---
+# kubectl -n camry create secret generic secret --dry-run=client --from-literal='POSTGRES_PASSWORD=(redacted)' -o yaml | kubeseal --controller-name=sealed-secrets --controller-namespace=kube-system -o yaml
+apiVersion: bitnami.com/v1alpha1
+kind: SealedSecret
+metadata:
+  creationTimestamp: null
+  name: secret
+  namespace: camry
+spec:
+  encryptedData:
+    POSTGRES_PASSWORD: AgCRGSiwx4p9ZLHRKOkULzDfMwT3GfQZ9s41yMvZ2Cx72Li7CllKicLelzMFuATzQ7W7wbms1yApCtDU9zwMD+nqqQ+9Ahil9XarmTRjQ/7MRKqk0LugT907+UH2sDE5owj2e5NeQjstM90CQ2Go+kJ/UNi+63PzbZrsjJRqfrQ9lbTEfpgxxTYbxePP0106eVKw6zskdqryV9LjxTmSOOT8xXLnjZ1jMknTMrwWHQfZRtBFN9mGY7omXc4KqU5y9nt2byNLyehWqIOoni6cjNyaGqGR2wGyVsBKOUKSFUv7CjyZdVd8iNeRM+q7LB/vGJLpi2HzmYzuS3y12LznqVd3UgXThQMgSS+vaWixZk5WiDPF2Wg2cu87LyK6WInATjOWYU6weW0vLftEPLhBI8u8sCr/LQ/+wNVfRDxdu+J9OrsdC4kUXgtnskA+ieB8Rs9q2H2swzGN3KRTRdzMkDSv6FxP3ikwRrJP0u7HH+CREDKuzbNxn39erxluZbuWYlysPvWwSYQp4dL43Y3g9b+FZpQewoDF5QsRbxFZ4Y656nFDNqUwhxaVyMSQv3GbNVedP7AQj/HpBDTp2Y8G2YDoMqz1zjbtvIp4EoexPlg9MQLkIDv3eYUpou9iKasz2GybnGS4GOWx/TnPLycDZDCwkoRvNqngLFv4GKP8cqqLHCrVuxBAqdoNFvy3GYBpI4a4ZP81JzogWw==
+  template:
+    metadata:
+      creationTimestamp: null
+      name: secret
+      namespace: camry

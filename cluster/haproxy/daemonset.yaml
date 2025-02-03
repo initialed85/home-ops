@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: haproxy
+  namespace: kube-system
+  labels:
+    app: haproxy
+spec:
+  selector:
+    matchLabels:
+      app: haproxy
+  template:
+    metadata:
+      labels:
+        app: haproxy
+    spec:
+      nodeSelector:
+        kubernetes.io/arch: amd64
+      hostNetwork: true
+      volumes:
+        - name: etc-haproxy
+          configMap:
+            name: haproxy
+      containers:
+        - name: haproxy
+          image: kube-registry:5000/haproxy
+          imagePullPolicy: Always
+          securityContext:
+            privileged: true
+          volumeMounts:
+            - name: etc-haproxy
+              mountPath: /etc/haproxy/haproxy.cfg
+              subPath: haproxy.cfg

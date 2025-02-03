@@ -1,0 +1,74 @@
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+    namespace: fred
+    name: api
+    labels:
+        app: api
+        service: api
+spec:
+    serviceName: api
+    replicas: 1
+    selector:
+        matchLabels:
+            app: api
+            service: api
+    template:
+        metadata:
+            labels:
+                app: api
+                service: api
+        spec:
+            nodeSelector:
+                kubernetes.io/arch: amd64
+            containers:
+                - name: api
+                  image: kube-registry:5000/fred-api:latest
+                  imagePullPolicy: Always
+                  ports:
+                      - containerPort: 7070
+                  envFrom:
+                      - configMapRef:
+                            name: config
+                      - secretRef:
+                            name: secret
+                  args: ["serve"]
+                  resources:
+                      requests:
+                          memory: "4096Mi"
+                          cpu: "1000m"
+                      limits:
+                          memory: "4096Mi"
+                          cpu: "1000m"
+                  startupProbe:
+                    exec:
+                      command:
+                        - curl
+                        - http://localhost:7070/api/healthz
+                    periodSeconds: 10
+                    timeoutSeconds: 10
+                    failureThreshold: 60
+                  livenessProbe:
+                    exec:
+                      command:
+                        - curl
+                        - http://localhost:7070/api/healthz
+                    periodSeconds: 10
+                    timeoutSeconds: 10
+                    failureThreshold: 2
+---
+apiVersion: v1
+kind: Service
+metadata:
+    name: api
+    namespace: fred
+    labels:
+        monitoring: "true"
+spec:
+    selector:
+        app: api
+    ports:
+        - name: api
+          port: 7070
+          targetPort: 7070

@@ -1,0 +1,107 @@
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+    namespace: quake
+    name: quake
+    annotations:
+        cert-manager.io/cluster-issuer: letsencrypt
+spec:
+    ingressClassName: traefik
+    tls:
+        - hosts:
+              - quake.initialed85.cc
+          secretName: quake
+    rules:
+        - host: quake.initialed85.cc
+          http:
+              paths:
+                  - pathType: Prefix
+                    path: /
+                    backend:
+                        service:
+                            name: quake-index
+                            port:
+                                number: 80
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+    namespace: quake
+    name: quake-play
+    annotations:
+        cert-manager.io/cluster-issuer: letsencrypt
+spec:
+    ingressClassName: traefik
+    tls:
+        - hosts:
+              - quake-play.initialed85.cc
+          secretName: quake-play
+    rules:
+        - host: quake-play.initialed85.cc
+          http:
+              paths:
+                  - pathType: Prefix
+                    path: /
+                    backend:
+                        service:
+                            name: quake-wasm
+                            port:
+                                number: 80
+                  - pathType: Prefix
+                    path: /ws
+                    backend:
+                        service:
+                            name: quake-server-and-proxy
+                            port:
+                                number: 7071
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+    namespace: quake
+    name: quake-rcon
+    annotations:
+        cert-manager.io/cluster-issuer: letsencrypt
+spec:
+    ingressClassName: traefik
+    tls:
+        - hosts:
+              - quake-rcon.initialed85.cc
+          secretName: quake-rcon
+    rules:
+        - host: quake-rcon.initialed85.cc
+          http:
+              paths:
+                  - pathType: Prefix
+                    path: /
+                    backend:
+                        service:
+                            name: quake-server-and-proxy
+                            port:
+                                number: 7072
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+    namespace: quake
+    name: quake-play-glquake
+    annotations:
+        cert-manager.io/cluster-issuer: letsencrypt
+spec:
+    ingressClassName: traefik
+    tls:
+        - hosts:
+              - quake-play-glquake.initialed85.cc
+          secretName: quake-play-glquake
+    rules:
+        - host: quake-play-glquake.initialed85.cc
+          http:
+              paths:
+                  - pathType: Prefix
+                    path: /
+                    backend:
+                        service:
+                            name: quake-wasm-glquake
+                            port:
+                                number: 80

@@ -1,0 +1,80 @@
+# ---
+# apiVersion: v1
+# kind: ConfigMap
+# metadata:
+#   name: docker-in-docker
+#   namespace: docker-swarm
+# data:
+#   daemon.json: |
+#     {
+#       "insecure-registries": [
+#         "kube-registry:5000",
+#         "kube-registry.kube-system.svc.cluster.local:5000"
+#       ],
+#       "exec-opts": [
+#         "native.cgroupdriver=cgroupfs"
+#       ]
+#     }
+#   bootstrap.sh: |
+#     #!/bin/sh
+
+#     set -e
+
+#     echo "waiting for docker to start..."
+#     while ! docker info >/dev/null 2>&1; do
+#       sleep 1
+#     done
+
+#     echo "docker started, checking docker swarm status..."
+#     if ! docker info | grep -i 'Swarm: inactive' >/dev/null 2>&1; then
+#       echo "warning: it looks like docker swarm is already running; doing nothing"
+#       tail -F /dev/null
+#       exit 0
+#     fi
+
+#     IP=""
+#     for x in $(hostname -i); do
+#       if echo ${x} | grep -oE '^127.*$' >/dev/null 2>&1; then
+#         continue
+#       fi
+
+#       IP="${x}"
+#       break
+#     done
+
+#     if [[ "${IP}" == "" ]]; then
+#       echo "error: failed to work out IP"
+#       exit 1
+#     fi
+
+#     echo "IP=${IP}"
+
+#     POD_ID=$(echo "${POD_NAME}" | grep -oE '\d+')
+
+#     if [[ "${POD_ID}" == "0" ]]; then
+#       echo "i am the master; time for docker swarm init..."
+#       docker swarm init > /srv/shared/master-docker-swarm-init.txt
+#     else
+#       while true; do
+#         sleep 1
+
+#         echo "waiting for master to finish docker swarm init..."
+
+#         if ! test -e /srv/shared/master-docker-swarm-init.txt >/dev/null 2>&1; then
+#           continue
+#         fi
+
+#         if ! cat /srv/shared/master-docker-swarm-init.txt | grep 'docker swarm join --token' | xargs >/dev/null 2>&1; then
+#           continue
+#         fi
+
+#         break
+#       done
+
+#       echo "okay joining docker swarm..."
+#       $(cat /srv/shared/master-docker-swarm-init.txt | grep 'docker swarm join --token' | xargs)
+#     fi
+
+#     echo "done."
+
+#     tail -F /dev/null

@@ -1,0 +1,71 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+    namespace: eds-game-for-ftp-game-jam-2022
+    name: proxy-config-map
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+    namespace: eds-game-for-ftp-game-jam-2022
+    name: proxy-deployment
+    labels:
+        app: proxy
+spec:
+    replicas: 1
+    selector:
+        matchLabels:
+            app: proxy
+    template:
+        metadata:
+            labels:
+                app: proxy
+        spec:
+            nodeSelector:
+                kubernetes.io/arch: amd64
+            containers:
+                - name: proxy
+                  image: kube-registry:5000/eds-game-for-ftp-game-jam-2022-proxy:latest
+                  imagePullPolicy: Always
+                  ports:
+                      - containerPort: 80
+---
+apiVersion: v1
+kind: Service
+metadata:
+    name: proxy
+    namespace: eds-game-for-ftp-game-jam-2022
+    labels:
+        monitoring: "true"
+spec:
+    selector:
+        app: proxy
+    ports:
+        - name: proxy
+          port: 80
+          targetPort: 80
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+    namespace: eds-game-for-ftp-game-jam-2022
+    name: proxy-ingress
+    annotations:
+        cert-manager.io/cluster-issuer: letsencrypt
+spec:
+    ingressClassName: traefik
+    tls:
+        - hosts:
+              - eds-game-for-ftp-game-jam-2022.initialed85.cc
+          secretName: proxy-ingress
+    rules:
+        - host: eds-game-for-ftp-game-jam-2022.initialed85.cc
+          http:
+              paths:
+                  - pathType: Prefix
+                    path: /
+                    backend:
+                        service:
+                            name: proxy
+                            port:
+                                number: 80

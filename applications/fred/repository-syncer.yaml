@@ -1,0 +1,57 @@
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+    namespace: fred
+    name: repository-syncer
+    labels:
+        app: repository-syncer
+        service: repository-syncer
+spec:
+    serviceName: repository-syncer
+    replicas: 1
+    selector:
+        matchLabels:
+            app: repository-syncer
+            service: repository-syncer
+    template:
+        metadata:
+            labels:
+                app: repository-syncer
+                service: repository-syncer
+        spec:
+            nodeSelector:
+                kubernetes.io/arch: amd64
+            volumes:
+                - name: ssd
+                  persistentVolumeClaim:
+                      claimName: ssd
+                      readOnly: false
+                - name: root-ssh
+                  hostPath:
+                      path: /root/.ssh
+                      type: DirectoryOrCreate
+            containers:
+                - name: repository-syncer
+                  image: kube-registry:5000/fred-repository-syncer:latest
+                  imagePullPolicy: Always
+                  ports:
+                      - containerPort: 7070
+                  volumeMounts:
+                      - name: ssd
+                        subPath: media
+                        mountPath: /srv/repositories
+                      - name: root-ssh
+                        mountPath: /root/.ssh
+                  envFrom:
+                      - configMapRef:
+                            name: config
+                      - secretRef:
+                            name: secret
+                  resources:
+                      requests:
+                          memory: "256Mi"
+                          cpu: "200m"
+                      limits:
+                          memory: "256Mi"
+                          cpu: "200m"

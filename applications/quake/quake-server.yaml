@@ -1,0 +1,59 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+    namespace: quake
+    name: quake-server-and-proxy
+    labels:
+        app: quake-server-and-proxy
+spec:
+    replicas: 1
+    selector:
+        matchLabels:
+            app: quake-server-and-proxy
+    template:
+        metadata:
+            labels:
+                app: quake-server-and-proxy
+        spec:
+            nodeSelector:
+                kubernetes.io/arch: amd64
+            containers:
+                - name: quake-server-and-proxy
+                  image: kube-registry:5000/quake-server:latest
+                  imagePullPolicy: Always
+                  env:
+                      - name: DISABLE_GOTTY
+                        value: "1"
+                  ports:
+                      - containerPort: 7072
+                  stdin: true
+                  tty: true
+                  resources: {}
+                - name: quake-websocket-proxy
+                  image: kube-registry:5000/quake-websocket-proxy:latest
+                  imagePullPolicy: Always
+                  env:
+                      - name: QUAKE_SERVER_ADDRESS
+                        value: "localhost:26000"
+                  ports:
+                      - containerPort: 7071
+                  resources: {}
+---
+apiVersion: v1
+kind: Service
+metadata:
+    name: quake-server-and-proxy
+    namespace: quake
+    labels:
+        monitoring: "true"
+spec:
+    selector:
+        app: quake-server-and-proxy
+    ports:
+        - name: quake-server
+          port: 7072
+          targetPort: 7072
+        - name: quake-websocket-proxy
+          port: 7071
+          targetPort: 7071

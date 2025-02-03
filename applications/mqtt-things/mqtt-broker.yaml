@@ -1,0 +1,60 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+    namespace: mqtt-things
+    name: mqtt-broker
+    labels:
+        app: mqtt-broker
+spec:
+    replicas: 0 # disabled
+    selector:
+        matchLabels:
+            app: mqtt-broker
+    template:
+        metadata:
+            labels:
+                app: mqtt-broker
+        spec:
+            nodeSelector:
+                kubernetes.io/arch: amd64
+            containers:
+                - name: mqtt-broker
+                  image: eclipse-mosquitto:1.6.8
+                  imagePullPolicy: Always
+                  ports:
+                      - containerPort: 1883
+                  resources: {}
+---
+apiVersion: v1
+kind: Service
+metadata:
+    name: mqtt-broker-internal
+    namespace: mqtt-things
+    labels:
+        monitoring: "true"
+spec:
+    selector:
+        app: mqtt-broker
+    type: ClusterIP
+    clusterIP: None # headless service
+    ports:
+        - name: mqtt-broker
+          port: 1883
+          targetPort: 1883
+---
+apiVersion: discovery.k8s.io/v1
+kind: EndpointSlice
+metadata:
+    name: mqtt-broker-internal
+    namespace: mqtt-things
+    labels:
+        kubernetes.io/service-name: mqtt-broker-internal
+addressType: IPv4
+ports:
+    - name: mqtt-broker
+      protocol: TCP
+      port: 1883
+endpoints:
+    - addresses:
+          - "192.168.137.251"
+      conditions: {}

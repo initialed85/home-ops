@@ -1,0 +1,153 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+    namespace: mqtt-things
+    name: smart-aircons-cli
+data:
+    MQTT_BROKER_HOST: "192.168.137.251"
+    AIRCON_HOST_1: "192.168.137.19"
+    AIRCON_NAME_1: "bedroom"
+    AIRCON_CODES_NAME_1: "mitsubishi"
+    AIRCON_HOST_2: "192.168.137.20"
+    AIRCON_NAME_2: "living-room"
+    AIRCON_CODES_NAME_2: "fujitsu"
+    AIRCON_HOST_3: "192.168.137.59"
+    AIRCON_NAME_3: "kids-room"
+    AIRCON_CODES_NAME_3: "new_fujitsu"
+    AIRCON_HOST_4: "192.168.137.57"
+    AIRCON_NAME_4: "office"
+    AIRCON_CODES_NAME_4: "new_fujitsu"
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+    namespace: mqtt-things
+    name: smart-aircons-cli
+    labels:
+        app: smart-aircons-cli
+spec:
+    serviceName: smart-aircons-cli
+    replicas: 1
+    selector:
+        matchLabels:
+            app: smart-aircons-cli
+    template:
+        metadata:
+            labels:
+                app: smart-aircons-cli
+        spec:
+            nodeSelector:
+                kubernetes.io/arch: amd64
+            hostNetwork: true
+            containers:
+                - name: smart-aircons-cli
+                  image: initialed85/mqtt-things-smart-aircons-cli:latest
+                  imagePullPolicy: Always
+                  env:
+                      - name: MQTT_CLIENT_PROVIDER
+                        value: gmq
+                      - name: MQTT_BROKER_HOST
+                        valueFrom:
+                            configMapKeyRef:
+                                name: smart-aircons-cli
+                                key: MQTT_BROKER_HOST
+
+                      - name: AIRCON_HOST_1
+                        valueFrom:
+                            configMapKeyRef:
+                                name: smart-aircons-cli
+                                key: AIRCON_HOST_1
+                      - name: AIRCON_NAME_1
+                        valueFrom:
+                            configMapKeyRef:
+                                name: smart-aircons-cli
+                                key: AIRCON_NAME_1
+                      - name: AIRCON_CODES_NAME_1
+                        valueFrom:
+                            configMapKeyRef:
+                                name: smart-aircons-cli
+                                key: AIRCON_CODES_NAME_1
+
+                      - name: AIRCON_HOST_2
+                        valueFrom:
+                            configMapKeyRef:
+                                name: smart-aircons-cli
+                                key: AIRCON_HOST_2
+                      - name: AIRCON_NAME_2
+                        valueFrom:
+                            configMapKeyRef:
+                                name: smart-aircons-cli
+                                key: AIRCON_NAME_2
+                      - name: AIRCON_CODES_NAME_2
+                        valueFrom:
+                            configMapKeyRef:
+                                name: smart-aircons-cli
+                                key: AIRCON_CODES_NAME_2
+
+                      - name: AIRCON_HOST_3
+                        valueFrom:
+                            configMapKeyRef:
+                                name: smart-aircons-cli
+                                key: AIRCON_HOST_3
+                      - name: AIRCON_NAME_3
+                        valueFrom:
+                            configMapKeyRef:
+                                name: smart-aircons-cli
+                                key: AIRCON_NAME_3
+                      - name: AIRCON_CODES_NAME_3
+                        valueFrom:
+                            configMapKeyRef:
+                                name: smart-aircons-cli
+                                key: AIRCON_CODES_NAME_3
+
+                      - name: AIRCON_HOST_4
+                        valueFrom:
+                            configMapKeyRef:
+                                name: smart-aircons-cli
+                                key: AIRCON_HOST_4
+                      - name: AIRCON_NAME_4
+                        valueFrom:
+                            configMapKeyRef:
+                                name: smart-aircons-cli
+                                key: AIRCON_NAME_4
+                      - name: AIRCON_CODES_NAME_4
+                        valueFrom:
+                            configMapKeyRef:
+                                name: smart-aircons-cli
+                                key: AIRCON_CODES_NAME_4
+                  resources: {}
+                  command:
+                      [
+                          "/srv/entrypoint",
+                          "-host",
+                          "$(MQTT_BROKER_HOST)",
+
+                          "-airconHost",
+                          "$(AIRCON_HOST_1)",
+                          "-airconName",
+                          "$(AIRCON_NAME_1)",
+                          "-airconCodesName",
+                          "$(AIRCON_CODES_NAME_1)",
+
+                          "-airconHost",
+                          "$(AIRCON_HOST_2)",
+                          "-airconName",
+                          "$(AIRCON_NAME_2)",
+                          "-airconCodesName",
+                          "$(AIRCON_CODES_NAME_2)",
+
+                          "-airconHost",
+                          "$(AIRCON_HOST_3)",
+                          "-airconName",
+                          "$(AIRCON_NAME_3)",
+                          "-airconCodesName",
+                          "$(AIRCON_CODES_NAME_3)",
+
+                          "-airconHost",
+                          "$(AIRCON_HOST_4)",
+                          "-airconName",
+                          "$(AIRCON_NAME_4)",
+                          "-airconCodesName",
+                          "$(AIRCON_CODES_NAME_4)",
+                      ]

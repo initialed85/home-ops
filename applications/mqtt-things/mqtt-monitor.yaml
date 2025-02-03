@@ -1,0 +1,24 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mqtt-monitor
+  labels:
+    app: mqtt-monitor
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mqtt-monitor
+  template:
+    metadata:
+      labels:
+        app: mqtt-monitor
+    spec:
+      containers:
+        - name: mqtt-monitor
+          image: hivemq/mqtt-cli:latest
+          env:
+            - name: MQTT_URL
+              value: mqtt-monitor:1883
+          args: ["sub", "-h", "mqtt-broker-internal", "-t", "+/+/#", "-i", "mqttmonitor", "-T"]
