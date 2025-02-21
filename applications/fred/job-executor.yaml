@@ -40,6 +40,8 @@ spec:
                       - dionysus
                       - ocnus
                       - romulus
+                      - bee-1
+                      - bee-2
             topologySpreadConstraints:
                 - maxSkew: 1
                   topologyKey: kubernetes.io/hostname
