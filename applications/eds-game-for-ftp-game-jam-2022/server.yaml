@@ -23,7 +23,7 @@ spec:
         spec:
             nodeSelector:
                 kubernetes.io/arch: amd64
-                kubernetes.io/hostname: adonis
+                kubernetes.io/hostname: bee-2
             containers:
                 - name: xvfb
                   image: kube-registry:5000/eds-game-for-ftp-game-jam-2022-xvfb:latest

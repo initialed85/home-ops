@@ -26,7 +26,7 @@ spec:
                                   - key: kubernetes.io/hostname
                                     operator: In
                                     values:
-                                        - romulus
+                                        - bee-1
             volumes:
                 - name: shared
                   persistentVolumeClaim:
