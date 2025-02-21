@@ -14,7 +14,7 @@ spec:
     spec:
       nodeSelector:
         kubernetes.io/arch: amd64
-        gpu: disabled__amd
+        gpu: amd
       priorityClassName: system-node-critical
       tolerations:
         - key: CriticalAddonsOnly
