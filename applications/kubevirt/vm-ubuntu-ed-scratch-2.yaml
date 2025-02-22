@@ -34,7 +34,10 @@ spec:
         - cloudInitNoCloud:
             userData: |
               # <custom>
-              echo “cloud-init script execution"
+              chpasswd:
+                expire: false
+                users:
+                - {name: ubuntu, password: ubuntu, type: text}
               # </custom>
           name: cloudinitdisk
   dataVolumeTemplates:
