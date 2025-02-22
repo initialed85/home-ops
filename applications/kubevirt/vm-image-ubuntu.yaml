@@ -78,4 +78,4 @@ spec:
         source:
           pvc:
             namespace: vm-images
-            name: fedora-cloud-base
+            name: ubuntu-24.04
