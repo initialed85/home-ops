@@ -74,7 +74,7 @@ spec:
             - ReadWriteOnce
           resources:
             requests:
-              storage: 5Gi
+              storage: 10Gi
         source:
           pvc:
             namespace: vm-images
