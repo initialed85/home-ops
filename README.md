@@ -39,7 +39,8 @@ I've got a mixture of old x86 laptops, one desktop, one server and two Raspberry
     - AMD ROCm
 - High-availability
   - Keepalived (so my router only has to know about one virtual IP)
-  - HAProxy (so whoever has the virtual IP will round-robin the nodes + provides Traefik w/ all the load-balancer-ish proxy headers)
+  - HAProxy (so whoever has the virtual IP will round-robin the nodes + provides Traefik w/ all the load-balancer-ish
+    proxy headers)
 - Storage
   - Dedicated ZFS / NFS file server
 - Deployment infrastructure
@@ -251,3 +252,10 @@ catalyst for the IaC.
 ### Continuous Integration
 
 TODO
+
+### Kubevirt
+
+```shell
+brew install kubevirt
+virtctl image-upload pvc ubuntu-db --namespace vm-images --size=10Gi --image-path=/Users/edwardbeech/Downloads/noble-server-cloudimg-amd64.img --storage-class nfs-hdd --force-bind --uploadproxy-url https://192.168.137.10:8443 --insecure
+```
