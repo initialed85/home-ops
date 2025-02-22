@@ -16,7 +16,7 @@ metadata:
 subjects:
   - kind: ServiceAccount
     name: default
-    namespace: default
+    namespace: kubevirt
 roleRef:
   kind: ClusterRole
   name: cdi-cloner
