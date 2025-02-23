@@ -10,7 +10,7 @@ metadata:
     system: camry
 spec:
   serviceName: home-assistant-webhook-front-door
-  replicas: 1
+  replicas: 0
   selector:
     matchLabels:
       app: home-assistant-webhook-front-door
