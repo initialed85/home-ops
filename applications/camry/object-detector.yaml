@@ -25,7 +25,7 @@ spec:
                 kubernetes.io/arch: amd64
                 gpu: nvidia
                 gpu-era: contemporary
-                kubernetes.io/hostname: adonis
+                # kubernetes.io/hostname: adonis
             runtimeClassName: "nvidia"
             volumes:
                 - name: hdd
