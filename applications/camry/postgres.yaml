@@ -23,7 +23,6 @@ spec:
         spec:
             nodeSelector:
                 kubernetes.io/arch: amd64
-                kubernetes.io/hostname: ocnus
             volumes:
                 - name: dev-shm
                   emptyDir:
