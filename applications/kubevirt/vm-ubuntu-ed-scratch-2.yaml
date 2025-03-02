@@ -27,10 +27,10 @@ spec:
         # cpu:
         #   dedicatedCpuPlacement: true
         #   isolateEmulatorThread: true
-        resources:
-          limits:
-            cpu: 4
-            memory: 16Gi
+        # resources:
+        #   limits:
+        #     cpu: 4
+        #     memory: 16Gi
       terminationGracePeriodSeconds: 0
       volumes:
         - dataVolume:
