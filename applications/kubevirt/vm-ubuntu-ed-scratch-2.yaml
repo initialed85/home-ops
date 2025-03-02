@@ -33,12 +33,10 @@ spec:
           name: datavolumedisk1
         - cloudInitNoCloud:
             userData: |
-              # <custom>
-              chpasswd:
-                expire: false
-                users:
-                - {name: ubuntu, password: ubuntu, type: text}
-              # </custom>
+              # cloud-config
+              password: ubuntu
+              chpasswd: { expire: False }
+              ssh_pwauth: True
           name: cloudinitdisk
   dataVolumeTemplates:
     - metadata:
