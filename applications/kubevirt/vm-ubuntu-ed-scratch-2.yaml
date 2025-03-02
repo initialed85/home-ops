@@ -1,54 +1,54 @@
----
-apiVersion: kubevirt.io/v1alpha3
-kind: VirtualMachine
-metadata:
-  labels:
-    kubevirt.io/vm: ed-scratch-2
-  name: ed-scratch-2
-spec:
-  runStrategy: Always
-  template:
-    metadata:
-      labels:
-        kubevirt.io/vm: ed-scratch-2
-    spec:
-      domain:
-        devices:
-          disks:
-            - disk:
-                bus: virtio
-              name: datavolumedisk1
-            - disk:
-                bus: virtio
-              name: cloudinitdisk
-        machine:
-          type: ""
-        resources:
-          requests:
-            memory: 1Gi
-      terminationGracePeriodSeconds: 0
-      volumes:
-        - dataVolume:
-            name: ed-scratch-2
-          name: datavolumedisk1
-        - cloudInitNoCloud:
-            userData: |
-              # cloud-config
-              password: ubuntu
-              chpasswd: { expire: False }
-              ssh_pwauth: True
-          name: cloudinitdisk
-  dataVolumeTemplates:
-    - metadata:
-        name: ed-scratch-2
-      spec:
-        pvc:
-          accessModes:
-            - ReadWriteOnce
-          resources:
-            requests:
-              storage: 16Gi
-        source:
-          pvc:
-            namespace: vm-images
-            name: ubuntu-scratch-vm
+# ---
+# apiVersion: kubevirt.io/v1alpha3
+# kind: VirtualMachine
+# metadata:
+#   labels:
+#     kubevirt.io/vm: ed-scratch-2
+#   name: ed-scratch-2
+# spec:
+#   runStrategy: Always
+#   template:
+#     metadata:
+#       labels:
+#         kubevirt.io/vm: ed-scratch-2
+#     spec:
+#       domain:
+#         devices:
+#           disks:
+#             - disk:
+#                 bus: virtio
+#               name: datavolumedisk1
+#             - disk:
+#                 bus: virtio
+#               name: cloudinitdisk
+#         machine:
+#           type: ""
+#         resources:
+#           requests:
+#             memory: 1Gi
+#       terminationGracePeriodSeconds: 0
+#       volumes:
+#         - dataVolume:
+#             name: ed-scratch-2
+#           name: datavolumedisk1
+#         - cloudInitNoCloud:
+#             userData: |
+#               # cloud-config
+#               password: ubuntu
+#               chpasswd: { expire: False }
+#               ssh_pwauth: True
+#           name: cloudinitdisk
+#   dataVolumeTemplates:
+#     - metadata:
+#         name: ed-scratch-2
+#       spec:
+#         pvc:
+#           accessModes:
+#             - ReadWriteOnce
+#           resources:
+#             requests:
+#               storage: 16Gi
+#         source:
+#           pvc:
+#             namespace: vm-images
+#             name: ubuntu-scratch-vm
