@@ -29,7 +29,7 @@ spec:
           isolateEmulatorThread: true
         resources:
           limits:
-            cpu: 4
+            cpu: '4'
             memory: 16Gi
       terminationGracePeriodSeconds: 0
       volumes:
@@ -46,6 +46,7 @@ spec:
   dataVolumeTemplates:
     - metadata:
         name: ed-scratch-2
+        creationTimestamp: null
       spec:
         pvc:
           accessModes:
