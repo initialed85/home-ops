@@ -50,5 +50,5 @@
 #               storage: 16Gi
 #         source:
 #           pvc:
-#             namespace: vm-images
+#             namespace: kubevirt
 #             name: ubuntu-scratch-vm

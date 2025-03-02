@@ -1,5 +1,5 @@
 # wget https://cloud-images.ubuntu.com/noble/current/noble-server-cloudimg-amd64.img
-# virtctl image-upload pvc ubuntu-24.04 --namespace vm-images --size=10Gi --image-path=$(pwd)/noble-server-cloudimg-amd64.img --storage-class longhorn --uploadproxy-url https://192.168.137.10:8443 --insecure
+# virtctl image-upload pvc ubuntu-24.04 --namespace kubevirt --size=10Gi --image-path=$(pwd)/noble-server-cloudimg-amd64.img --storage-class longhorn --uploadproxy-url https://192.168.137.10:8443 --insecure
 # ---
 # apiVersion: kubevirt.io/v1alpha3
 # kind: VirtualMachine
@@ -7,7 +7,7 @@
 #   labels:
 #     kubevirt.io/vm: ubuntu-scratch-vm-provisioner
 #   name: ubuntu-scratch-vm-provisioner
-#   namespace: vm-images
+#   namespace: kubevirt
 # spec:
 #   runStrategy: "RerunOnFailure"
 #   template:
@@ -71,5 +71,5 @@
 #               storage: 10Gi
 #         source:
 #           pvc:
-#             namespace: vm-images
+#             namespace: kubevirt
 #             name: ubuntu-24.04
