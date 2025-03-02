@@ -2,13 +2,13 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: cdi-upload-server-loadbalancer
-  namespace: kubevirt
+  name: cdi-uploadproxy-loadbalancer
+  namespace: cdi
 spec:
   ports:
-  - port: 8443
-    protocol: TCP
-    targetPort: 8443
+    - port: 8443
+      protocol: TCP
+      targetPort: 8443
   selector:
-    cdi.kubevirt.io: cdi-upload-server
+    cdi.kubevirt.io: cdi-uploadproxy
   type: LoadBalancer
