@@ -1,0 +1,67 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+    namespace: eds-game-for-ftp-game-jam-2022
+    name: server-config-map
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+    namespace: eds-game-for-ftp-game-jam-2022
+    name: server-deployment
+    labels:
+        app: server
+spec:
+    replicas: 1
+    selector:
+        matchLabels:
+            app: server
+    template:
+        metadata:
+            labels:
+                app: server
+        spec:
+            nodeSelector:
+                kubernetes.io/arch: amd64
+                kubernetes.io/hostname: bee-2
+            containers:
+                - name: xvfb
+                  image: kube-registry:5000/eds-game-for-ftp-game-jam-2022-xvfb:latest
+                  imagePullPolicy: Always
+                  resources:
+                      requests:
+                          memory: "128Mi"
+                          cpu: "1000m"
+                      limits:
+                          memory: "128Mi"
+                          cpu: "1000m"
+                - name: server
+                  image: kube-registry:5000/eds-game-for-ftp-game-jam-2022-server:latest
+                  imagePullPolicy: Always
+                  env:
+                      - name: DISPLAY
+                        value: "localhost:0"
+                  ports:
+                      - containerPort: 8080
+                  resources:
+                      requests:
+                          memory: "256Mi"
+                          cpu: "1000m"
+                      limits:
+                          memory: "256Mi"
+                          cpu: "1000m"
+---
+apiVersion: v1
+kind: Service
+metadata:
+    name: server
+    namespace: eds-game-for-ftp-game-jam-2022
+    labels:
+        monitoring: "true"
+spec:
+    selector:
+        app: server
+    ports:
+        - name: server
+          port: 8080
+          targetPort: 8080

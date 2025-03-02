@@ -1,0 +1,59 @@
+---
+kind: ServiceAccount
+apiVersion: v1
+metadata:
+  name: restart
+  namespace: fred
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: restart
+  namespace: fred
+rules:
+  - apiGroups: [""]
+    resources: ["pods"]
+    verbs: ["get", "patch", "list", "watch", "delete"]
+  - apiGroups: ["apps"]
+    resources: ["statefulsets", "deployments"]
+    verbs: ["get", "patch", "list", "watch", "delete"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: restart
+  namespace: fred
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: restart
+subjects:
+  - kind: ServiceAccount
+    name: restart
+# ---
+# apiVersion: batch/v1
+# kind: CronJob
+# metadata:
+#   name: restart
+#   namespace: fred
+# spec:
+#   concurrencyPolicy: Forbid
+#   schedule: "10 1 * * *"
+#   jobTemplate:
+#     spec:
+#       backoffLimit: 0
+#       activeDeadlineSeconds: 600
+#       template:
+#         spec:
+#           serviceAccountName: restart
+#           restartPolicy: Never
+#           containers:
+#             - name: kubectl
+#               image: bitnami/kubectl
+#               command:
+#                 - "kubectl"
+#                 - "-n"
+#                 - "fred"
+#                 - "rollout"
+#                 - "restart"
+#                 - "statefulset,deployment"

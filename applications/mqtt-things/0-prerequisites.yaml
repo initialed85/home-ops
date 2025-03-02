@@ -1,0 +1,21 @@
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: mqtt-things
+  labels:
+    name: mqtt-things
+---
+# kubectl -n mqtt-things create secret generic mqtt-things --dry-run=client --from-literal='hue-api-key=(redacted)' -o yaml | kubeseal --controller-name=sealed-secrets --controller-namespace=kube-system -o yaml
+apiVersion: bitnami.com/v1alpha1
+kind: SealedSecret
+metadata:
+  name: mqtt-things
+  namespace: mqtt-things
+spec:
+  encryptedData:
+    hue-api-key: AgAFIa59mjaKsdwJWADrqkFWZeV/pDvDKI936yzYsluvXEREaS3KHDnkztLpVwr/gatfCVqppq3pU1CVIvXCf+W7u9kI9GUiz+WchaEjx2qLGZSpo8cO66n6lUUKXlMpviyy1s4B9OKV82kcqx5nlYIO6GtrYlau+Ri1A5ZQ5dmlC2qZmvQBRZcMNQYcXpszhU4JVRNWkb6aVT28c/5SzJKT6E9pB8krJsqLhvjqHI6qc1wyxIBg51q7CcauJ5fYJZr+Jg0qR0JggSroC8MUvPaylneIaB8n95pSRQI2HaC5/RJj0u97d1fqiAK1S2ocLz9kuD4oh22ANlOQ/Fkc1AlXsTREjQpoVzZYCIew4vBhQtmyoG5RJ2P8gterBhBUl4iWkMOAvZPkecYqFfKNEJDksZLTLmkfz83iy5sUv1S9TeSNcJCoj4fljX6cFi3euTt237Qe9IjmA7bnLhsgtqzKjI0MtywM5NR29K2vkDHy45VII4Tt22D95BJpTP9tbtpK3u45+QK5G/ecEAAdT7GCIsTtxmooRUTK2lGwh9J6WBirNaepIkEfARuW4HS6zr7tmEJsgBa7j/egzSUMV3IXHkeVGZIxs68G707Z0iRBDNhmelXmO1oyFQSCsvxj3wJJTIigbpOUtCPn41g57G6Qdx3uhE4l+RjN6yAG4L/Tyr4DA9FDC/rAkZueEHAAYFnytb/QbhL6Xh9rhHMpXNtkg+snc/smza5hzv+1MXYRA7P+eIbGAhp9
+  template:
+    metadata:
+      name: mqtt-things
+      namespace: mqtt-things

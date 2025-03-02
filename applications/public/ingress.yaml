@@ -1,0 +1,32 @@
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  namespace: public
+  name: public
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt
+spec:
+  ingressClassName: traefik
+  tls:
+    - hosts:
+        - public.initialed85.cc
+      secretName: public
+  rules:
+    - host: public.initialed85.cc
+      http:
+        paths:
+          - pathType: Prefix
+            path: /
+            backend:
+              service:
+                name: nginx
+                port:
+                  number: 80
+          - pathType: Prefix
+            path: /filebrowser
+            backend:
+              service:
+                name: filebrowser
+                port:
+                  number: 8080

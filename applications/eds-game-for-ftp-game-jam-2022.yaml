@@ -1,0 +1,21 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: eds-game-for-ftp-game-jam-2022
+  namespace: argo-cd
+spec:
+  destination:
+    namespace: eds-game-for-ftp-game-jam-2022
+    server: https://kubernetes.default.svc
+  project: default
+  source:
+    path: applications/eds-game-for-ftp-game-jam-2022
+    repoURL: https://github.com/initialed85/home-ops
+    targetRevision: HEAD
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+      - ServerSideApply=false

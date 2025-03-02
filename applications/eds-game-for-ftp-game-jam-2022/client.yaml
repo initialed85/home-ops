@@ -1,0 +1,46 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+    namespace: eds-game-for-ftp-game-jam-2022
+    name: client-config-map
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+    namespace: eds-game-for-ftp-game-jam-2022
+    name: client-deployment
+    labels:
+        app: client
+spec:
+    replicas: 1
+    selector:
+        matchLabels:
+            app: client
+    template:
+        metadata:
+            labels:
+                app: client
+        spec:
+            nodeSelector:
+                kubernetes.io/arch: amd64
+            containers:
+                - name: client
+                  image: kube-registry:5000/eds-game-for-ftp-game-jam-2022-client:latest
+                  imagePullPolicy: Always
+                  ports:
+                      - containerPort: 1334
+---
+apiVersion: v1
+kind: Service
+metadata:
+    name: client
+    namespace: eds-game-for-ftp-game-jam-2022
+    labels:
+        monitoring: "true"
+spec:
+    selector:
+        app: client
+    ports:
+        - name: client
+          port: 1334
+          targetPort: 1334

@@ -1,0 +1,52 @@
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+    namespace: camry
+    name: segment-producer
+    labels:
+        app: segment-producer
+        service: segment-producer
+        system: camry
+spec:
+    serviceName: segment-producer
+    replicas: 3
+    selector:
+        matchLabels:
+            app: segment-producer
+            service: segment-producer
+    template:
+        metadata:
+            labels:
+                app: segment-producer
+                service: segment-producer
+        spec:
+            nodeSelector:
+                kubernetes.io/arch: amd64
+            volumes:
+                - name: hdd
+                  persistentVolumeClaim:
+                      claimName: hdd
+                      readOnly: false
+            containers:
+                - name: segment-producer
+                  image: kube-registry:5000/camry-segment-producer:latest
+                  imagePullPolicy: Always
+                  ports:
+                      - containerPort: 7070
+                  volumeMounts:
+                      - name: hdd
+                        subPath: media
+                        mountPath: /srv/media
+                  envFrom:
+                      - configMapRef:
+                            name: config
+                      - secretRef:
+                            name: secret
+                  resources:
+                      requests:
+                          memory: "2048Mi"
+                          cpu: "1000m"
+                      limits:
+                          memory: "2048Mi"
+                          cpu: "1000m"

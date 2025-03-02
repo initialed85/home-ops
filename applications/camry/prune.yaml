@@ -1,0 +1,173 @@
+---
+kind: ServiceAccount
+apiVersion: v1
+metadata:
+  name: prune
+  namespace: camry
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: prune
+  namespace: camry
+rules:
+  - apiGroups: [""]
+    resources: ["pods"]
+    verbs: ["get", "patch", "list", "watch", "delete"]
+  - apiGroups: ["apps"]
+    resources: ["statefulsets", "deployments"]
+    verbs: ["get", "patch", "list", "watch", "delete"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: prune
+  namespace: camry
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: prune
+subjects:
+  - kind: ServiceAccount
+    name: prune
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: prune
+  namespace: camry
+data:
+  prune.sql: |
+    SET
+        session_replication_role = replica;
+
+    DELETE FROM detection
+    WHERE
+        created_at < now() - interval '7 days';
+
+    DELETE FROM video
+    WHERE
+        created_at < now() - interval '7 days';
+
+    UPDATE detection
+    SET
+        updated_at = now()
+    WHERE
+        id = (
+            SELECT
+                id
+            FROM
+                detection
+            ORDER BY
+                created_at DESC
+            LIMIT
+                1
+        );
+
+    UPDATE video
+    SET
+        updated_at = now()
+    WHERE
+        id = (
+            SELECT
+                id
+            FROM
+                video
+            ORDER BY
+                created_at DESC
+            LIMIT
+                1
+        );
+
+    UPDATE camera
+    SET
+        updated_at = now()
+    WHERE
+        id = (
+            SELECT
+                id
+            FROM
+                camera
+            ORDER BY
+                created_at DESC
+            LIMIT
+                1
+        );
+  fix.sql: |
+    UPDATE video
+    SET
+      status = 'needs detection'
+    WHERE
+      status IN ('detecting', 'failed');
+  vacuum.sql: |
+    VACUUM VERBOSE;
+    ANALYZE VERBOSE;
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: prune
+  namespace: camry
+  labels:
+    app: prune
+    service: prune
+    system: camry
+spec:
+  concurrencyPolicy: Forbid
+  schedule: "30 1 * * *"
+  jobTemplate:
+    spec:
+      backoffLimit: 0
+      activeDeadlineSeconds: 14400
+      template:
+        spec:
+          serviceAccountName: prune
+          restartPolicy: Never
+          nodeSelector:
+              kubernetes.io/arch: amd64
+          volumes:
+            - name: prune
+              configMap:
+                name: prune
+            - name: hdd
+              persistentVolumeClaim:
+                claimName: hdd
+                readOnly: false
+          containers:
+            - name: prune-media
+              image: ubuntu:22.04
+              volumeMounts:
+                - name: hdd
+                  subPath: media
+                  mountPath: /srv/media
+              command:
+                - "bash"
+                - "-c"
+                - "cd /srv/media && find . -maxdepth 1 -mtime +7 -type f -delete"
+            - name: prune-database-and-restart-api
+              image: initialed85/the-last-ci-image-you-will-ever-need:postgres-and-kubernetes
+              volumeMounts:
+                - name: prune
+                  subPath: prune.sql
+                  mountPath: /tmp/prune.sql
+                - name: prune
+                  subPath: fix.sql
+                  mountPath: /tmp/fix.sql
+                - name: prune
+                  subPath: vacuum.sql
+                  mountPath: /tmp/vacuum.sql
+              env:
+                - name: PAGER
+                  value: CAT
+                - name: PGPASSWORD
+                  valueFrom:
+                    secretKeyRef:
+                      name: secret
+                      key: POSTGRES_PASSWORD
+              command:
+                - "bash"
+                - "-c"
+                - |
+                  psql -h postgres -U postgres camry -f /tmp/prune.sql && \
+                    psql -h postgres -U postgres camry -f /tmp/vacuum.sql && \
+                    psql -h postgres -U postgres camry -f /tmp/fix.sql

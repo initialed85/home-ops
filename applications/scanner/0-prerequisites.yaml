@@ -1,0 +1,21 @@
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+    name: scanner
+    labels:
+        name: scanner
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+    name: scanner
+    namespace: scanner
+spec:
+    accessModes:
+        - ReadWriteMany
+    resources:
+        requests:
+            storage: 1G
+    storageClassName: nfs-hdd
+    volumeMode: Filesystem

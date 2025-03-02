@@ -1,0 +1,42 @@
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  namespace: camry
+  name: home-assistant-webhook-side-gate
+  labels:
+    app: home-assistant-webhook-side-gate
+    service: home-assistant-webhook
+    system: camry
+spec:
+  serviceName: home-assistant-webhook-side-gate
+  replicas: 0
+  selector:
+    matchLabels:
+      app: home-assistant-webhook-side-gate
+      service: home-assistant-webhook
+  template:
+    metadata:
+      labels:
+        app: home-assistant-webhook-side-gate
+        service: home-assistant-webhook
+    spec:
+      nodeSelector:
+        kubernetes.io/arch: amd64
+      containers:
+        - name: home-assistant-webhook
+          image: kube-registry:5000/camry-home-assistant-webhook:latest
+          imagePullPolicy: Always
+          stdin: true
+          tty: true
+          env:
+            - name: DEBUG
+              value: "0"
+            - name: CAMERA_ID
+              value: 821cd0d7-ca18-41db-9516-c7100680e413
+            - name: CLASS_NAME
+              value: person
+            - name: WEBHOOK_SUFFIX
+              value: side-gate
+            - name: POSTGRES_PORT
+              value: "5432"

@@ -1,0 +1,43 @@
+---
+apiVersion: operator.victoriametrics.com/v1beta1
+kind: VMServiceScrape
+metadata:
+    name: external
+    namespace: monitoring
+spec:
+    selector:
+        matchLabels:
+            monitoring: "true"
+    endpoints:
+        - port: web
+        - port: websecure
+# ---
+# apiVersion: operator.victoriametrics.com/v1beta1
+# kind: VMProbe
+# metadata:
+#   name: external
+#   namespace: monitoring
+# spec:
+#   jobName: external
+#   vmProberSpec:
+#     url: blackbox-prometheus-blackbox-exporter:9115
+#   module: http_2xx
+#   targets:
+#     staticConfig:
+#       targets:
+#         - http://topic-exporter-cli.mqtt-things.svc.cluster.local:9137
+#   interval: 10s
+---
+apiVersion: operator.victoriametrics.com/v1beta1
+kind: VMScrapeConfig
+metadata:
+    name: topic-exporter-cli
+    namespace: monitoring
+    labels:
+        prometheus: system-monitoring-prometheus
+spec:
+    staticConfigs:
+        - labels:
+              job: prometheus
+          targets:
+              - topic-exporter-cli.mqtt-things.svc.cluster.local:9137

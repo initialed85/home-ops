@@ -1,0 +1,171 @@
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+    namespace: fred
+    name: job-executor
+    labels:
+        app: job-executor
+        service: job-executor
+spec:
+    serviceName: job-executor
+    replicas: 5
+    selector:
+        matchLabels:
+            app: job-executor
+            service: job-executor
+    template:
+        metadata:
+            labels:
+                app: job-executor
+                service: job-executor
+        spec:
+            serviceAccountName: restart
+            hostAliases:
+                - ip: "192.168.137.10"
+                  hostnames:
+                      - "kube-registry"
+            nodeSelector:
+                kubernetes.io/arch: amd64
+            affinity:
+              nodeAffinity:
+                requiredDuringSchedulingIgnoredDuringExecution:
+                  nodeSelectorTerms:
+                  - matchExpressions:
+                    - key: kubernetes.io/hostname
+                      operator: In
+                      values:
+                      - adonis
+                      - chronos
+                      - dionysus
+                      - ocnus
+                      - romulus
+                      - bee-1
+                      - bee-2
+            topologySpreadConstraints:
+                - maxSkew: 1
+                  topologyKey: kubernetes.io/hostname
+                  whenUnsatisfiable: DoNotSchedule
+                  labelSelector:
+                      matchLabels:
+                          app: job-executor
+            volumes:
+                - name: etc-docker
+                  configMap:
+                      name: config
+                      items:
+                          - key: daemon.json
+                            path: daemon.json
+                - name: var-run-docker
+                  hostPath:
+                      path: /var/run/docker
+                      type: DirectoryOrCreate
+                - name: var-lib-containerd
+                  hostPath:
+                      path: /var/lib/containerd
+                      type: DirectoryOrCreate
+                - name: var-lib-docker
+                  hostPath:
+                      path: /var/lib/docker
+                      type: DirectoryOrCreate
+                - name: srv-repositories
+                  hostPath:
+                      path: /srv/repositories
+                      type: DirectoryOrCreate
+                - name: srv-temp
+                  hostPath:
+                      path: /srv/temp
+                      type: DirectoryOrCreate
+                - name: root-ssh
+                  hostPath:
+                      path: /root/.ssh
+                      type: DirectoryOrCreate
+                - name: root-cache
+                  hostPath:
+                      path: /root/.cache
+                      type: DirectoryOrCreate
+                - name: root-npm
+                  hostPath:
+                      path: /root/.npm
+                      type: DirectoryOrCreate
+                - name: root-go-pkg
+                  hostPath:
+                      path: /root/docker
+                      type: DirectoryOrCreate
+                - name: root-docker
+                  hostPath:
+                      path: /root/.docker
+                      type: DirectoryOrCreate
+            containers:
+                - name: docker-in-docker
+                  image: docker:27.3.1-dind
+                  securityContext:
+                      privileged: true
+                      allowPrivilegeEscalation: true
+                  volumeMounts:
+                      - name: etc-docker
+                        mountPath: /etc/docker
+                      - name: var-run-docker
+                        mountPath: /var/run/docker
+                      - name: var-lib-containerd
+                        mountPath: /var/lib/containerd
+                      - name: var-lib-docker
+                        mountPath: /var/lib/docker
+                      - name: srv-repositories
+                        mountPath: /srv/repositories
+                      - name: srv-temp
+                        mountPath: /srv/temp
+                      - name: root-ssh
+                        mountPath: /root/.ssh
+                      - name: root-cache
+                        mountPath: /root/.cache
+                      - name: root-npm
+                        mountPath: /root/.npm
+                      - name: root-go-pkg
+                        mountPath: /root/go/pkg
+                      - name: root-docker
+                        mountPath: /root/.docker
+                  env:
+                      - name: DOCKER_HOST
+                        value: "unix:///var/run/docker/docker.sock"
+                      - name: COMPOSE_DOCKER_CLI_BUILD
+                        value: "1"
+                      - name: DOCKER_BUILDKIT
+                        value: "1"
+                  args: ["-H", "unix:///var/run/docker/docker.sock", "--mtu", "1450", "--dns", "192.168.137.3"]
+                  # resources:
+                  #     requests:
+                  #         memory: "2048Mi"
+                  #     limits:
+                  #         memory: "2048Mi"
+                - name: job-executor
+                  image: kube-registry:5000/fred-job-executor:latest
+                  imagePullPolicy: Always
+                  securityContext:
+                      privileged: true
+                      allowPrivilegeEscalation: true
+                  volumeMounts:
+                      - name: var-run-docker
+                        mountPath: /var/run/docker
+                      - name: var-lib-docker
+                        mountPath: /var/lib/docker
+                      - name: etc-docker
+                        mountPath: /etc/docker
+                      - name: srv-repositories
+                        mountPath: /srv/repositories
+                      - name: srv-temp
+                        mountPath: /srv/temp
+                      - name: root-ssh
+                        mountPath: /root/.ssh
+                  envFrom:
+                      - configMapRef:
+                            name: config
+                      - secretRef:
+                            name: secret
+                  env:
+                      - name: DOCKER_HOST
+                        value: "unix:///var/run/docker/docker.sock"
+                      - name: COMPOSE_DOCKER_CLI_BUILD
+                        value: "1"
+                      - name: DOCKER_BUILDKIT
+                        value: "1"

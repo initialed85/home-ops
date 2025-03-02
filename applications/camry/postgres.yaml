@@ -1,0 +1,91 @@
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+    namespace: camry
+    name: postgres
+    labels:
+        app: postgres
+        service: postgres
+        system: camry
+spec:
+    serviceName: postgres
+    replicas: 1
+    selector:
+        matchLabels:
+            app: postgres
+            service: postgres
+    template:
+        metadata:
+            labels:
+                app: postgres
+                service: postgres
+        spec:
+            nodeSelector:
+                kubernetes.io/arch: amd64
+            volumes:
+                - name: dev-shm
+                  emptyDir:
+                      medium: Memory
+                - name: ssd
+                  persistentVolumeClaim:
+                      claimName: ssd
+                      readOnly: false
+            containers:
+                - name: postgres
+                  image: timescale/timescaledb-ha:pg16
+                  imagePullPolicy: IfNotPresent
+                  volumeMounts:
+                      - name: dev-shm
+                        mountPath: /dev/shm
+                      - name: ssd
+                        subPath: postgres/var/lib/postgresql/data
+                        # mountPath: /var/lib/postgresql/data
+                        mountPath: /home/postgres/pgdata/data
+                  envFrom:
+                      - configMapRef:
+                            name: config
+                      - secretRef:
+                            name: secret
+                  ports:
+                      - containerPort: 5432
+                  # resources:
+                  #     requests:
+                  #         memory: "8192Mi"
+                  #         cpu: "8000m"
+                  #     limits:
+                  #         memory: "8192Mi"
+                  #         cpu: "8000m"
+                  startupProbe:
+                      exec:
+                          command:
+                              - pg_isready
+                              - -U
+                              - postgres
+                      periodSeconds: 10
+                      timeoutSeconds: 10
+                      failureThreshold: 60
+                  livenessProbe:
+                      exec:
+                          command:
+                              - pg_isready
+                              - -U
+                              - postgres
+                      periodSeconds: 10
+                      timeoutSeconds: 10
+                      failureThreshold: 2
+---
+apiVersion: v1
+kind: Service
+metadata:
+    name: postgres
+    namespace: camry
+    labels:
+        monitoring: "true"
+spec:
+    selector:
+        app: postgres
+    ports:
+        - name: postgres
+          port: 5432
+          targetPort: 5432

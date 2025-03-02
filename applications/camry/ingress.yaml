@@ -1,0 +1,57 @@
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  namespace: camry
+  name: camry
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt
+spec:
+  ingressClassName: traefik
+  tls:
+    - hosts:
+        - camry.initialed85.cc
+      secretName: camry
+  rules:
+    - host: camry.initialed85.cc
+      http:
+        paths:
+          - pathType: Prefix
+            path: /
+            backend:
+              service:
+                name: frontend
+                port:
+                  number: 80
+          - pathType: Prefix
+            path: /api
+            backend:
+              service:
+                name: api
+                port:
+                  number: 7070
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  namespace: camry
+  name: camry-stream
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt
+spec:
+  ingressClassName: traefik
+  tls:
+    - hosts:
+        - camry-stream.initialed85.cc
+      secretName: camry-stream
+  rules:
+    - host: camry-stream.initialed85.cc
+      http:
+        paths:
+          - pathType: Prefix
+            path: /
+            backend:
+              service:
+                name: mediamtx
+                port:
+                  number: 8889

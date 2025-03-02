@@ -1,0 +1,61 @@
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+    namespace: camry
+    name: object-detector
+    labels:
+        app: object-detector
+        service: object-detector
+        system: camry
+spec:
+    serviceName: object-detector
+    replicas: 3
+    selector:
+        matchLabels:
+            app: object-detector
+            service: object-detector
+    template:
+        metadata:
+            labels:
+                app: object-detector
+                service: object-detector
+        spec:
+            nodeSelector:
+                kubernetes.io/arch: amd64
+                gpu: nvidia
+                gpu-era: contemporary
+                # kubernetes.io/hostname: adonis
+            runtimeClassName: "nvidia"
+            volumes:
+                - name: hdd
+                  persistentVolumeClaim:
+                      claimName: hdd
+                      readOnly: false
+            containers:
+                - name: object-detector
+                  image: kube-registry:5000/camry-object-detector:latest
+                  imagePullPolicy: Always
+                  ports:
+                      - containerPort: 7070
+                  volumeMounts:
+                      - name: hdd
+                        subPath: media
+                        mountPath: /srv/media
+                  envFrom:
+                      - configMapRef:
+                            name: config
+                      - secretRef:
+                            name: secret
+                  env:
+                      - name: NVIDIA_VISIBLE_DEVICES
+                        value: all
+                      - name: NVIDIA_DRIVER_CAPABILITIES
+                        value: all
+                  # resources:
+                  #   requests:
+                  #     memory: "6144m"
+                  #     cpu: "1000m"
+                  #   limits:
+                  #     memory: "6144m"
+                  #     cpu: "1000m"

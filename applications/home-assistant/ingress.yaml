@@ -1,0 +1,25 @@
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  namespace: home-assistant
+  name: home-assistant
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt
+spec:
+  ingressClassName: traefik
+  tls:
+    - hosts:
+        - home-assistant.initialed85.cc
+      secretName: home-assistant
+  rules:
+    - host: home-assistant.initialed85.cc
+      http:
+        paths:
+          - pathType: Prefix
+            path: /
+            backend:
+              service:
+                name: home-assistant
+                port:
+                  number: 8123

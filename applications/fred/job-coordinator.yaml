@@ -1,0 +1,42 @@
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+    namespace: fred
+    name: job-coordinator
+    labels:
+        app: job-coordinator
+        service: job-coordinator
+spec:
+    serviceName: job-coordinator
+    replicas: 1
+    selector:
+        matchLabels:
+            app: job-coordinator
+            service: job-coordinator
+    template:
+        metadata:
+            labels:
+                app: job-coordinator
+                service: job-coordinator
+        spec:
+            nodeSelector:
+                kubernetes.io/arch: amd64
+            containers:
+                - name: job-coordinator
+                  image: kube-registry:5000/fred-job-coordinator:latest
+                  imagePullPolicy: Always
+                  ports:
+                      - containerPort: 7070
+                  envFrom:
+                      - configMapRef:
+                            name: config
+                      - secretRef:
+                            name: secret
+                  resources:
+                      requests:
+                          memory: "128Mi"
+                          cpu: "100m"
+                      limits:
+                          memory: "128Mi"
+                          cpu: "100m"

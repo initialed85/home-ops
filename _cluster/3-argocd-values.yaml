@@ -171,7 +171,7 @@ configs:
 
     # -- Enable exec feature in Argo UI
     ## Ref: https://argo-cd.readthedocs.io/en/latest/operator-manual/rbac/#exec-resource
-    exec.enabled: false
+    exec.enabled: true
 
     # -- Enable local admin user
     ## Ref: https://argo-cd.readthedocs.io/en/latest/faq/#how-to-disable-admin-user
@@ -185,7 +185,7 @@ configs:
 
     # -- Enable Status Badge
     ## Ref: https://argo-cd.readthedocs.io/en/stable/user-guide/status-badge/
-    statusbadge.enabled: false
+    statusbadge.enabled: true
 
     # Dex configuration
     # dex.config: |
@@ -418,13 +418,13 @@ configs:
       #       command: [sh, -c, find . -name env.yaml]
 
   # -- Provide one or multiple [external cluster credentials]
-  # @default -- `[]` (See [values.yaml])
+  # @default -- `{}` (See [values.yaml])
   ## Ref:
   ## - https://argo-cd.readthedocs.io/en/stable/operator-manual/declarative-setup/#clusters
   ## - https://argo-cd.readthedocs.io/en/stable/operator-manual/security/#external-cluster-credentials
   ## - https://argo-cd.readthedocs.io/en/stable/user-guide/projects/#project-scoped-repositories-and-clusters
-  clusterCredentials: []
-    # - name: mycluster
+  clusterCredentials: {}
+    # mycluster:
     #   server: https://mycluster.example.com
     #   labels: {}
     #   annotations: {}
@@ -433,7 +433,7 @@ configs:
     #     tlsClientConfig:
     #       insecure: false
     #       caData: "<base64 encoded certificate>"
-    # - name: mycluster2
+    # mycluster2:
     #   server: https://mycluster2.example.com
     #   labels: {}
     #   annotations: {}
@@ -444,7 +444,7 @@ configs:
     #     tlsClientConfig:
     #       insecure: false
     #       caData: "<base64 encoded certificate>"
-    # - name: mycluster3-project-scoped
+    # mycluster3-project-scoped:
     #   server: https://mycluster3.example.com
     #   labels: {}
     #   annotations: {}
@@ -1982,7 +1982,7 @@ server:
   ## Ref: https://argo-cd.readthedocs.io/en/stable/operator-manual/tls/#tls-certificates-used-by-argocd-server
   certificate:
     # -- Deploy a Certificate resource (requires cert-manager)
-    enabled: false
+    enabled: true
     # -- The name of the Secret that will be automatically created and managed by this Certificate resource
     secretName: argocd-server-tls
     # -- Certificate primary domain (commonName)
@@ -2004,9 +2004,9 @@ server:
       # -- Certificate issuer group. Set if using an external issuer. Eg. `cert-manager.io`
       group: ""
       # -- Certificate issuer kind. Either `Issuer` or `ClusterIssuer`
-      kind: ""
+      kind: "ClusterIssuer"
       # -- Certificate issuer name. Eg. `letsencrypt`
-      name: ""
+      name: "letsencrypt"
     # Private key of the certificate
     privateKey:
       # -- Rotation policy of private key when certificate is re-issued. Either: `Never` or `Always`
@@ -2272,7 +2272,7 @@ server:
 
     # -- Enable TLS configuration for the hostname defined at `server.ingressGrpc.hostname`
     ## TLS certificate will be retrieved from a TLS secret with name: `argocd-server-grpc-tls`
-    tls: true
+    tls: false
 
     # -- The list of additional hostnames to be covered by ingress record
     # @default -- `[]` (See [values.yaml])
@@ -3049,7 +3049,7 @@ applicationSet:
 
     # -- Enable TLS configuration for the hostname defined at `applicationSet.webhook.ingress.hostname`
     ## TLS certificate will be retrieved from a TLS secret with name:`argocd-applicationset-controller-tls`
-    tls: true
+    tls: false
 
     # -- The list of additional hostnames to be covered by ingress record
     # @default -- `[]` (See [values.yaml])

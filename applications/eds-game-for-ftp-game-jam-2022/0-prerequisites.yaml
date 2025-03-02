@@ -1,0 +1,7 @@
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: eds-game-for-ftp-game-jam-2022
+  labels:
+    name: eds-game-for-ftp-game-jam-2022

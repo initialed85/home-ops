@@ -1,0 +1,69 @@
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+    namespace: camry
+    name: redis
+    labels:
+        app: redis
+        service: redis
+        system: camry
+spec:
+    serviceName: redis
+    replicas: 1
+    selector:
+        matchLabels:
+            app: redis
+            service: redis
+    template:
+        metadata:
+            labels:
+                app: redis
+                service: redis
+        spec:
+            nodeSelector:
+                kubernetes.io/arch: amd64
+            containers:
+                - name: redis
+                  image: redis:7.2.5
+                  imagePullPolicy: IfNotPresent
+                  ports:
+                      - containerPort: 6379
+                  resources:
+                      requests:
+                          memory: "1024Mi"
+                          cpu: "1000m"
+                      limits:
+                          memory: "1024Mi"
+                          cpu: "1000m"
+                  startupProbe:
+                      exec:
+                          command:
+                              - redis-cli
+                              - PONG
+                      periodSeconds: 10
+                      timeoutSeconds: 10
+                      failureThreshold: 60
+                  livenessProbe:
+                      exec:
+                          command:
+                              - redis-cli
+                              - PONG
+                      periodSeconds: 10
+                      timeoutSeconds: 10
+                      failureThreshold: 2
+---
+apiVersion: v1
+kind: Service
+metadata:
+    name: redis
+    namespace: camry
+    labels:
+        monitoring: "true"
+spec:
+    selector:
+        app: redis
+    ports:
+        - name: redis
+          port: 6379
+          targetPort: 6379
