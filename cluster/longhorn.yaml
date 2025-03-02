@@ -5008,6 +5008,7 @@ spec:
                   - key: kubernetes.io/hostname
                     operator: In
                     values:
+                      - adonis
                       - bee-1
                       - bee-2
       containers:
@@ -5146,6 +5147,7 @@ spec:
                   - key: kubernetes.io/hostname
                     operator: In
                     values:
+                      - adonis
                       - bee-1
                       - bee-2
       initContainers:
@@ -5245,6 +5247,7 @@ spec:
                   - key: kubernetes.io/hostname
                     operator: In
                     values:
+                      - adonis
                       - bee-1
                       - bee-2
       containers:
