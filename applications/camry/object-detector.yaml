@@ -10,7 +10,7 @@ metadata:
         system: camry
 spec:
     serviceName: object-detector
-    replicas: 3
+    replicas: 4
     selector:
         matchLabels:
             app: object-detector
@@ -21,12 +21,18 @@ spec:
                 app: object-detector
                 service: object-detector
         spec:
+            runtimeClassName: "nvidia"
             nodeSelector:
                 kubernetes.io/arch: amd64
                 gpu: nvidia
                 gpu-era: contemporary
-                # kubernetes.io/hostname: adonis
-            runtimeClassName: "nvidia"
+            topologySpreadConstraints:
+                - maxSkew: 1
+                  topologyKey: kubernetes.io/hostname
+                  whenUnsatisfiable: DoNotSchedule
+                  labelSelector:
+                      matchLabels:
+                          app: object-detector
             volumes:
                 - name: hdd
                   persistentVolumeClaim:
