@@ -10,7 +10,7 @@ metadata:
         system: camry
 spec:
     serviceName: object-detector
-    replicas: 4
+    replicas: 3
     selector:
         matchLabels:
             app: object-detector
@@ -27,7 +27,7 @@ spec:
                 gpu: nvidia
                 gpu-era: contemporary
             topologySpreadConstraints:
-                - maxSkew: 1
+                - maxSkew: 2
                   topologyKey: kubernetes.io/hostname
                   whenUnsatisfiable: DoNotSchedule
                   labelSelector:
