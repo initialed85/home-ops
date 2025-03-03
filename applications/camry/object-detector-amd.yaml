@@ -21,7 +21,6 @@ spec:
                 app: object-detector-amd
                 service: object-detector
         spec:
-            runtimeClassName: "nvidia"
             nodeSelector:
                 kubernetes.io/arch: amd64
                 gpu: amd
