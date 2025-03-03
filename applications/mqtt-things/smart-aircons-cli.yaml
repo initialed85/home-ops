@@ -28,7 +28,7 @@ metadata:
         app: smart-aircons-cli
 spec:
     serviceName: smart-aircons-cli
-    replicas: 1
+    replicas: 0 # running natively on Pi right now
     selector:
         matchLabels:
             app: smart-aircons-cli
