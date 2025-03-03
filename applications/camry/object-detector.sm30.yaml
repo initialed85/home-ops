@@ -13,12 +13,12 @@ spec:
     replicas: 2
     selector:
         matchLabels:
-            app: object-detector
+            app: object-detector-sm30
             service: object-detector
     template:
         metadata:
             labels:
-                app: object-detector
+                app: object-detector-sm30
                 service: object-detector
         spec:
             runtimeClassName: "nvidia"
