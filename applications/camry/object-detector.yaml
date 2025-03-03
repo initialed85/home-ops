@@ -26,13 +26,14 @@ spec:
                 kubernetes.io/arch: amd64
                 gpu: nvidia
                 gpu-era: contemporary
-            topologySpreadConstraints:
-                - maxSkew: 1
-                  topologyKey: kubernetes.io/hostname
-                  whenUnsatisfiable: DoNotSchedule
-                  labelSelector:
-                      matchLabels:
-                          app: object-detector
+                kubernetes.io/hostname: adonis
+            # topologySpreadConstraints:
+            #     - maxSkew: 1
+            #       topologyKey: kubernetes.io/hostname
+            #       whenUnsatisfiable: DoNotSchedule
+            #       labelSelector:
+            #           matchLabels:
+            #               app: object-detector
             volumes:
                 - name: hdd
                   persistentVolumeClaim:
