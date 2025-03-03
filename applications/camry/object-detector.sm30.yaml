@@ -3,9 +3,9 @@ apiVersion: apps/v1
 kind: StatefulSet
 metadata:
     namespace: camry
-    name: object-detector
+    name: object-detector-sm30
     labels:
-        app: object-detector
+        app: object-detector-sm30
         service: object-detector
         system: camry
 spec:
@@ -25,14 +25,14 @@ spec:
             nodeSelector:
                 kubernetes.io/arch: amd64
                 gpu: nvidia
-                gpu-era: contemporary
+                gpu-era: legacy
             topologySpreadConstraints:
                 - maxSkew: 1
                   topologyKey: kubernetes.io/hostname
                   whenUnsatisfiable: DoNotSchedule
                   labelSelector:
                       matchLabels:
-                          app: object-detector
+                          app: object-detector-sm30
             volumes:
                 - name: hdd
                   persistentVolumeClaim:
@@ -40,7 +40,7 @@ spec:
                       readOnly: false
             containers:
                 - name: object-detector
-                  image: kube-registry:5000/camry-object-detector:latest
+                  image: kube-registry:5000/camry-object-detector:sm30
                   imagePullPolicy: Always
                   ports:
                       - containerPort: 7070
