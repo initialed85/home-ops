@@ -1,75 +1,75 @@
 # wget https://cloud-images.ubuntu.com/noble/current/noble-server-cloudimg-amd64.img
 # virtctl image-upload pvc ubuntu-24.04 --namespace vm-images --size=10Gi --image-path=$(pwd)/noble-server-cloudimg-amd64.img --storage-class longhorn --uploadproxy-url https://192.168.137.10:8443 --insecure
----
-apiVersion: kubevirt.io/v1alpha3
-kind: VirtualMachine
-metadata:
-  labels:
-    kubevirt.io/vm: ubuntu-scratch-vm-provisioner
-  name: ubuntu-scratch-vm-provisioner
-  namespace: vm-images
-spec:
-  runStrategy: "RerunOnFailure"
-  template:
-    metadata:
-      labels:
-        kubevirt.io/vm: ubuntu-scratch-vm
-    spec:
-      domain:
-        devices:
-          disks:
-            - disk:
-                bus: virtio
-              name: datavolumedisk1
-            - disk:
-                bus: virtio
-              name: cloudinitdisk
-        machine:
-          type: "q35"
-        resources:
-          requests:
-            memory: 1Gi
-      terminationGracePeriodSeconds: 0
-      volumes:
-        - dataVolume:
-            name: ubuntu-scratch-vm
-          name: datavolumedisk1
-        - cloudInitNoCloud:
-            userData: |
-              #!/bin/bash
+# ---
+# apiVersion: kubevirt.io/v1alpha3
+# kind: VirtualMachine
+# metadata:
+#   labels:
+#     kubevirt.io/vm: ubuntu-scratch-vm-provisioner
+#   name: ubuntu-scratch-vm-provisioner
+#   namespace: vm-images
+# spec:
+#   runStrategy: "RerunOnFailure"
+#   template:
+#     metadata:
+#       labels:
+#         kubevirt.io/vm: ubuntu-scratch-vm
+#     spec:
+#       domain:
+#         devices:
+#           disks:
+#             - disk:
+#                 bus: virtio
+#               name: datavolumedisk1
+#             - disk:
+#                 bus: virtio
+#               name: cloudinitdisk
+#         machine:
+#           type: "q35"
+#         resources:
+#           requests:
+#             memory: 1Gi
+#       terminationGracePeriodSeconds: 0
+#       volumes:
+#         - dataVolume:
+#             name: ubuntu-scratch-vm
+#           name: datavolumedisk1
+#         - cloudInitNoCloud:
+#             userData: |
+#               #!/bin/bash
 
-              sudo apt-get update
-              sudo apt-get install -y ca-certificates curl
-              sudo install -y -m 0755 -d /etc/apt/keyrings
-              sudo curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc
-              sudo chmod a+r /etc/apt/keyrings/docker.asc
+#               sudo apt-get update
+#               sudo apt-get install -y ca-certificates curl
+#               sudo install -y -m 0755 -d /etc/apt/keyrings
+#               sudo curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc
+#               sudo chmod a+r /etc/apt/keyrings/docker.asc
 
-              echo \
-                "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu \
-                $(. /etc/os-release && echo "${UBUNTU_CODENAME:-$VERSION_CODENAME}") stable" | \
-                sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
-              sudo apt-get update
+#               echo \
+#                 "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu \
+#                 $(. /etc/os-release && echo "${UBUNTU_CODENAME:-$VERSION_CODENAME}") stable" | \
+#                 sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+#               sudo apt-get update
 
-              sudo apt-get install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+#               sudo apt-get install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
 
-              sudo usermod -aG docker ${USER}
+#               sudo usermod -aG docker ${USER}
 
-              # removing instances ensures cloud init will execute again after reboot
-              rm -rf /var/lib/cloud/instances
+#               # removing instances ensures cloud init will execute again after reboot
+#               rm -rf /var/lib/cloud/instances
 
-              shutdown now
-          name: cloudinitdisk
-  dataVolumeTemplates:
-    - metadata:
-        name: ubuntu-scratch-vm
-      spec:
-        pvc:
-          accessModes:
-            - ReadWriteOnce
-          resources:
-            requests:
-              storage: 10Gi
-        source:
-          pvc:
-            namespace: vm-images
-            name: ubuntu-24.04
+#               shutdown now
+#           name: cloudinitdisk
+#   dataVolumeTemplates:
+#     - metadata:
+#         name: ubuntu-scratch-vm
+#       spec:
+#         pvc:
+#           accessModes:
+#             - ReadWriteOnce
+#           resources:
+#             requests:
+#               storage: 10Gi
+#         source:
+#           pvc:
+#             namespace: vm-images
+#             name: ubuntu-24.04
