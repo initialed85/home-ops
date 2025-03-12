@@ -1,24 +1,24 @@
-apiVersion: argoproj.io/v1alpha1
-kind: Application
-metadata:
-  name: kubevirt
-  namespace: argo-cd
-spec:
-  destination:
-    namespace: kubevirt
-    server: https://kubernetes.default.svc
-  project: default
-  ignoreDifferences:
-    - group: apiextensions.k8s.io
-      kind: CustomResourceDefinition
-  source:
-    path: applications/kubevirt
-    repoURL: https://github.com/initialed85/home-ops
-    targetRevision: HEAD
-  syncPolicy:
-    automated:
-      prune: true
-      selfHeal: true
-    syncOptions:
-      - CreateNamespace=true
-      - ServerSideApply=true
+# apiVersion: argoproj.io/v1alpha1
+# kind: Application
+# metadata:
+#   name: kubevirt
+#   namespace: argo-cd
+# spec:
+#   destination:
+#     namespace: kubevirt
+#     server: https://kubernetes.default.svc
+#   project: default
+#   ignoreDifferences:
+#     - group: apiextensions.k8s.io
+#       kind: CustomResourceDefinition
+#   source:
+#     path: applications/kubevirt
+#     repoURL: https://github.com/initialed85/home-ops
+#     targetRevision: HEAD
+#   syncPolicy:
+#     automated:
+#       prune: true
+#       selfHeal: true
+#     syncOptions:
+#       - CreateNamespace=true
+#       - ServerSideApply=true
