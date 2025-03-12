@@ -1,28 +1,28 @@
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: whatever-ed-is-working-on
-spec:
-  ports:
-    - port: 3000
-      targetPort: 3000
----
-apiVersion: discovery.k8s.io/v1
-kind: EndpointSlice
-metadata:
-  name: whatever-ed-is-working-on
-  namespace: whatever-ed-is-working-on
-  labels:
-    kubernetes.io/service-name: whatever-ed-is-working-on
-addressType: IPv4
-ports:
-  - protocol: TCP
-    port: 3000
-endpoints:
-  - addresses:
-      - "192.168.137.222"
-    conditions:
-      ready: true
-      serving: true
-      terminating: false
+# ---
+# apiVersion: v1
+# kind: Service
+# metadata:
+#   name: whatever-ed-is-working-on
+# spec:
+#   ports:
+#     - port: 3000
+#       targetPort: 3000
+# ---
+# apiVersion: discovery.k8s.io/v1
+# kind: EndpointSlice
+# metadata:
+#   name: whatever-ed-is-working-on
+#   namespace: whatever-ed-is-working-on
+#   labels:
+#     kubernetes.io/service-name: whatever-ed-is-working-on
+# addressType: IPv4
+# ports:
+#   - protocol: TCP
+#     port: 3000
+# endpoints:
+#   - addresses:
+#       - "192.168.137.222"
+#     conditions:
+#       ready: true
+#       serving: true
+#       terminating: false

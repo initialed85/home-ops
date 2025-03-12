@@ -9,7 +9,7 @@ metadata:
         service: api
 spec:
     serviceName: api
-    replicas: 1
+    replicas: 0
     selector:
         matchLabels:
             app: api
