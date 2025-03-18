@@ -17,7 +17,7 @@ metadata:
         app: sensors-cli
 spec:
     serviceName: sensors-cli
-    replicas: 0 # running natively on Pi right now
+    replicas: 1
     selector:
         matchLabels:
             app: sensors-cli
