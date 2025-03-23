@@ -199,7 +199,7 @@ spec:
             # --  Ingress TLS configuration
             tls:
               # -- Secret name for the certificate
-              - secretName: chart-example-tls
+              - secretName: node-red-tls
                 # -- Hostnames for the Ingress
                 hosts:
                   - node-red.initialed85.cc
