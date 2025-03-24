@@ -16,6 +16,9 @@ spec:
       - CreateNamespace=true
       - ServerSideApply=false
   sources:
+    - path: applications/open-webui
+      repoURL: https://github.com/initialed85/home-ops
+      targetRevision: HEAD
     - chart: open-webui
       targetRevision: 5.25.0
       repoURL: https://helm.openwebui.com/
@@ -206,7 +209,7 @@ spec:
               - open-webui.initialed85.cc # update to your real domain
 
           ingress:
-            enabled: true
+            enabled: false
             class: ""
             # -- Use appropriate annotations for your Ingress controller, e.g., for NGINX:
             annotations:

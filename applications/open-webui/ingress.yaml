@@ -1,0 +1,25 @@
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  namespace: open-webui
+  name: open-webui
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt
+spec:
+  ingressClassName: traefik
+  tls:
+    - hosts:
+        - open-webui.initialed85.cc
+      secretName: open-webui
+  rules:
+    - host: open-webui.initialed85.cc
+      http:
+        paths:
+          - pathType: Prefix
+            path: /
+            backend:
+              service:
+                name: open-webui
+                port:
+                  number: 11434

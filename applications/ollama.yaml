@@ -16,6 +16,9 @@ spec:
       - CreateNamespace=true
       - ServerSideApply=false
   sources:
+    - path: applications/ollama
+      repoURL: https://github.com/initialed85/home-ops
+      targetRevision: HEAD
     - chart: ollama
       targetRevision: 1.11.0
       repoURL: https://otwld.github.io/ollama-helm/
@@ -201,7 +204,7 @@ spec:
           # Configure the ingress resource that allows you to access the
           ingress:
             # -- Enable ingress controller resource
-            enabled: true
+            enabled: false
 
             # -- IngressClass that will be used to implement the Ingress (Kubernetes 1.18+)
             className: "traefik"
@@ -217,7 +220,7 @@ spec:
               - host: ollama.initialed85.cc
                 paths:
                   - path: /
-                    pathType: Prefix
+                    pathType: ImplementationSpecific
 
             # --  The tls configuration for hostnames to be covered with this ingress record.
             tls:
