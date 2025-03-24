@@ -10,7 +10,7 @@ metadata:
         system: camry
 spec:
     serviceName: object-detector
-    replicas: 0
+    replicas: 2
     selector:
         matchLabels:
             app: object-detector-sm30
