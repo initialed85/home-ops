@@ -16,9 +16,6 @@ spec:
       - CreateNamespace=true
       - ServerSideApply=false
   sources:
-    # - path: applications/ollama
-    #   repoURL: https://github.com/initialed85/home-ops
-    #   targetRevision: HEAD
     - chart: ollama
       targetRevision: 1.11.0
       repoURL: https://otwld.github.io/ollama-helm/
