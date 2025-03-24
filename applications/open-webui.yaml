@@ -16,9 +16,9 @@ spec:
       - CreateNamespace=true
       - ServerSideApply=false
   sources:
-    - path: applications/open-webui
-      repoURL: https://github.com/initialed85/home-ops
-      targetRevision: HEAD
+    # - path: applications/open-webui
+    #   repoURL: https://github.com/initialed85/home-ops
+    #   targetRevision: HEAD
     - chart: open-webui
       targetRevision: 5.25.0
       repoURL: https://helm.openwebui.com/
