@@ -222,7 +222,24 @@ spec:
               kubernetes.io/tls-acme: "true"
             host: "open-webui.initialed85.cc" # update to your real domain
             additionalHosts: []
-            tls: false
+            tls:
+              # -- Secret name for the certificate
+              - secretName: open-webui-tls
+                # -- Hostnames for the Ingress
+                hosts:
+                  - open-webui.initialed85.cc
+                # -- Certificate used by the Cert-Manager
+                certificate:
+                  # -- Enable certificate
+                  enabled: true
+                  # -- Name of the certificate default: `$fullname-cert-$index`
+                  #   name: ""
+                  # -- Reference of ClusterIssuers or Issuer
+                  issuerRef:
+                    # -- Kind of the Issuer
+                    kind: ClusterIssuer
+                    # -- Name of the Issuer
+                    name: "letsencrypt"
             existingSecret: ""
           persistence:
             enabled: true
