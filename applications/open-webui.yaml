@@ -60,7 +60,7 @@ spec:
           ollamaUrls: ["ollama.ollama.svc.cluster.local:11434"]
 
           # -- Disables taking Ollama Urls from `ollamaUrls`  list
-          ollamaUrlsFromExtraEnv: true
+          ollamaUrlsFromExtraEnv: false
 
           websocket:
             # -- Enables websocket support in Open WebUI with env `ENABLE_WEBSOCKET_SUPPORT`
