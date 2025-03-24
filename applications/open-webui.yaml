@@ -209,7 +209,7 @@ spec:
               - open-webui.initialed85.cc # update to your real domain
 
           ingress:
-            enabled: false
+            enabled: true
             class: ""
             # -- Use appropriate annotations for your Ingress controller, e.g., for NGINX:
             annotations:
