@@ -223,6 +223,7 @@ spec:
               #   networking.gke.io/managed-certificates: "mydomain-chat-cert"
               #   # nginx.ingress.kubernetes.io/rewrite-target: /
               kubernetes.io/tls-acme: "true"
+              cert-manager.io/cluster-issuer: letsencrypt
             host: "open-webui.initialed85.cc" # update to your real domain
             additionalHosts: []
             tls:
@@ -237,12 +238,6 @@ spec:
                   enabled: true
                   # -- Name of the certificate default: `$fullname-cert-$index`
                   #   name: ""
-                  # -- Reference of ClusterIssuers or Issuer
-                  issuerRef:
-                    # -- Kind of the Issuer
-                    kind: ClusterIssuer
-                    # -- Name of the Issuer
-                    name: "letsencrypt"
             existingSecret: ""
           persistence:
             enabled: true

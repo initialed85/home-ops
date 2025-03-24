@@ -214,6 +214,7 @@ spec:
               # kubernetes.io/ingress.class: traefik
               # kubernetes.io/ingress.class: nginx
               kubernetes.io/tls-acme: "true"
+              cert-manager.io/cluster-issuer: letsencrypt
 
             # The list of hostnames to be covered with this ingress record.
             hosts:
@@ -235,12 +236,6 @@ spec:
                   enabled: true
                   # -- Name of the certificate default: `$fullname-cert-$index`
                   #   name: ""
-                  # -- Reference of ClusterIssuers or Issuer
-                  issuerRef:
-                    # -- Kind of the Issuer
-                    kind: ClusterIssuer
-                    # -- Name of the Issuer
-                    name: "letsencrypt"
 
           # Configure resource requests and limits
           # ref: http://kubernetes.io/docs/user-guide/compute-resources/
