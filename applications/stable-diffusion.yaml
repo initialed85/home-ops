@@ -36,10 +36,10 @@ spec:
 
           # Stable Diffusion and optional companion models. Change these out if you'd like
           models:
-            sd14: https://www.googleapis.com/storage/v1/b/aai-blog-files/o/sd-v1-4.ckpt?alt=media
-            gfpGan13: https://github.com/TencentARC/GFPGAN/releases/download/v1.3.0/GFPGANv1.3.pth
-            realEsrGanx4p10: https://github.com/xinntao/Real-ESRGAN/releases/download/v0.1.0/RealESRGAN_x4plus.pth
-            realEsrGanx4Animep02: https://github.com/xinntao/Real-ESRGAN/releases/download/v0.2.2.4/RealESRGAN_x4plus_anime_6B.pth
+            sd14: https://huggingface.co/CompVis/stable-diffusion-v-1-4-original/resolve/main/sd-v1-4.ckpt
+            gfpGan13: https://huggingface.co/kaliansh/sdrep/resolve/690b63ac431cf8bed0998332079e926f845e7628/GFPGANv1.3.pth
+            realEsrGanx4p10: https://huggingface.co/lllyasviel/Annotators/resolve/main/RealESRGAN_x4plus.pth
+            realEsrGanx4Animep02: https://huggingface.co/ac-pill/upscale_models/resolve/main/RealESRGAN_x4plus_anime_6B.pth
 
           imagePullSecrets: []
           nameOverride: ""
