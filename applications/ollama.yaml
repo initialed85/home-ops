@@ -20,7 +20,7 @@ spec:
       targetRevision: 1.11.0
       repoURL: https://otwld.github.io/ollama-helm/
       helm:
-        releaseName: ollama # ollama run thinkverse/towerinstruct
+        releaseName: ollama
         valuesObject:
           # Default values for ollama-helm.
           # This is a YAML-formatted file.
