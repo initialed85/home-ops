@@ -110,7 +110,7 @@ spec:
 
           nodeSelector:
             # nvidia.com/gpu.present: "true"
-            k3s.io/hostname: adonis
+            kubernetes.io/hostname: adonis
 
           tolerations: []
 
