@@ -1,0 +1,117 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: stable-diffusion
+  namespace: argo-cd
+spec:
+  destination:
+    namespace: stable-diffusion
+    server: https://kubernetes.default.svc
+  project: default
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+      - ServerSideApply=false
+  sources:
+    - chart: stable-diffusion
+      targetRevision: 1.0.6
+      repoURL: https://amithkk.github.io/stable-diffusion-k8s
+      helm:
+        releaseName: stable-diffusion
+        valuesObject:
+          # Default values for stable-diffusion.
+          # This is a YAML-formatted file.
+          # Declare variables to be passed into your templates.
+
+          replicaCount: 1
+
+          image:
+            repository: amithkk/stable-diffusion
+            pullPolicy: IfNotPresent
+            # Overrides the image tag whose default is the chart appVersion.
+            tag: "latest"
+
+          # Stable Diffusion and optional companion models. Change these out if you'd like
+          models:
+            sd14: https://www.googleapis.com/storage/v1/b/aai-blog-files/o/sd-v1-4.ckpt?alt=media
+            gfpGan13: https://github.com/TencentARC/GFPGAN/releases/download/v1.3.0/GFPGANv1.3.pth
+            realEsrGanx4p10: https://github.com/xinntao/Real-ESRGAN/releases/download/v0.1.0/RealESRGAN_x4plus.pth
+            realEsrGanx4Animep02: https://github.com/xinntao/Real-ESRGAN/releases/download/v0.2.2.4/RealESRGAN_x4plus_anime_6B.pth
+
+          imagePullSecrets: []
+          nameOverride: ""
+          fullnameOverride: ""
+          cliFlags: "--extra-models-cpu --optimized-turbo"
+
+          persistence:
+            annotations: {}
+            ## If defined, storageClass: <storageClass>
+            ## If set to "-", storageClass: "", which disables dynamic provisioning
+            ## If undefined (the default) or set to null, no storageClass spec is
+            ##   set, choosing the default provisioner.  (gp2 on AWS, standard on
+            ##   GKE, AWS & OpenStack)
+            ##
+            accessMode: ReadWriteMany
+            size: 16Gi
+            storageClass: nfs-ssd
+
+          serviceAccount:
+            # Specifies whether a service account should be created
+            create: true
+            # Annotations to add to the service account
+            annotations: {}
+            # The name of the service account to use.
+            # If not set and create is true, a name is generated using the fullname template
+            name: ""
+
+          podAnnotations: {}
+
+          podSecurityContext: {}
+
+          securityContext: {}
+
+          service:
+            type: ClusterIP
+            port: 80
+
+          ingress:
+            enabled: true
+            className: "traefik"
+            annotations:
+              # kubernetes.io/ingress.class: nginx
+              # kubernetes.io/tls-acme: "true"
+            hosts:
+              - host: stable-diffusion.initialed85.cc
+                paths:
+                  - path: /
+                    pathType: ImplementationSpecific
+            tls:
+              # -- Secret name for the certificate
+              - secretName: stable-diffusion-tls
+                # -- Hostnames for the Ingress
+                hosts:
+                  - stable-diffusion.initialed85.cc
+                # -- Certificate used by the Cert-Manager
+                certificate:
+                  # -- Enable certificate
+                  enabled: true
+
+          resources: {}
+
+          autoscaling:
+            enabled: false
+            minReplicas: 1
+            maxReplicas: 100
+            targetCPUUtilizationPercentage: 80
+            # targetMemoryUtilizationPercentage: 80
+
+          nodeSelector:
+            # nvidia.com/gpu.present: "true"
+            k3s.io/hostname: adonis
+
+          tolerations: []
+
+          affinity: {}
