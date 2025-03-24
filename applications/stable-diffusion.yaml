@@ -1,116 +1,116 @@
-apiVersion: argoproj.io/v1alpha1
-kind: Application
-metadata:
-  name: stable-diffusion
-  namespace: argo-cd
-spec:
-  destination:
-    namespace: stable-diffusion
-    server: https://kubernetes.default.svc
-  project: default
-  syncPolicy:
-    automated:
-      prune: true
-      selfHeal: true
-    syncOptions:
-      - CreateNamespace=true
-      - ServerSideApply=false
-  sources:
-    - chart: stable-diffusion
-      targetRevision: 1.0.6
-      repoURL: https://amithkk.github.io/stable-diffusion-k8s
-      helm:
-        releaseName: stable-diffusion
-        valuesObject:
-          # Default values for stable-diffusion.
-          # This is a YAML-formatted file.
-          # Declare variables to be passed into your templates.
+# apiVersion: argoproj.io/v1alpha1
+# kind: Application
+# metadata:
+#   name: stable-diffusion
+#   namespace: argo-cd
+# spec:
+#   destination:
+#     namespace: stable-diffusion
+#     server: https://kubernetes.default.svc
+#   project: default
+#   syncPolicy:
+#     automated:
+#       prune: true
+#       selfHeal: true
+#     syncOptions:
+#       - CreateNamespace=true
+#       - ServerSideApply=false
+#   sources:
+#     - chart: stable-diffusion
+#       targetRevision: 1.0.6
+#       repoURL: https://amithkk.github.io/stable-diffusion-k8s
+#       helm:
+#         releaseName: stable-diffusion
+#         valuesObject:
+#           # Default values for stable-diffusion.
+#           # This is a YAML-formatted file.
+#           # Declare variables to be passed into your templates.
 
-          replicaCount: 1
+#           replicaCount: 1
 
-          image:
-            repository: amithkk/stable-diffusion
-            pullPolicy: IfNotPresent
-            # Overrides the image tag whose default is the chart appVersion.
-            tag: "latest"
+#           image:
+#             repository: amithkk/stable-diffusion
+#             pullPolicy: IfNotPresent
+#             # Overrides the image tag whose default is the chart appVersion.
+#             tag: "latest"
 
-          # Stable Diffusion and optional companion models. Change these out if you'd like
-          models:
-            sd14: https://huggingface.co/CompVis/stable-diffusion-v-1-4-original/resolve/main/sd-v1-4.ckpt
-            gfpGan13: https://huggingface.co/kaliansh/sdrep/resolve/690b63ac431cf8bed0998332079e926f845e7628/GFPGANv1.3.pth
-            realEsrGanx4p10: https://huggingface.co/lllyasviel/Annotators/resolve/main/RealESRGAN_x4plus.pth
-            realEsrGanx4Animep02: https://huggingface.co/ac-pill/upscale_models/resolve/main/RealESRGAN_x4plus_anime_6B.pth
+#           # Stable Diffusion and optional companion models. Change these out if you'd like
+#           models:
+#             sd14: https://huggingface.co/CompVis/stable-diffusion-v-1-4-original/resolve/main/sd-v1-4.ckpt
+#             gfpGan13: https://huggingface.co/kaliansh/sdrep/resolve/690b63ac431cf8bed0998332079e926f845e7628/GFPGANv1.3.pth
+#             realEsrGanx4p10: https://huggingface.co/lllyasviel/Annotators/resolve/main/RealESRGAN_x4plus.pth
+#             realEsrGanx4Animep02: https://huggingface.co/ac-pill/upscale_models/resolve/main/RealESRGAN_x4plus_anime_6B.pth
 
-          imagePullSecrets: []
-          nameOverride: ""
-          fullnameOverride: ""
-          cliFlags: "--extra-models-cpu --optimized-turbo"
+#           imagePullSecrets: []
+#           nameOverride: ""
+#           fullnameOverride: ""
+#           cliFlags: "--extra-models-cpu --optimized-turbo"
 
-          persistence:
-            annotations: {}
-            ## If defined, storageClass: <storageClass>
-            ## If set to "-", storageClass: "", which disables dynamic provisioning
-            ## If undefined (the default) or set to null, no storageClass spec is
-            ##   set, choosing the default provisioner.  (gp2 on AWS, standard on
-            ##   GKE, AWS & OpenStack)
-            ##
-            accessMode: ReadWriteMany
-            size: 16Gi
-            storageClass: nfs-ssd
+#           persistence:
+#             annotations: {}
+#             ## If defined, storageClass: <storageClass>
+#             ## If set to "-", storageClass: "", which disables dynamic provisioning
+#             ## If undefined (the default) or set to null, no storageClass spec is
+#             ##   set, choosing the default provisioner.  (gp2 on AWS, standard on
+#             ##   GKE, AWS & OpenStack)
+#             ##
+#             accessMode: ReadWriteMany
+#             size: 16Gi
+#             storageClass: nfs-ssd
 
-          serviceAccount:
-            # Specifies whether a service account should be created
-            create: true
-            # Annotations to add to the service account
-            annotations: {}
-            # The name of the service account to use.
-            # If not set and create is true, a name is generated using the fullname template
-            name: ""
+#           serviceAccount:
+#             # Specifies whether a service account should be created
+#             create: true
+#             # Annotations to add to the service account
+#             annotations: {}
+#             # The name of the service account to use.
+#             # If not set and create is true, a name is generated using the fullname template
+#             name: ""
 
-          podAnnotations: {}
+#           podAnnotations: {}
 
-          podSecurityContext: {}
+#           podSecurityContext: {}
 
-          securityContext: {}
+#           securityContext: {}
 
-          service:
-            type: ClusterIP
-            port: 80
+#           service:
+#             type: ClusterIP
+#             port: 80
 
-          ingress:
-            enabled: true
-            className: "traefik"
-            annotations:
-              # kubernetes.io/ingress.class: nginx
-              # kubernetes.io/tls-acme: "true"
-            hosts:
-              - host: stable-diffusion.initialed85.cc
-                paths:
-                  - path: /
-                    pathType: ImplementationSpecific
-            tls:
-              # -- Secret name for the certificate
-              - secretName: stable-diffusion-tls
-                # -- Hostnames for the Ingress
-                hosts:
-                  - stable-diffusion.initialed85.cc
-                # -- Certificate used by the Cert-Manager
-                certificate:
-                  # -- Enable certificate
-                  enabled: true
+#           ingress:
+#             enabled: true
+#             className: "traefik"
+#             annotations:
+#               # kubernetes.io/ingress.class: nginx
+#               # kubernetes.io/tls-acme: "true"
+#             hosts:
+#               - host: stable-diffusion.initialed85.cc
+#                 paths:
+#                   - path: /
+#                     pathType: ImplementationSpecific
+#             tls:
+#               # -- Secret name for the certificate
+#               - secretName: stable-diffusion-tls
+#                 # -- Hostnames for the Ingress
+#                 hosts:
+#                   - stable-diffusion.initialed85.cc
+#                 # -- Certificate used by the Cert-Manager
+#                 certificate:
+#                   # -- Enable certificate
+#                   enabled: true
 
-          resources: {}
+#           resources: {}
 
-          autoscaling:
-            enabled: false
-            minReplicas: 1
-            maxReplicas: 100
-            targetCPUUtilizationPercentage: 80
-            # targetMemoryUtilizationPercentage: 80
+#           autoscaling:
+#             enabled: false
+#             minReplicas: 1
+#             maxReplicas: 100
+#             targetCPUUtilizationPercentage: 80
+#             # targetMemoryUtilizationPercentage: 80
 
-          nodeSelector:
-            nvidia.com/gpu.present: "true"
+#           nodeSelector:
+#             nvidia.com/gpu.present: "true"
 
-          tolerations: []
+#           tolerations: []
 
-          affinity: {}
+#           affinity: {}
