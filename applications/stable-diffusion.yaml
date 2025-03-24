@@ -109,8 +109,7 @@ spec:
             # targetMemoryUtilizationPercentage: 80
 
           nodeSelector:
-            # nvidia.com/gpu.present: "true"
-            kubernetes.io/hostname: adonis
+            nvidia.com/gpu.present: "true"
 
           tolerations: []
 
