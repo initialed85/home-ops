@@ -23,7 +23,7 @@ spec:
             name: keepalived
       containers:
         - name: keepalived
-          image: kube-registry:5000/keepalived
+          image: initialed85/keepalived:latest
           imagePullPolicy: Always
           securityContext:
             privileged: true
