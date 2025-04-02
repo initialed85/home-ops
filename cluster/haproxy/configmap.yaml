@@ -54,7 +54,7 @@ data:
         server chronos    192.168.137.27:79  check send-proxy-v2
         server dionysus   192.168.137.28:79  check send-proxy-v2
         # server hera     192.168.137.29:79  check send-proxy-v2
-        server romulus    192.168.137.253:79 check send-proxy-v2
+        # server romulus    192.168.137.253:79 check send-proxy-v2
         server bee-1      192.168.137.35:79  check send-proxy-v2
         server bee-2      192.168.137.35:79  check send-proxy-v2
         server beefcake-1 192.168.137.37:79  check send-proxy-v2
@@ -73,7 +73,7 @@ data:
         server chronos    192.168.137.27:442  check send-proxy-v2
         server dionysus   192.168.137.28:442  check send-proxy-v2
         # server hera     192.168.137.29:442  check send-proxy-v2
-        server romulus    192.168.137.253:442 check send-proxy-v2
+        # server romulus    192.168.137.253:442 check send-proxy-v2
         server bee-1      192.168.137.35:442  check send-proxy-v2
         server bee-2      192.168.137.36:442  check send-proxy-v2
         server beefcake-1 192.168.137.36:442  check send-proxy-v2
