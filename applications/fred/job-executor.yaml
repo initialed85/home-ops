@@ -38,10 +38,9 @@ spec:
                       - adonis
                       - chronos
                       - dionysus
-                      - ocnus
-                      - romulus
                       - bee-1
                       - bee-2
+                      - beefcake-1
             topologySpreadConstraints:
                 - maxSkew: 1
                   topologyKey: kubernetes.io/hostname
