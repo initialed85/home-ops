@@ -9,7 +9,7 @@ metadata:
         service: job-coordinator
 spec:
     serviceName: job-coordinator
-    replicas: 0
+    replicas: 1
     selector:
         matchLabels:
             app: job-coordinator

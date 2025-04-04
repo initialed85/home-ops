@@ -9,7 +9,7 @@ metadata:
         service: repository-syncer
 spec:
     serviceName: repository-syncer
-    replicas: 0
+    replicas: 1
     selector:
         matchLabels:
             app: repository-syncer

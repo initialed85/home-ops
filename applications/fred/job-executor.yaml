@@ -9,7 +9,7 @@ metadata:
         service: job-executor
 spec:
     serviceName: job-executor
-    replicas: 0
+    replicas: 1
     selector:
         matchLabels:
             app: job-executor
