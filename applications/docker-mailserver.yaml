@@ -521,10 +521,10 @@ spec:
                       }
 
                       process_limit = 200
+                  }
 
-                      protocol imap {
-                          mail_max_userip_connections = 100
-                      }
+                  protocol imap {
+                      mail_max_userip_connections = 100
                   }
                   {{- end -}}
 
