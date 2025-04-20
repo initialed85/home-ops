@@ -54,7 +54,7 @@ spec:
                       - name: TUNE_NURSERY_SIZES
                         value: "TRUE"
                       - name: VERSION
-                        value: "1.21.4"
+                        value: "1.21.5"
                   volumeMounts:
                       - name: shared
                         subPath: minecraft/data
