@@ -62,8 +62,8 @@ spec:
                               - pg_isready
                               - -U
                               - postgres
-                      periodSeconds: 10
-                      timeoutSeconds: 10
+                      periodSeconds: 30
+                      timeoutSeconds: 30
                       failureThreshold: 60
                   livenessProbe:
                       exec:
@@ -71,8 +71,8 @@ spec:
                               - pg_isready
                               - -U
                               - postgres
-                      periodSeconds: 10
-                      timeoutSeconds: 10
+                      periodSeconds: 30
+                      timeoutSeconds: 30
                       failureThreshold: 2
 ---
 apiVersion: v1
