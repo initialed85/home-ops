@@ -5,39 +5,6 @@ metadata:
   name: keepalived
   namespace: kube-system
 data:
-  ocnus.conf: |
-    global_defs {
-        script_user root
-        enable_script_security
-    }
-
-    vrrp_instance VI_1 {
-        interface eth0
-        state MASTER
-        virtual_router_id 51
-        priority 100
-        advert_int 1
-        use_vmac
-        vmac_xmit_base
-        authentication {
-            auth_type PASS
-            auth_pass Password1
-        }
-        unicast_peer {
-            # 192.168.137.34
-            192.168.137.30
-            192.168.137.27
-            192.168.137.28
-            # 192.168.137.29 (retired)
-            # 192.168.137.253 (cordoned)
-            192.168.137.35
-            192.168.137.36
-            192.168.137.37
-        }
-        virtual_ipaddress {
-            192.168.137.10
-        }
-    }
   adonis.conf: |
     global_defs {
         script_user root
@@ -57,147 +24,13 @@ data:
             auth_pass Password1
         }
         unicast_peer {
-            # 192.168.137.34 (dead)
-            # 192.168.137.30
-            192.168.137.27
-            192.168.137.28
-            # 192.168.137.29 (retired)
-            # 192.168.137.253 (cordoned)
-            192.168.137.35
-            192.168.137.36
-            192.168.137.37
-        }
-        virtual_ipaddress {
-            192.168.137.10
-        }
-    }
-  dionysus.conf: |
-    global_defs {
-        script_user root
-        enable_script_security
-    }
-
-    vrrp_instance VI_1 {
-        interface eth0
-        state BACKUP
-        virtual_router_id 51
-        priority 97
-        advert_int 1
-        use_vmac
-        vmac_xmit_base
-        authentication {
-            auth_type PASS
-            auth_pass Password1
-        }
-        unicast_peer {
-            # 192.168.137.34 (dead)
-            192.168.137.30
-            192.168.137.27
-            # 192.168.137.28
-            # 192.168.137.29 (retired)
-            # 192.168.137.253 (cordoned)
-            192.168.137.35
-            192.168.137.36
-            192.168.137.37
-        }
-        virtual_ipaddress {
-            192.168.137.10
-        }
-    }
-  chronos.conf: |
-    global_defs {
-        script_user root
-        enable_script_security
-    }
-
-    vrrp_instance VI_1 {
-        interface eth0
-        state BACKUP
-        virtual_router_id 51
-        priority 98
-        advert_int 1
-        use_vmac
-        vmac_xmit_base
-        authentication {
-            auth_type PASS
-            auth_pass Password1
-        }
-        unicast_peer {
-            # 192.168.137.34 (dead)
-            192.168.137.30
-            # 192.168.137.27
-            192.168.137.28
-            # 192.168.137.29 (retired)
-            # 192.168.137.253 (cordoned)
-            192.168.137.35
-            192.168.137.36
-            192.168.137.37
-        }
-        virtual_ipaddress {
-            192.168.137.10
-        }
-    }
-  hera.conf: |
-    global_defs {
-        script_user root
-        enable_script_security
-    }
-
-    vrrp_instance VI_1 {
-        interface eth0
-        state BACKUP
-        virtual_router_id 51
-        priority 96
-        advert_int 1
-        use_vmac
-        vmac_xmit_base
-        authentication {
-            auth_type PASS
-            auth_pass Password1
-        }
-        unicast_peer {
-            # 192.168.137.34 (dead)
-            192.168.137.30
-            192.168.137.27
-            192.168.137.28
-            # 192.168.137.29
-            # 192.168.137.253 (cordoned)
-            192.168.137.35
-            192.168.137.36
-            192.168.137.37
-        }
-        virtual_ipaddress {
-            192.168.137.10
-        }
-    }
-  romulus.conf: |
-    global_defs {
-        script_user root
-        enable_script_security
-    }
-
-    vrrp_instance VI_1 {
-        interface eth0
-        state BACKUP
-        virtual_router_id 51
-        priority 95
-        advert_int 1
-        use_vmac
-        vmac_xmit_base
-        authentication {
-            auth_type PASS
-            auth_pass Password1
-        }
-        unicast_peer {
-            # 192.168.137.34 (dead)
-            192.168.137.30
-            192.168.137.27
-            192.168.137.28
-            # 192.168.137.29 (retired)
-            # 192.168.137.253
-            192.168.137.35
-            192.168.137.36
-            192.168.137.37
+          # 192.168.137.30  # adonis
+          192.168.137.35  # bee-1
+          192.168.137.36  # bee-2
+          192.168.137.37  # beefcake-1
+          192.168.137.27  # chronos
+          192.168.137.28  # dionysus
+          192.168.137.253 # romulus
         }
         virtual_ipaddress {
             192.168.137.10
@@ -222,15 +55,13 @@ data:
             auth_pass Password1
         }
         unicast_peer {
-            # 192.168.137.34 (dead)
-            192.168.137.30
-            192.168.137.27
-            192.168.137.28
-            # 192.168.137.29 (retired)
-            192.168.137.253
-            # 192.168.137.35
-            192.168.137.36
-            192.168.137.37
+          192.168.137.30  # adonis
+          # 192.168.137.35  # bee-1
+          192.168.137.36  # bee-2
+          192.168.137.37  # beefcake-1
+          192.168.137.27  # chronos
+          192.168.137.28  # dionysus
+          192.168.137.253 # romulus
         }
         virtual_ipaddress {
             192.168.137.10
@@ -255,15 +86,13 @@ data:
             auth_pass Password1
         }
         unicast_peer {
-            # 192.168.137.34 (dead)
-            192.168.137.30
-            192.168.137.27
-            192.168.137.28
-            # 192.168.137.29 (retired)
-            # 192.168.137.253 (cordoned)
-            192.168.137.35
-            # 192.168.137.36
-            192.168.137.37
+          192.168.137.30  # adonis
+          192.168.137.35  # bee-1
+          # 192.168.137.36  # bee-2
+          192.168.137.37  # beefcake-1
+          192.168.137.27  # chronos
+          192.168.137.28  # dionysus
+          192.168.137.253 # romulus
         }
         virtual_ipaddress {
             192.168.137.10
@@ -288,15 +117,106 @@ data:
             auth_pass Password1
         }
         unicast_peer {
-            # 192.168.137.34 (dead)
-            192.168.137.30
-            192.168.137.27
-            192.168.137.28
-            # 192.168.137.29 (retired)
-            # 192.168.137.253 (cordoned)
-            192.168.137.35
-            192.168.137.36
-            # 192.168.137.37
+          192.168.137.30  # adonis
+          192.168.137.35  # bee-1
+          192.168.137.36  # bee-2
+          # 192.168.137.37  # beefcake-1
+          192.168.137.27  # chronos
+          192.168.137.28  # dionysus
+          192.168.137.253 # romulus
+        }
+        virtual_ipaddress {
+            192.168.137.10
+        }
+    }
+  chronos.conf: |
+    global_defs {
+        script_user root
+        enable_script_security
+    }
+
+    vrrp_instance VI_1 {
+        interface eth0
+        state BACKUP
+        virtual_router_id 51
+        priority 98
+        advert_int 1
+        use_vmac
+        vmac_xmit_base
+        authentication {
+            auth_type PASS
+            auth_pass Password1
+        }
+        unicast_peer {
+          192.168.137.30  # adonis
+          192.168.137.35  # bee-1
+          192.168.137.36  # bee-2
+          192.168.137.37  # beefcake-1
+          # 192.168.137.27  # chronos
+          192.168.137.28  # dionysus
+          192.168.137.253 # romulus
+        }
+        virtual_ipaddress {
+            192.168.137.10
+        }
+    }
+  dionysus.conf: |
+    global_defs {
+        script_user root
+        enable_script_security
+    }
+
+    vrrp_instance VI_1 {
+        interface eth0
+        state BACKUP
+        virtual_router_id 51
+        priority 97
+        advert_int 1
+        use_vmac
+        vmac_xmit_base
+        authentication {
+            auth_type PASS
+            auth_pass Password1
+        }
+        unicast_peer {
+          192.168.137.30  # adonis
+          192.168.137.35  # bee-1
+          192.168.137.36  # bee-2
+          192.168.137.37  # beefcake-1
+          192.168.137.27  # chronos
+          # 192.168.137.28  # dionysus
+          192.168.137.253 # romulus
+        }
+        virtual_ipaddress {
+            192.168.137.10
+        }
+    }
+  romulus.conf: |
+    global_defs {
+        script_user root
+        enable_script_security
+    }
+
+    vrrp_instance VI_1 {
+        interface eth0
+        state BACKUP
+        virtual_router_id 51
+        priority 95
+        advert_int 1
+        use_vmac
+        vmac_xmit_base
+        authentication {
+            auth_type PASS
+            auth_pass Password1
+        }
+        unicast_peer {
+          192.168.137.30  # adonis
+          192.168.137.35  # bee-1
+          192.168.137.36  # bee-2
+          192.168.137.37  # beefcake-1
+          192.168.137.27  # chronos
+          192.168.137.28  # dionysus
+          # 192.168.137.253 # romulus
         }
         virtual_ipaddress {
             192.168.137.10

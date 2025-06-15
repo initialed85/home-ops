@@ -121,14 +121,14 @@ PersistentVolumeClaims.
 I ran this to get the K3s cluster running:
 
 ```shell
-# first node (ocnus)
-curl -sfL https://get.k3s.io | K3S_TOKEN=some-token K3S_KUBECONFIG_MODE=644 sh -s - server --cluster-init
+# first node (beefcake-1 - 192.168.137.37)
+curl -sfL https://get.k3s.io | K3S_TOKEN=some-token K3S_KUBECONFIG_MODE=644 sh -s - server --cluster-init --flannel-backend=none --disable-network-policy --disable=servicelb
 
-# subsequent nodes
-curl -sfL https://get.k3s.io | K3S_TOKEN=some-token K3S_KUBECONFIG_MODE=644 sh -s - server --server https://192.168.137.34:6443
+# on the high-spec nodes
+curl -sfL https://get.k3s.io | K3S_TOKEN=some-token K3S_KUBECONFIG_MODE=644 sh -s - server --server https://192.168.137.37:6443 --flannel-backend=none --disable-network-policy --disable=servicelb
 
 # on the low-spec nodes
-curl -sfL https://get.k3s.io | K3S_TOKEN=some-token K3S_KUBECONFIG_MODE=644 sh -s - agent --server https://192.168.137.34:6443
+curl -sfL https://get.k3s.io | K3S_TOKEN=some-token K3S_KUBECONFIG_MODE=644 sh -s - agent --server https://192.168.137.37:6443
 ```
 
 | FYI, `/etc/rancher/k3s/k3s/yaml` on the first node is basically `~/.kube/config`, it just needs to have the IP changed
@@ -144,38 +144,53 @@ metadata:
   namespace: kube-system
 spec:
   valuesContent: |-
-    dashboard:
-      enabled: true
+    dashboard: true
     podAnnotations:
-      prometheus.io/port: "8082"
-      prometheus.io/scrape: "true"
+        prometheus.io/port: "8082"
+        prometheus.io/scrape: "true"
     providers:
-      kubernetesIngress:
-        publishedService:
-          enabled: true
-        allowEmptyServices:
-          enabled: true
-        allowExternalNameServices:
-          enabled: true
+        kubernetesIngress:
+            publishedService:
+                enabled: "true"
+            allowEmptyServices: "true"
+            allowExternalNameServices:
+                enabled: "true"
     priorityClassName: "system-cluster-critical"
-    image:
-      name: "rancher/mirrored-library-traefik"
-      tag: "2.9.4"
     tolerations:
-    - key: "CriticalAddonsOnly"
-      operator: "Exists"
-    - key: "node-role.kubernetes.io/control-plane"
-      operator: "Exists"
-      effect: "NoSchedule"
-    - key: "node-role.kubernetes.io/master"
-      operator: "Exists"
-      effect: "NoSchedule"
+        - key: "CriticalAddonsOnly"
+          operator: "Exists"
+        - key: "node-role.kubernetes.io/control-plane"
+          operator: "Exists"
+          effect: "NoSchedule"
+        - key: "node-role.kubernetes.io/master"
+          operator: "Exists"
+          effect: "NoSchedule"
     service:
-      ipFamilyPolicy: "PreferDualStack"
+        ipFamilyPolicy: "PreferDualStack"
+        spec:
+            externalTrafficPolicy: Local
+    ports:
+        web:
+            exposedPort: 79
+            forwardedHeaders:
+                insecure: "true"
+                trustedIPs:
+                    - 0.0.0.0/0
+            proxyProtocol:
+                insecure: "true"
+                trustedIPs:
+                    - 0.0.0.0/0
+        websecure:
+            exposedPort: 442
+            forwardedHeaders:
+                insecure: "true"
+                trustedIPs:
+                    - 0.0.0.0/0
+            proxyProtocol:
+                insecure: "true"
+                trustedIPs:
+                    - 0.0.0.0/0
 ```
-
-The only difference from standard in the changes above is `allowEmptyServices: true` and
-`allowExternalNameServices: true`.
 
 Then I ensured I had a `/etc/rancher/k3s/registries.yaml` on each node that read as follows:
 
@@ -196,6 +211,33 @@ This is coupled with an `/etc/hosts` entry on each node that points `kube-regist
 192.168.137.34  kube-registry
 ```
 
+Then we ship Cilium:
+
+```shell
+sudo cp /etc/rancher/k3s/k3s.yaml ~/.kube/config
+sudo chown -fR edward:edward ~/.kube/config
+
+CILIUM_CLI_VERSION=$(curl -s https://raw.githubusercontent.com/cilium/cilium-cli/main/stable.txt)
+CLI_ARCH=amd64
+if [ "$(uname -m)" = "aarch64" ]; then CLI_ARCH=arm64; fi
+curl -L --fail --remote-name-all https://github.com/cilium/cilium-cli/releases/download/${CILIUM_CLI_VERSION}/cilium-linux-${CLI_ARCH}.tar.gz{,.sha256sum}
+sha256sum --check cilium-linux-${CLI_ARCH}.tar.gz.sha256sum
+sudo tar xzvfC cilium-linux-${CLI_ARCH}.tar.gz /usr/local/bin
+rm cilium-linux-${CLI_ARCH}.tar.gz{,.sha256sum}
+
+cilium install --version 1.17.4 --set=ipam.operator.clusterPoolIPv4PodCIDRList="10.42.0.0/16"
+
+cilium status --wait
+
+cilium connectivity test
+```
+
+Next we ship MetalLB:
+
+```shell
+kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.15.2/config/manifests/metallb-native.yaml
+```
+
 Now we need to deploy the NFS provisioner:
 
 ```shell
@@ -214,7 +256,8 @@ kubectl -n mynamespace create secret generic mysecret --dry-run=client --from-li
 ```
 
 ```shell
-helm upgrade --atomic --install --namespace kube-system sealed-secrets sealed-secrets/sealed-secrets --version 2.16.1
+helm repo add sealed-secrets https://bitnami-labs.github.io/sealed-secrets
+helm upgrade --atomic --install --namespace kube-system sealed-secrets sealed-secrets/sealed-secrets --version 2.17.3
 ```
 
 ### SSL certificate vending
@@ -257,5 +300,4 @@ TODO
 
 ```shell
 brew install kubevirt
-virtctl image-upload pvc ubuntu-db --namespace vm-images --size=10Gi --image-path=/Users/edwardbeech/Downloads/noble-server-cloudimg-amd64.img --storage-class nfs-hdd --force-bind --uploadproxy-url https://192.168.137.10:8443 --insecure
 ```
