@@ -1,29 +1,29 @@
-apiVersion: apps/v1
-kind: DaemonSet
-metadata:
-  name: ping-gateway
-  namespace: kube-system
-  labels:
-    app: ping-gateway
-spec:
-  selector:
-    matchLabels:
-      app: ping-gateway
-  template:
-    metadata:
-      labels:
-        app: ping-gateway
-    spec:
-      nodeSelector:
-        kubernetes.io/arch: amd64
-      hostNetwork: true
-      containers:
-        - name: ping-gateway
-          image: ubuntu:22.04
-          imagePullPolicy: IfNotPresent
-          command:
-            - "bash"
-            - "-c"
-            # in theory, only the current VRRP master will be able to succeed running this; but at least then
-            # hopefully my shitty Google WiFi will see the VRRP IP as an option to forward ports to
-            - "apt-get update && apt-get install -y iputils-ping && while true; do clear; ping -i 1.0 -W 1000 -O -I 192.168.137.10 192.168.137.1 || true; sleep 1; done"
+# apiVersion: apps/v1
+# kind: DaemonSet
+# metadata:
+#   name: ping-gateway
+#   namespace: kube-system
+#   labels:
+#     app: ping-gateway
+# spec:
+#   selector:
+#     matchLabels:
+#       app: ping-gateway
+#   template:
+#     metadata:
+#       labels:
+#         app: ping-gateway
+#     spec:
+#       nodeSelector:
+#         kubernetes.io/arch: amd64
+#       hostNetwork: true
+#       containers:
+#         - name: ping-gateway
+#           image: ubuntu:22.04
+#           imagePullPolicy: IfNotPresent
+#           command:
+#             - "bash"
+#             - "-c"
+#             # in theory, only the current VRRP master will be able to succeed running this; but at least then
+#             # hopefully my shitty Google WiFi will see the VRRP IP as an option to forward ports to
+#             - "apt-get update && apt-get install -y iputils-ping && while true; do clear; ping -i 1.0 -W 1000 -O -I 192.168.137.10 192.168.137.1 || true; sleep 1; done"

@@ -118,14 +118,34 @@ PersistentVolumeClaims.
 
 ### Cluster
 
+```shell
+    --disable=servicelb \
+    --disable=traefik \
+    --disable=local-storage \
+```
+
 I ran this to get the K3s cluster running:
 
 ```shell
 # first node (beefcake-1 - 192.168.137.37)
-curl -sfL https://get.k3s.io | K3S_TOKEN=some-token K3S_KUBECONFIG_MODE=644 sh -s - server --cluster-init --flannel-backend=none --disable-network-policy
+curl -sfL https://get.k3s.io | K3S_TOKEN=some-token K3S_KUBECONFIG_MODE=644 sh -s - server --cluster-init \
+    --flannel-backend=none \
+    --disable-network-policy=true \
+    --disable=kube-proxy \
+    --cluster-cidr=10.42.0.0/16 \
+    --service-cidr=10.43.0.0/16 \
+    --advertise-address="$(hostname -i)" \
+    --node-ip="$(hostname -i)"
 
 # on the high-spec nodes
-curl -sfL https://get.k3s.io | K3S_TOKEN=some-token K3S_KUBECONFIG_MODE=644 sh -s - server --server https://192.168.137.37:6443 --flannel-backend=none --disable-network-policy --disable=servicelb
+curl -sfL https://get.k3s.io | K3S_TOKEN=some-token K3S_KUBECONFIG_MODE=644 sh -s - server --server https://192.168.137.37:6443 \
+    --flannel-backend=none \
+    --disable-network-policy=true \
+    --disable=kube-proxy \
+    --cluster-cidr=10.42.0.0/16 \
+    --service-cidr=10.43.0.0/16 \
+    --advertise-address="$(hostname -i)" \
+    --node-ip="$(hostname -i)"
 
 # on the low-spec nodes
 curl -sfL https://get.k3s.io | K3S_TOKEN=some-token K3S_KUBECONFIG_MODE=644 sh -s - agent --server https://192.168.137.37:6443
@@ -133,6 +153,37 @@ curl -sfL https://get.k3s.io | K3S_TOKEN=some-token K3S_KUBECONFIG_MODE=644 sh -
 
 | FYI, `/etc/rancher/k3s/k3s/yaml` on the first node is basically `~/.kube/config`, it just needs to have the IP changed
 after copying before you can use it on your own workstation.
+
+Then we ship Cilium:
+
+```shell
+CILIUM_CLI_VERSION=$(curl -s https://raw.githubusercontent.com/cilium/cilium-cli/main/stable.txt)
+CLI_ARCH=amd64
+if [ "$(uname -m)" = "aarch64" ]; then CLI_ARCH=arm64; fi
+curl -L --fail --remote-name-all https://github.com/cilium/cilium-cli/releases/download/${CILIUM_CLI_VERSION}/cilium-linux-${CLI_ARCH}.tar.gz{,.sha256sum}
+sha256sum --check cilium-linux-${CLI_ARCH}.tar.gz.sha256sum
+sudo tar xzvfC cilium-linux-${CLI_ARCH}.tar.gz /usr/local/bin
+rm cilium-linux-${CLI_ARCH}.tar.gz{,.sha256sum}
+
+sudo cp /etc/rancher/k3s/k3s.yaml ~/.kube/config && sudo chown -fR edward:edward ~/.kube/config
+
+cilium install \
+    --version 1.17.4 \
+    --namespace kube-system \
+    --set routingMode=tunnel\ \
+    --set tunnelProtocol=geneve \
+    --set kubeProxyReplacement=true \
+    --set loadBalancer.mode=dsr \
+    --set loadBalancer.dsrDispatch=geneve \
+    --set "k8sServiceHost=$(hostname -i)" \
+    --set k8sServicePort=6443 \
+    --set=ipam.operator.clusterPoolIPv4PodCIDRList="10.42.0.0/16" \
+    --set ipv6.enabled=false
+
+cilium status --wait
+
+cilium connectivity test
+```
 
 I made sure to have the following at `/var/lib/rancher/k3s/server/manifests/traefik-config.yaml` on each node:
 
@@ -211,32 +262,11 @@ This is coupled with an `/etc/hosts` entry on each node that points `kube-regist
 192.168.137.34  kube-registry
 ```
 
-Then we ship Cilium:
-
-```shell
-sudo cp /etc/rancher/k3s/k3s.yaml ~/.kube/config
-sudo chown -fR edward:edward ~/.kube/config
-
-CILIUM_CLI_VERSION=$(curl -s https://raw.githubusercontent.com/cilium/cilium-cli/main/stable.txt)
-CLI_ARCH=amd64
-if [ "$(uname -m)" = "aarch64" ]; then CLI_ARCH=arm64; fi
-curl -L --fail --remote-name-all https://github.com/cilium/cilium-cli/releases/download/${CILIUM_CLI_VERSION}/cilium-linux-${CLI_ARCH}.tar.gz{,.sha256sum}
-sha256sum --check cilium-linux-${CLI_ARCH}.tar.gz.sha256sum
-sudo tar xzvfC cilium-linux-${CLI_ARCH}.tar.gz /usr/local/bin
-rm cilium-linux-${CLI_ARCH}.tar.gz{,.sha256sum}
-
-cilium install --version 1.17.4 --set=ipam.operator.clusterPoolIPv4PodCIDRList="10.42.0.0/16"
-
-cilium status --wait
-
-cilium connectivity test
-```
-
-Next we ship MetalLB:
+<!-- Next we ship MetalLB:
 
 ```shell
 kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.15.2/config/manifests/metallb-native.yaml
-```
+``` -->
 
 Now we need to deploy the NFS provisioner:
 
