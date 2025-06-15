@@ -20,12 +20,12 @@ spec:
   storageClassName: nfs-ssd
   volumeMode: Filesystem
 ---
-# kubectl -n minecraft create secret generic mysecret --dry-run=client --from-literal='rcon-password=(some password)' -o yaml | kubeseal --controller-name=sealed-secrets --controller-namespace=kube-system -o yaml
+# kubectl -n minecraft create secret generic minecraft --dry-run=client --from-literal='rcon-password=(some password)' -o yaml | kubeseal --controller-name=sealed-secrets --controller-namespace=kube-system -o yaml
 apiVersion: bitnami.com/v1alpha1
 kind: SealedSecret
 metadata:
   creationTimestamp: null
-  name: mysecret
+  name: minecraft
   namespace: minecraft
 spec:
   encryptedData:
@@ -33,5 +33,5 @@ spec:
   template:
     metadata:
       creationTimestamp: null
-      name: mysecret
+      name: minecraft
       namespace: minecraft
