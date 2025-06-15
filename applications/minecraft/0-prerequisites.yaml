@@ -19,8 +19,8 @@ spec:
       storage: 16G
   storageClassName: nfs-ssd
   volumeMode: Filesystem
----
 # kubectl -n minecraft create secret generic minecraft --dry-run=client --from-literal='rcon-password=(some password)' -o yaml | kubeseal --controller-name=sealed-secrets --controller-namespace=kube-system -o yaml
+---
 apiVersion: bitnami.com/v1alpha1
 kind: SealedSecret
 metadata:
@@ -29,7 +29,7 @@ metadata:
   namespace: minecraft
 spec:
   encryptedData:
-    rcon-password: AgCrcF4NAcq9B44J8COIPuSvmypmnnx0T8HAbnFbbqqy+fjdPYxqSRXQ95FRZp/yLZqjHw0Xzx2jIPvC5DkmhIuKHR09ZVqOTXwRsEo5+DMS9PmFiH7B8WVUPuVJ0NEDeuoyZ+3CZXpMVBGTP0zgtmuO4aMwQqZoiO0iSqodIFYxkG/wXIFoz/i765GaID3/TM4mitGTe2iyoqm1/yB+uYeZe1CdoNbMN6076uHGtzJGrXj+mcmCWt6oSqCKaxxGVBEoaJF3ID/iHDKuATAArB6GPGG5bjNA/Str6Hi/GZb0vibJOR3t1J6XE0jaOn8cBX8jICApBwEgilAGL8iVN1iGuEpvSPM5Wqbo3kBUAvALIb01HyAifNZV0y6eh6in8OLaTt+gO627YMUQLF6Z1qwwKZ2LUwvyjdfaVsy2OVONtzIWvlvIenNjQ3RuWtlacwyQPrv59pYFVgT6XjngbfYke/vySfGIz3U/BcpumSo3ya5tCutH0vZWVYRaoYAV/4Y4EhEtemkAoUmlVQcMg2T70JqD+DlqVgIzWgs94zZ0a2DdACivlghisZNxYxa+z5KwcDukfMR+fWppS526USBFJVkZEJZ0xk+NjXd+aWFxaRkC8GEC6bBN/jFCn/Ml3++B5L40uMFMPIMKpu9UYCgbwvb2IxWZzaDpwS8wZQJFe/ynkVnRQAuoogsXGIWurfC+ls0t97seXxc=
+    rcon-password: AgADIBcM8Os4ORVubSGTEF+UAwEmUvhgZcMlq1sy41wVE43ozIXYcBq2hpcvAUk0nL5B9uP9RzKqfH9KbRJoTgwi0YG9T0M/Ffq1LzJbsSVuTwq9zkz/bLoQ0xkpD+bJzrYoi0isZ+eBUBuCuUTWR1hPkKNvdqZ+Ov5GKM6bXZsiaFcoKp+xVyJZa/m9AifHBZWISdZnL5ceLeDG506YQwh1M0/ZgQODAMDxzn0uzdnvIxrLOcIbeDbXSH91vBj+fXg2n+ucCBvseZp1OB0O0+hBcM/1ABsRCZm6ePgindIFdUWDwfAuSO13Rqbftw5ZK71hhLqpoNyl5aS36SX6ov/V8n/z4RPj5ySXyOVhd4cCzD88VbbjwsMZdbg5AtOO8JEtfXGVEfBOEB92VQDwMOD0tNeXjPUUNrINpiZNjtKmDNlRJ8A84+tKS/DuedsfrQSr/QUeGesNvQDaX9hxLp2/pJB/C5a32quxD9pHlMFjMjAva4WlM9FdJOjgRfZZFd9j3ZCX4znfDD3js4caD1KrNIctlbVQVBElGTypFkrcJwWmHhbwmyZMw/ZgVHRUB59E8ztMRBkQjOPDH9pGDV7FWAFBj4DI7SHe0hNNiuTSwgWkb2CeBGZ51Y/JZa8/MzAhylpbMeLwQTrSFSVqLZhB8+ccaWLjDoME9OixjdqRATCYoRAD70H4iwg2QpBR8YvF3nmVNO17jj4=
   template:
     metadata:
       creationTimestamp: null
