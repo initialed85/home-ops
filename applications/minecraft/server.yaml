@@ -34,7 +34,7 @@ spec:
                       readOnly: false
             containers:
                 - name: server
-                  image: itzg/minecraft-server:2024.12.1-java21-graalvm
+                  image: itzg/minecraft-server:2025.6.0-java21-graalvm
                   env:
                       - name: TYPE
                         value: "FABRIC"
