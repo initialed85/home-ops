@@ -122,7 +122,7 @@ I ran this to get the K3s cluster running:
 
 ```shell
 # first node (beefcake-1 - 192.168.137.37)
-curl -sfL https://get.k3s.io | K3S_TOKEN=some-token K3S_KUBECONFIG_MODE=644 sh -s - server --cluster-init --flannel-backend=none --disable-network-policy --disable=servicelb
+curl -sfL https://get.k3s.io | K3S_TOKEN=some-token K3S_KUBECONFIG_MODE=644 sh -s - server --cluster-init --flannel-backend=none --disable-network-policy
 
 # on the high-spec nodes
 curl -sfL https://get.k3s.io | K3S_TOKEN=some-token K3S_KUBECONFIG_MODE=644 sh -s - server --server https://192.168.137.37:6443 --flannel-backend=none --disable-network-policy --disable=servicelb

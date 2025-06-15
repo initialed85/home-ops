@@ -15,7 +15,7 @@ data:
         interface eth0
         state BACKUP
         virtual_router_id 51
-        priority 99
+        priority 120
         advert_int 1
         use_vmac
         vmac_xmit_base
@@ -46,7 +46,7 @@ data:
         interface eth0
         state BACKUP
         virtual_router_id 51
-        priority 102
+        priority 130
         advert_int 1
         use_vmac
         vmac_xmit_base
@@ -77,7 +77,7 @@ data:
         interface eth0
         state BACKUP
         virtual_router_id 51
-        priority 101
+        priority 140
         advert_int 1
         use_vmac
         vmac_xmit_base
@@ -108,7 +108,7 @@ data:
         interface eth0
         state BACKUP
         virtual_router_id 51
-        priority 101
+        priority 150
         advert_int 1
         use_vmac
         vmac_xmit_base
@@ -139,7 +139,7 @@ data:
         interface eth0
         state BACKUP
         virtual_router_id 51
-        priority 98
+        priority 100
         advert_int 1
         use_vmac
         vmac_xmit_base
@@ -170,7 +170,7 @@ data:
         interface eth0
         state BACKUP
         virtual_router_id 51
-        priority 97
+        priority 90
         advert_int 1
         use_vmac
         vmac_xmit_base
@@ -201,7 +201,7 @@ data:
         interface eth0
         state BACKUP
         virtual_router_id 51
-        priority 95
+        priority 110
         advert_int 1
         use_vmac
         vmac_xmit_base
