@@ -20,17 +20,18 @@ spec:
   storageClassName: nfs-ssd
   volumeMode: Filesystem
 ---
+# kubectl -n minecraft create secret generic mysecret --dry-run=client --from-literal='rcon-password=(some password)' -o yaml | kubeseal --controller-name=sealed-secrets --controller-namespace=kube-system -o yaml
 apiVersion: bitnami.com/v1alpha1
 kind: SealedSecret
 metadata:
   creationTimestamp: null
-  name: minecraft
+  name: mysecret
   namespace: minecraft
 spec:
   encryptedData:
-    rcon-password: AgB7ddbfeGXx4fpGnN47r0hK7OdRdB6PbLZeVXOgq8WD8sosL5mc8/sKo56Gu8/CNbVuvgr/jeswWqqOkopWFTgesMBCdE/BJwZw88NFrAM2FxfW4fUp6iwU+B30vFkLybnWRbm3BSD5h16AWrm/KkZPZA6KVJ+Sc35s1KcuhyXlyK4aNeB7RiFL8IfLLaNmvzY/b3fttEBEo2jm48oA6X3zolAMiTPAO/xh6vrWbGx+gBkU+yZduqp3+jTz2eSFW5NpGu05PN7WWCkorIKgRjBn8j0sbac2gPAoUQm6zp9WNT7YbC/TL1ViArvzw1wSGX9ePaEcwuRhBArs9qRQ+yVz6B7imn0svXc3AO8BJIK3LMm/ZM3IuEieHaqysy8+3nX9fUia97+rtOIYkVWFm8V8n6HF/G9+av0IA/jdp2GrXP7tXja65j0yjkjRtFvPd1ofamZ1czEOwRvptRWdH9HlZmcPoNVn6eW8mbJqpMiAiLUdFa581hLDZIk8SewOH+Kf0zp/UW8OMeK0GqtSXmUMt1GLWzVYPadhXtGLgZgIubTV+69fIW8jImxKneIUX1QNhpU9u7fKOkE/OMC8VHvNxAL23bcp1hLrwvnOcrwYhc5x1r8oZPzetk5ebqrr+2a4Q5oy7SfqwTVRVKkJe8fNmo1b50IFOUIXCXUcEbu81kLnzLe9YRo98vbJRnroW7HBD/k4ki7nlQ==
+    rcon-password: AgCrcF4NAcq9B44J8COIPuSvmypmnnx0T8HAbnFbbqqy+fjdPYxqSRXQ95FRZp/yLZqjHw0Xzx2jIPvC5DkmhIuKHR09ZVqOTXwRsEo5+DMS9PmFiH7B8WVUPuVJ0NEDeuoyZ+3CZXpMVBGTP0zgtmuO4aMwQqZoiO0iSqodIFYxkG/wXIFoz/i765GaID3/TM4mitGTe2iyoqm1/yB+uYeZe1CdoNbMN6076uHGtzJGrXj+mcmCWt6oSqCKaxxGVBEoaJF3ID/iHDKuATAArB6GPGG5bjNA/Str6Hi/GZb0vibJOR3t1J6XE0jaOn8cBX8jICApBwEgilAGL8iVN1iGuEpvSPM5Wqbo3kBUAvALIb01HyAifNZV0y6eh6in8OLaTt+gO627YMUQLF6Z1qwwKZ2LUwvyjdfaVsy2OVONtzIWvlvIenNjQ3RuWtlacwyQPrv59pYFVgT6XjngbfYke/vySfGIz3U/BcpumSo3ya5tCutH0vZWVYRaoYAV/4Y4EhEtemkAoUmlVQcMg2T70JqD+DlqVgIzWgs94zZ0a2DdACivlghisZNxYxa+z5KwcDukfMR+fWppS526USBFJVkZEJZ0xk+NjXd+aWFxaRkC8GEC6bBN/jFCn/Ml3++B5L40uMFMPIMKpu9UYCgbwvb2IxWZzaDpwS8wZQJFe/ynkVnRQAuoogsXGIWurfC+ls0t97seXxc=
   template:
     metadata:
       creationTimestamp: null
-      name: minecraft
+      name: mysecret
       namespace: minecraft
