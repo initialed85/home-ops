@@ -524,7 +524,7 @@ spec:
                   }
 
                   protocol imap {
-                      mail_max_userip_connections = 100
+                      mail_max_userip_connections = 500
                   }
                   {{- end -}}
 
