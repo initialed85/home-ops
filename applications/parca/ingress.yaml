@@ -1,0 +1,25 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt
+    traefik.ingress.kubernetes.io/router.middlewares: parca-parca-whitelist@kubernetescrd
+  name: parca
+  namespace: parca
+spec:
+  ingressClassName: traefik
+  rules:
+    - host: parca.initialed85.cc
+      http:
+        paths:
+          - backend:
+              service:
+                name: parca
+                port:
+                  name: http
+            path: /
+            pathType: Prefix
+  tls:
+    - hosts:
+        - parca.initialed85.cc
+      secretName: parca-ingress-tls
