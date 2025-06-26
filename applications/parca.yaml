@@ -8,10 +8,6 @@ spec:
     namespace: parca
     server: https://kubernetes.default.svc
   project: default
-  source:
-    path: applications/parca
-    repoURL: https://github.com/initialed85/home-ops
-    targetRevision: HEAD
   syncPolicy:
     automated:
       prune: true
@@ -19,3 +15,7 @@ spec:
     syncOptions:
       - CreateNamespace=true
       - ServerSideApply=false
+  sources:
+    - path: applications/parca
+      repoURL: https://github.com/initialed85/home-ops
+      targetRevision: HEAD
