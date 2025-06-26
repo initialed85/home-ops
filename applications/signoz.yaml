@@ -34,7 +34,7 @@ spec:
             # -- Overrides the storage class for all PVC with persistence enabled.
             # If not set, the default storage class is used.
             # If set to "-", storageClassName: "", which disables dynamic provisioning
-            storageClass: null
+            storageClass: longhorn-system
             # -- Kubernetes cluster domain
             # It is used only when components are installed in different namespace
             clusterDomain: cluster.local
@@ -248,10 +248,10 @@ spec:
               # If undefined (the default) or set to `null`, no storageClassName spec is
               # set, choosing the default provisioner.
               #
-              storageClass: null
+              storageClass: longhorn-system
               # -- Access Modes for persistent volume
               accessModes:
-                - ReadWriteOnce
+                - ReadWriteMany
               # -- Persistent Volume size
               size: 20Gi
             # -- Clickhouse user profile configuration.
@@ -817,10 +817,10 @@ spec:
               # If undefined (the default) or set to `null`, no storageClassName spec is
               # set, choosing the default provisioner.
               #
-              storageClass: null
+              storageClass: longhorn-system
               # -- Access Modes for persistent volume
               accessModes:
-                - ReadWriteOnce
+                - ReadWriteMany
               # -- Persistent Volume size
               size: 1Gi
           # Default values for schemaMigrator
