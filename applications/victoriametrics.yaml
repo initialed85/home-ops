@@ -336,12 +336,14 @@ spec:
                     storage: 64Gi
             ingress:
               # -- Enable deployment of ingress for server component
-              enabled: false
+              enabled: true
               # -- Ingress annotations
               annotations:
                 # kubernetes.io/ingress.class: traefik
                 # kubernetes.io/tls-acme: "true"
                 cert-manager.io/cluster-issuer: letsencrypt
+                # (namespace)-(name)@kubernetescrd
+                traefik.ingress.kubernetes.io/router.middlewares: monitoring-victorialogs-whitelist@kubernetescrd
               # -- Ingress extra labels
               labels: {}
               # -- Ingress default path
@@ -352,9 +354,18 @@ spec:
               ingressClassName: "traefik"
 
               # -- Array of host objects
-              hosts: []
-              #  - vmsingle.domain.com
-              # -- Extra paths to prepend to every host configuration. This is useful when working with annotation based services.
+              hosts:
+                - name: vmsingle.initialed85.cc
+                  path:
+                    - /
+                  port: http
+
+              # -- Array of TLS objects
+              tls:
+                - secretName: vmsingle-ingress-tls
+                  hosts:
+                    - vmsingle.initialed85.cc
+
               extraPaths: []
               # - path: /*
               #   pathType: Prefix
@@ -363,12 +374,6 @@ spec:
               #       name: ssl-redirect
               #       port:
               #         name: service
-
-              # -- Array of TLS objects
-              tls: []
-              #  - secretName: vmsingle-ingress-tls
-              #    hosts:
-              #      - vmsingle.domain.com
 
           vmcluster:
             # -- Create VMCluster CR
