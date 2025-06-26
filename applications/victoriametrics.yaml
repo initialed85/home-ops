@@ -847,7 +847,7 @@ spec:
                 promscrape.dropOriginalLabels: "false"
             # -- (object) VMAgent ingress configuration
             ingress:
-              enabled: false
+              enabled: true
               # For Kubernetes >= 1.18 you should specify the ingress-controller via the field ingressClassName
               # See https://kubernetes.io/blog/2020/04/02/improvements-to-the-ingress-api-in-kubernetes-1.18/#specifying-the-class-of-an-ingress
               # ingressClassName: nginx
@@ -856,12 +856,15 @@ spec:
                 # kubernetes.io/ingress.class: traefik
                 # kubernetes.io/tls-acme: "true"
                 cert-manager.io/cluster-issuer: letsencrypt
+                # (namespace)-(name)@kubernetescrd
+                traefik.ingress.kubernetes.io/router.middlewares: monitoring-victorialogs-whitelist@kubernetescrd
+
               labels: {}
               path: ""
               pathType: Prefix
 
               hosts:
-                - vmagent.domain.com
+                - vmagent.initialed85.cc
               extraPaths: []
               # - path: /*
               #   pathType: Prefix
@@ -870,10 +873,10 @@ spec:
               #       name: ssl-redirect
               #       port:
               #         name: service
-              tls: []
-              #  - secretName: vmagent-ingress-tls
-              #    hosts:
-              #      - vmagent.domain.com
+              tls:
+                - secretName: vmagent-ingress-tls
+                  hosts:
+                    - vmagent.initialed85.cc
 
           # -- Grafana dependency chart configuration. For possible values refer [here](https://github.com/grafana/helm-charts/tree/main/charts/grafana#configuration)
 
