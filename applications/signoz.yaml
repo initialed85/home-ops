@@ -10,8 +10,8 @@ spec:
     namespace: signoz
   syncPolicy:
     automated:
-      prune: true
-      selfHeal: true
+      prune: false
+      selfHeal: false
     syncOptions:
       - CreateNamespace=true
       - ServerSideApply=false
