@@ -355,17 +355,9 @@ spec:
 
               # -- Array of host objects
               hosts:
-                - name: vmsingle.initialed85.cc
-                  path:
-                    - /
-                  port: http
+                - vmsingle.initialed85.cc
 
-              # -- Array of TLS objects
-              tls:
-                - secretName: vmsingle-ingress-tls
-                  hosts:
-                    - vmsingle.initialed85.cc
-
+              # -- Extra paths to prepend to every host configuration. This is useful when working with annotation based services.
               extraPaths: []
               # - path: /*
               #   pathType: Prefix
@@ -374,6 +366,12 @@ spec:
               #       name: ssl-redirect
               #       port:
               #         name: service
+
+              # -- Array of TLS objects
+              tls:
+                - secretName: vmsingle-ingress-tls
+                  hosts:
+                    - vmsingle.initialed85.cc
 
           vmcluster:
             # -- Create VMCluster CR
