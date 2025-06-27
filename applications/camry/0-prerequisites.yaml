@@ -58,17 +58,17 @@ data:
   SWAGGER_JSON_URL: https://camry.initialed85.cc/api/openapi.json
 ---
 # kubectl -n camry create secret generic secret --dry-run=client --from-literal='POSTGRES_PASSWORD=(redacted)' -o yaml | kubeseal --controller-name=sealed-secrets --controller-namespace=kube-system -o yaml
-# apiVersion: bitnami.com/v1alpha1
-# kind: SealedSecret
-# metadata:
-#   creationTimestamp: null
-#   name: secret
-#   namespace: camry
-# spec:
-#   encryptedData:
-#     POSTGRES_PASSWORD: AgCpO92getu8+hm8s1oUtfx0WvgGagAIHQxL+ty5Lw8KcQhiekDJH+XV12PU1B2K2nKZcYg5OWApFl/azWW9Yllnk+HxPerZa15H0vwD9+f4FQULEP1az4wF3cRB2xR6lVZD8aKXIw2S61E7UyHkVOZ+xFYs4wHo+pgi5aS5qvB2CwrAmoYW8rxD2WZeZqm5uxOeKye7/R5z38jaU9zgo5sPS4Jx/npNGonZFQw7BbNEpPIWi47qzr8vtz4sRlZdSqyitLc70NPi13mR9j3sqH04Ptf1swywcv0FHUME+ZDgiqi+3FxhzKTGZdIqpLAUUFf6fURspIPosanbx/8Qn/hbiDDcP+KGRzIubDZG51E5BVJHmmHhPg5rootKhcqEpNn7Rx8pBXsv+IRREVTtPO7LPxcXmKMDuYMtFVJYOFfNrB3LYyEwnlMiPD4S9j7uIED8OwbXgNKdVZhbUtwau4DIlm1QKCHDfmQJjHPUw7mzH6jaKw9nEnDumVigtqreGatLUVXlS75lQ1nz2ElxPIJv0kL1qNveHcQPNNXUrrV3q0bhmuGV1U70U60ZWRjVdPwsYA09oIoFkvGVVZ5lrfNo6pUnQ/3+7uLoxFGoAJnO0iKZAdyYrjA6I9UB2BFqPJzMsXhO3iteCGV33rhdLL+CHm8Ui8tdLRzxnfrBBE5S+RX/tddb72M+dM9Qx+AfLGaAXJz3FrhRmw==
-#   template:
-#     metadata:
-#       creationTimestamp: null
-#       name: secret
-#       namespace: camry
+apiVersion: bitnami.com/v1alpha1
+kind: SealedSecret
+metadata:
+  creationTimestamp: null
+  name: secret
+  namespace: camry
+spec:
+  encryptedData:
+    POSTGRES_PASSWORD: AgAZHKmL5lUL/IHbF4WuyR4kClAYn4r0gOPoeU8vq0KSyLIiL3S0hlpu3AJ0HFDOtNATFr9EaMrQSHHzBGZSPME41OdZkxkmAmTU810GpaQpJtSwDYMTCKzVjETpPjb2pWqBeBWQfCH7c46jcDgDkKfmtSsDvXKa6KmrHXy3zxS2HRdl4ykFewm/jvSFr3lDe5J1tMUptxXwYc16vUjQ8n1/NzLp9hHDN2DiTvHzRjuoZaolN54mKa3wKDhfokYJCi1jkJ9qSzdVkP4x/+Bxq/4pB6clhKIKM07OC+YeOx48nj25fuZ3tJW1mVpCjsB3hPO4NTD/Yh7e/OCftGmiOtZKxgFr6xpQV5OXBKgU7GGZsStrWbDJt//Sv/sLCOT6vVdEHv+5C9LD/dw80iKOkMHEQZJq+4qav+wIBzg+U+ZS58OfybxC/O6ULsHy6WPAMxnZecljyowrEiyO0cnHjB/uSbEh4PKs1q6AyKov5IGn5ctbEIuhw2PEeeqD5NPgGYQEpncjX23CyZR3XZK+uNT6McVScq/Uhm1EKcrqOjoQMd4HNioWEl9XYxgJNtqkj677pGwl9cpeWQG5Fc01WdwOMMR1W7QzfreHY2NSUiXOMu3TlkC3FXT4NUpw7jOm6kGf4/pE58dGPghrwMS1YnLTCY9++4hJOrgZHYKEmkIgmq3c3LESiIJ82nG12hF7oPPcAXKSt6xGHw==
+  template:
+    metadata:
+      creationTimestamp: null
+      name: secret
+      namespace: camry
