@@ -71,17 +71,17 @@ data:
     }
 ---
 # kubectl -n fred create secret generic secret --dry-run=client --from-literal='POSTGRES_PASSWORD=(redacted)' -o yaml | kubeseal --controller-name=sealed-secrets --controller-namespace=kube-system -o yaml
-apiVersion: bitnami.com/v1alpha1
-kind: SealedSecret
-metadata:
-  creationTimestamp: null
-  name: secret
-  namespace: fred
-spec:
-  encryptedData:
-    POSTGRES_PASSWORD: AgBNItVT3f68e/ezdbRIVURB1XUUElEYUvxWcQaSkYvhKEySF/OieQT6P3+Zzb8Jdjy4nkpjG5qIMNVfDjpxQ7+H+qp6wsUOLIgf/r1SL3sDipHx8nvwJdLFPNLGAYsRMjbPyupaWqfb37JHxmnsqm7m40amOaSaIGIENJ6pNIR233QoHdavAgT0VDYs2clIiWoHvqnSgS45sXg9hYBGgBb9MZcOlOL32V6To4dnN6vAtRRVGA+d5pzmtJvlfRLVHNp0uZyc8zuk8ovLA8U1QWmRplfrF3YtoPssSSfDrjeL3euHEEDVSz0OlrjPdgIPDzm5WB1OFWe3WGUG22OCz4ws8KYr6eKHwT2jLkC0Z6XSe+YBIOFzsDirXJ/NiHIAcs1eWQLoYv5QO7o0XPakh2ucxqPTVX5BfEXZZ/JE9z0JnApE9ai1cUyt+KwSEF72ZL1a0fFljG+PDSn4UPcL8/HV/CQtbyKOVW1N22/jJYwmCqv4k49Sr5/WXCIJ8D5toCoMV2uw6QQ6lZ8MkKbCxq8r4bPJ50Zz7NJAgKOaQrMUeBWUrPAQfzNwBNRj30gRYSPSHamsvgDXcu42jtWSLppsIz9sT06KStfxdp3OoBujbSksLA35vec+jXLI5QRKJ6mtd35aw5f7aVgGobDNLujfGIpvef3xhA4iTcei4Hw7O8fqW0MOt00wPmAunjPoyUL84qipswBw
-  template:
-    metadata:
-      creationTimestamp: null
-      name: secret
-      namespace: fred
+# apiVersion: bitnami.com/v1alpha1
+# kind: SealedSecret
+# metadata:
+#   creationTimestamp: null
+#   name: secret
+#   namespace: fred
+# spec:
+#   encryptedData:
+#     POSTGRES_PASSWORD: AgBNItVT3f68e/ezdbRIVURB1XUUElEYUvxWcQaSkYvhKEySF/OieQT6P3+Zzb8Jdjy4nkpjG5qIMNVfDjpxQ7+H+qp6wsUOLIgf/r1SL3sDipHx8nvwJdLFPNLGAYsRMjbPyupaWqfb37JHxmnsqm7m40amOaSaIGIENJ6pNIR233QoHdavAgT0VDYs2clIiWoHvqnSgS45sXg9hYBGgBb9MZcOlOL32V6To4dnN6vAtRRVGA+d5pzmtJvlfRLVHNp0uZyc8zuk8ovLA8U1QWmRplfrF3YtoPssSSfDrjeL3euHEEDVSz0OlrjPdgIPDzm5WB1OFWe3WGUG22OCz4ws8KYr6eKHwT2jLkC0Z6XSe+YBIOFzsDirXJ/NiHIAcs1eWQLoYv5QO7o0XPakh2ucxqPTVX5BfEXZZ/JE9z0JnApE9ai1cUyt+KwSEF72ZL1a0fFljG+PDSn4UPcL8/HV/CQtbyKOVW1N22/jJYwmCqv4k49Sr5/WXCIJ8D5toCoMV2uw6QQ6lZ8MkKbCxq8r4bPJ50Zz7NJAgKOaQrMUeBWUrPAQfzNwBNRj30gRYSPSHamsvgDXcu42jtWSLppsIz9sT06KStfxdp3OoBujbSksLA35vec+jXLI5QRKJ6mtd35aw5f7aVgGobDNLujfGIpvef3xhA4iTcei4Hw7O8fqW0MOt00wPmAunjPoyUL84qipswBw
+#   template:
+#     metadata:
+#       creationTimestamp: null
+#       name: secret
+#       namespace: fred

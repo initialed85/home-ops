@@ -96,8 +96,8 @@ SDD) and exposing that via NFS (which is then consumed as PersistentVolumeClaims
 ZFS provisioning was something like this (once all drives had been freshly partition w/ Linux partitions):
 
 ```shell
-sudo zpool create -o ashift=12 storage-hdd /dev/sdb /dev/sde /dev/sdh
-sudo zpool create -o ashift=12 storage-ssd /dev/sdf1 /dev/sdg1
+sudo zpool create -o ashift=12 -O checksum=on -O compression=lz4 -O atime=off -O relatime=on -O acltype=posixacl -O dedup=off storage-hdd /dev/sdb /dev/sde /dev/sdh
+sudo zpool create -o ashift=12 -O checksum=on -O compression=lz4 -O atime=off -O relatime=on -O acltype=posixacl -O dedup=off storage-ssd /dev/sdf1 /dev/sdg1
 ```
 
 This is a RAID0 setup btw, so maximum storage (and I think speed?) and zero redundancy- my drives are slow and garbage
@@ -106,7 +106,7 @@ and small and my data is unimportant so this gives me what I need.
 I can't recall the exact commands I ran to install the NFS server (pretty standard stuff though), but `/etc/exports`
 looks like this:
 
-```
+```conf
 /storage-ssd *(insecure,sync,rw,no_subtree_check,no_root_squash,async)
 /storage-hdd *(insecure,sync,rw,no_subtree_check,no_root_squash,async)
 ```
@@ -117,12 +117,6 @@ PersistentVolumeClaims.
 ## Kubernetes provisioning
 
 ### Cluster
-
-```shell
-    --disable=servicelb \
-    --disable=traefik \
-    --disable=local-storage \
-```
 
 I ran this to get the K3s cluster running:
 
@@ -148,7 +142,8 @@ curl -sfL https://get.k3s.io | K3S_TOKEN=some-token K3S_KUBECONFIG_MODE=644 sh -
     --node-ip="$(hostname -i)"
 
 # on the low-spec nodes
-curl -sfL https://get.k3s.io | K3S_TOKEN=some-token K3S_KUBECONFIG_MODE=644 sh -s - agent --server https://192.168.137.37:6443
+curl -sfL https://get.k3s.io | K3S_TOKEN=some-token K3S_KUBECONFIG_MODE=644 sh -s - agent --server https://192.168.137.37:6443 \
+    --node-ip="$(hostname -i)"
 ```
 
 | FYI, `/etc/rancher/k3s/k3s/yaml` on the first node is basically `~/.kube/config`, it just needs to have the IP changed
@@ -279,15 +274,15 @@ helm upgrade --atomic --install --namespace kube-system nfs-subdir-external-prov
 And [bitnami-labs/sealed-secrets](https://github.com/bitnami-labs/sealed-secrets) so we can safely store secrets in this
 repo:
 
+```shell
+helm repo add sealed-secrets https://bitnami-labs.github.io/sealed-secrets
+helm upgrade --atomic --install --namespace kube-system sealed-secrets sealed-secrets/sealed-secrets --version 2.17.3
+```
+
 Usage is something like this:
 
 ```shell
 kubectl -n mynamespace create secret generic mysecret --dry-run=client --from-literal='key=value' -o yaml | kubeseal --controller-name=sealed-secrets --controller-namespace=kube-system -o yaml > mysealedsecret.yaml
-```
-
-```shell
-helm repo add sealed-secrets https://bitnami-labs.github.io/sealed-secrets
-helm upgrade --atomic --install --namespace kube-system sealed-secrets sealed-secrets/sealed-secrets --version 2.17.3
 ```
 
 ### SSL certificate vending
@@ -296,11 +291,9 @@ helm upgrade --atomic --install --namespace kube-system sealed-secrets sealed-se
 [Let's Encrypt](https://letsencrypt.org/); to ship that:
 
 ```shell
-cd _cluster
-
 # came from curl -L https://github.com/cert-manager/cert-manager/releases/download/v1.14.5/cert-manager.yaml
-kubectl apply -f 1-cert-manager.yaml
-kubectl apply -f 2-clusterissuer.yaml
+kubectl apply -f _cluster/1-cert-manager.yaml
+kubectl apply -f _cluster/2-clusterissuer.yaml
 ```
 
 ### Continuous Deployment
@@ -308,12 +301,10 @@ kubectl apply -f 2-clusterissuer.yaml
 Argo isn't perfect but it seems to be the best out there; to ship that:
 
 ```shell
-cd _cluster
-
 helm repo add argo https://argoproj.github.io/argo-helm
 
 # came from helm show values argo/argo-cd > 3-argocd-values.yaml (which needed some edits)
-helm upgrade --atomic --install --namespace argo-cd --create-namespace argo-cd argo/argo-cd --version 7.0.0 --values 3-argocd-values.yaml
+helm upgrade --atomic --install --namespace argo-cd --create-namespace argo-cd argo/argo-cd --version 8.1.2 --values _cluster/3-argocd-values.yaml
 
 # dump out the secret
 kubectl -n argo-cd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d

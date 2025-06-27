@@ -41,20 +41,20 @@ spec:
           targetPort: 80
 ---
 # kubectl -n nginx-router create secret generic --type kubernetes.io/basic-auth nginx-basic-auth --dry-run=client --from-literal='username=(redacted)' --from-literal='password=(redacted)' -o yaml | kubeseal --controller-name=sealed-secrets --controller-namespace=kube-system -o yaml
-apiVersion: bitnami.com/v1alpha1
-kind: SealedSecret
-metadata:
-    name: nginx-basic-auth
-    namespace: nginx-router
-spec:
-    encryptedData:
-        password: AgC/BFYJdhgFL/oSxwXufMXGw+WM0+0uYVbwPxYB4aUPFBuRZVQK2h6WP1NExh1JPqtRWtU5es3zmsVuzqw+lZ8VJk1wOsqlxFHXD9Aj2KjWqwU1DBmXBwCNndlMrGIZTEoeq2eJv6VVa+hpn9qzIemgnto++Nm9ZHXEnd3n3zp8UbVvI6sX6m7cHxbOt+B03Wq1IiLOn5T+NHMblyrhjyXnsDoiKOanQ3cUoFH1dIp+MB1n+W2GEYfZ/o2+PoUbjNDeVzqSNavU0UNyqnu1gI/tGNd0OXy20vI3r7sht2xHlOo57mc+tP0KH8/aZMNVtpQef4jRwQZjJ+vZEX5cMLSOQg5WwazIQw45KkATAYsBO0GmKmmtxr7W7ASmTOvDN/H447Qu3Kjrr5wLqc9kFEINR44ar69TJo1RMWxOVGkO1bk5Xszia3Ntqo9ocPp4RITL6dhLrqixAkNxoKd+tlLrTdZL7VQ6octzddtjfoQuRGKUkdkf52+e3y9MSznMIElmgG+Llxk2t4IbdC9zyBGfvlqkHF3nml2paE9LvLFzZldiKW4A3mmJ5+3YYEI+LIML5BQ4228ksiCCN4RUI8aDWdAs+vZJvi49LJOMHeMDB/sBSvU4jG2MoMiA3D/ThNSCiwSpq7ixDkXabFfYruBhgVIREJTrLd5gA9BHcD1N0h2DY5bBeIJJvnQEX5IDCxWY1JhVo3PE+mxI
-        username: AgBS8hXu4orPLOgFnJ4KjdHPrtDvTMcS4AoTRYHoVHHFD6GjX4q6MIPiPG3gJJmjepLM6dSHXlsx5OsXzi4xg/zS3V4AzB/DLasv0LXP21qjlIm7/S9NhgmsWahgVpH0RfIkOYcKFI7n8YoBtR6SBgSquUUiqC9tU6R6Y8oNXb6g+pjvIAUrersZsgX3FfykwTuvAEGv86nmNMfOz4Rnrb5+hqcMmtn3j7fQoWn/mtuTLqz5PuWqauspOqmGE39SyM5R7VAsh0+3wDdOuVvxRAjDigMi3EoUB6RX6ydRFKyRy41q3+gnsQ2CNlOpflhZ5jkq5u0pRrYEp6WF/XDDx/CPHE0kZakeL1YXGs9/LUlPZUt90B40vyGiK6dinR61ebbVM1jA/Qmk6k863dz1UoQrdEjt1F1omnGBcAz2C6Ias8LZhF93JcLaNJDaqcsykYujhRBwmqxs7XHJ2l72zhFDY5SG5Xc2WW8SRQAAoMBsewjWoOPLBrS7MiegCRfppotqoCMFq1i0ntjuCPU8jZWyCPrqRzHPz4/BXMHm8jdnsVRbgSpiNEeCE7I/1Eu3x+K2TKhYF6YN6+S9KIlqa9tTs1wY2pxIwHGxurs0dcKr7+bMZU/A05HpSlVD3OdqwTTDX0Ro9dMyor4MQWvAveQHbXrGT050xhSyl3zGKEbqJb2B6WkFS/oSUbGoBRmJfsw3RJud
-    template:
-        metadata:
-            name: nginx-basic-auth
-            namespace: nginx-router
-        type: kubernetes.io/basic-auth
+# apiVersion: bitnami.com/v1alpha1
+# kind: SealedSecret
+# metadata:
+#     name: nginx-basic-auth
+#     namespace: nginx-router
+# spec:
+#     encryptedData:
+#         password: AgC/BFYJdhgFL/oSxwXufMXGw+WM0+0uYVbwPxYB4aUPFBuRZVQK2h6WP1NExh1JPqtRWtU5es3zmsVuzqw+lZ8VJk1wOsqlxFHXD9Aj2KjWqwU1DBmXBwCNndlMrGIZTEoeq2eJv6VVa+hpn9qzIemgnto++Nm9ZHXEnd3n3zp8UbVvI6sX6m7cHxbOt+B03Wq1IiLOn5T+NHMblyrhjyXnsDoiKOanQ3cUoFH1dIp+MB1n+W2GEYfZ/o2+PoUbjNDeVzqSNavU0UNyqnu1gI/tGNd0OXy20vI3r7sht2xHlOo57mc+tP0KH8/aZMNVtpQef4jRwQZjJ+vZEX5cMLSOQg5WwazIQw45KkATAYsBO0GmKmmtxr7W7ASmTOvDN/H447Qu3Kjrr5wLqc9kFEINR44ar69TJo1RMWxOVGkO1bk5Xszia3Ntqo9ocPp4RITL6dhLrqixAkNxoKd+tlLrTdZL7VQ6octzddtjfoQuRGKUkdkf52+e3y9MSznMIElmgG+Llxk2t4IbdC9zyBGfvlqkHF3nml2paE9LvLFzZldiKW4A3mmJ5+3YYEI+LIML5BQ4228ksiCCN4RUI8aDWdAs+vZJvi49LJOMHeMDB/sBSvU4jG2MoMiA3D/ThNSCiwSpq7ixDkXabFfYruBhgVIREJTrLd5gA9BHcD1N0h2DY5bBeIJJvnQEX5IDCxWY1JhVo3PE+mxI
+#         username: AgBS8hXu4orPLOgFnJ4KjdHPrtDvTMcS4AoTRYHoVHHFD6GjX4q6MIPiPG3gJJmjepLM6dSHXlsx5OsXzi4xg/zS3V4AzB/DLasv0LXP21qjlIm7/S9NhgmsWahgVpH0RfIkOYcKFI7n8YoBtR6SBgSquUUiqC9tU6R6Y8oNXb6g+pjvIAUrersZsgX3FfykwTuvAEGv86nmNMfOz4Rnrb5+hqcMmtn3j7fQoWn/mtuTLqz5PuWqauspOqmGE39SyM5R7VAsh0+3wDdOuVvxRAjDigMi3EoUB6RX6ydRFKyRy41q3+gnsQ2CNlOpflhZ5jkq5u0pRrYEp6WF/XDDx/CPHE0kZakeL1YXGs9/LUlPZUt90B40vyGiK6dinR61ebbVM1jA/Qmk6k863dz1UoQrdEjt1F1omnGBcAz2C6Ias8LZhF93JcLaNJDaqcsykYujhRBwmqxs7XHJ2l72zhFDY5SG5Xc2WW8SRQAAoMBsewjWoOPLBrS7MiegCRfppotqoCMFq1i0ntjuCPU8jZWyCPrqRzHPz4/BXMHm8jdnsVRbgSpiNEeCE7I/1Eu3x+K2TKhYF6YN6+S9KIlqa9tTs1wY2pxIwHGxurs0dcKr7+bMZU/A05HpSlVD3OdqwTTDX0Ro9dMyor4MQWvAveQHbXrGT050xhSyl3zGKEbqJb2B6WkFS/oSUbGoBRmJfsw3RJud
+#     template:
+#         metadata:
+#             name: nginx-basic-auth
+#             namespace: nginx-router
+#         type: kubernetes.io/basic-auth
 ---
 apiVersion: traefik.io/v1alpha1
 kind: Middleware
