@@ -64,7 +64,7 @@ spec:
         kubernetes.io/cluster-service: "true"
     spec:
       nodeSelector:
-          kubernetes.io/arch: amd64
+        kubernetes.io/arch: amd64
       volumes:
         - name: image-store
           persistentVolumeClaim:
@@ -119,3 +119,56 @@ spec:
       port: 5000
       targetPort: 5000
   type: LoadBalancer
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: kube-registry-external
+  namespace: kube-system
+spec:
+  selector:
+    app: kube-registry
+  ports:
+    - name: registry
+      protocol: TCP
+      port: 5000
+      targetPort: 5000
+---
+apiVersion: traefik.io/v1alpha1
+kind: Middleware
+metadata:
+  namespace: kube-system
+  name: kube-registry-whitelist
+spec:
+  ipWhiteList:
+    sourceRange:
+      - 10.0.0.0/8 # internal IP range
+      - 172.16.0.0/12 # internal IP range
+      - 192.168.0.0/16 # internal IP range
+      - 100.64.0.0/10 # Tailscale VPN
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt
+    traefik.ingress.kubernetes.io/router.middlewares: kube-system-kube-registry-whitelist@kubernetescrd
+  name: kube-registry
+  namespace: kube-system
+spec:
+  ingressClassName: traefik
+  rules:
+    - host: registry.initialed85.cc
+      http:
+        paths:
+          - pathType: Prefix
+            path: /
+            backend:
+              service:
+                name: kube-registry-external
+                port:
+                  number: 5000
+  tls:
+    - hosts:
+        - registry.initialed85.cc
+      secretName: kube-registry-ingress-tls
