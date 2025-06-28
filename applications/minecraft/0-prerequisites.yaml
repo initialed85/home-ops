@@ -24,7 +24,6 @@ spec:
 # apiVersion: bitnami.com/v1alpha1
 # kind: SealedSecret
 # metadata:
-#   creationTimestamp: null
 #   name: minecraft-secret
 #   namespace: minecraft
 # spec:
@@ -32,6 +31,5 @@ spec:
 #     rcon-password: AgA8oy7anUQ0gX8Bw6aMdwV2ksqFZlFFui+SuCJftmXwlSo9EZ8o8HgGV0YVO2cU4PSgfSWOxfoeCHcZOcG/tx+CAeQY58n4DionLeTi8gxnDGJ0jOaK9Te6n/Zyn5RsU0NojktTy+TYeq0ul2DCPXf2RiyXyNvErDGbm4CNHNFpJ4C1xjcfqjsNxkJA4d0LvK9A/hwXZf5m/z4LvA73uEvxKshn4fpXeSPf6P62I1X2pnHqEzb0tpzZjyeT2M6d9sv9HyDjxBDlwxuS53KFuPyszLe322DIpte0FR7AYAAbGbWxBJzbk1r/Lils38IykpknnG/If0SDQEAdiYYpzFO5oA8TTXU5Rk/c8dp8vDX3fCqLX2v8tn0R0veYEB43sir+1tIudssqquhqrPFYtETudEzBlYs3Xz3zsTwHblkPXoKrwo36XysuRhf4PTD4mLcXeG5Yn6FId7MLkiCGkcMCjZYKctULVbvJtHDXWDZgWvTus0SZr0Jk8OIHTOGJDEuRvuJqe5IH3KPWHxwfZPI5UEBwUL/OM6Lkvh6871CbibT+XAugnC4b//MV9vKeTOuJUmFzFuJrIOQRFEvqZFhfU6ta1WdDOCOlquUIHc6QFoLAnqdfHAM9TrHTvYVDCuUUNX0wMLycvC2mCM8RwI83abe51UcQ9PtvqdJP1GMPps8Xf+dbylpJcIYLQPcM7wGnP3kWM12w0Uk=
 #   template:
 #     metadata:
-#       creationTimestamp: null
 #       name: minecraft-secret
 #       namespace: minecraft

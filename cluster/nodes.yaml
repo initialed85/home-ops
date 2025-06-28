@@ -1,0 +1,47 @@
+---
+apiVersion: v1
+kind: Node
+metadata:
+  name: adonis
+  labels:
+    gpu: nvidia
+    gpu-era: contemporary
+---
+apiVersion: v1
+kind: Node
+metadata:
+  name: bee-1
+---
+apiVersion: v1
+kind: Node
+metadata:
+  name: bee-2
+---
+apiVersion: v1
+kind: Node
+metadata:
+  name: beefcake-1
+---
+apiVersion: v1
+kind: Node
+metadata:
+  name: chronos
+  labels:
+    gpu: nvidia
+    gpu-era: legacy
+---
+apiVersion: v1
+kind: Node
+metadata:
+  name: dionysus
+  labels:
+    gpu: nvidia
+    gpu-era: legacy
+---
+apiVersion: v1
+kind: Node
+metadata:
+  name: romulus
+  labels:
+    gpu: nvidia
+    gpu-era: contemporary

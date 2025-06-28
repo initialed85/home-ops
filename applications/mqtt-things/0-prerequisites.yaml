@@ -10,7 +10,6 @@ metadata:
 # apiVersion: bitnami.com/v1alpha1
 # kind: SealedSecret
 # metadata:
-#   creationTimestamp: null
 #   name: mqtt-things
 #   namespace: mqtt-things
 # spec:
@@ -18,6 +17,5 @@ metadata:
 #     hue-api-key: AgBgeAKb+K8tQEbjVXFuGp398TqD5wjNe/20VUfTlFw/QMWTs3+CK48RNkxBPFLLDMMc7usPxiU4YEGqoUCP9URJon8E62yXYKVuY7B7+yeSZqGNj/BC4mZJhDE2wY81DGjOiJPITAqgStTFyVnfpL8zU/xgUY5MVqk5pyAOFfaZ12rf0894YZamwF1kwCZt2cOOh22AwIB4WRGvBXkx160UsVUIpilOH/CdRU1v7Moul+tR2IZnaVU/Cfj5r8X4dtjKeNXlqgyB5RQllqD4eya6CeIlWgCoFsv3iqxwZJ7Qq4p70F1A50uKP179j4Tqrg+7zqOhKaz4OIYJAXg3hfPVemI3zZgjwWBzPbsZo+oAHoOOZhnp7ox8f1bIzG12VnnkNHrSsfrVT5iobj2tuRK9CVUbZ4RWjDbx6IH+rTj2ZWrVb0jrQxX2UlzA6yWV1gVSmZcz48iAw5tJ5y6/mc5jC6OoxTNabmnvNdDm//4bCY99aBvbmF449g9MgL5R1YOZNFXHRRaWTEifHLlAS9NDGvafuoeKrA7H8S45nyp8HeFDhO0nyfri0LZNy3AWcIDNqfPpUwjLohiUrtiIsqXo5kAZ38mK6xhVcF9mg7LrxNvsEYfQdMm1RfJ2r33cQtO/uggHlKG2UwVQsYp/mVdfw0z7ImF6R9WN8R6BogtqKhsPLZjTy8u2r9ZeTp+bwkXGaPtHCt8KjMQAMlxZIN5T9Mm69pIIPmm4yKQw5qp1Og8kUVllSfGg
 #   template:
 #     metadata:
-#       creationTimestamp: null
 #       name: mqtt-things
 #       namespace: mqtt-things

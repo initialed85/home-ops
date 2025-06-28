@@ -61,7 +61,6 @@ data:
 apiVersion: bitnami.com/v1alpha1
 kind: SealedSecret
 metadata:
-  creationTimestamp: null
   name: secret
   namespace: camry
 spec:
@@ -69,6 +68,5 @@ spec:
     POSTGRES_PASSWORD: AgAZHKmL5lUL/IHbF4WuyR4kClAYn4r0gOPoeU8vq0KSyLIiL3S0hlpu3AJ0HFDOtNATFr9EaMrQSHHzBGZSPME41OdZkxkmAmTU810GpaQpJtSwDYMTCKzVjETpPjb2pWqBeBWQfCH7c46jcDgDkKfmtSsDvXKa6KmrHXy3zxS2HRdl4ykFewm/jvSFr3lDe5J1tMUptxXwYc16vUjQ8n1/NzLp9hHDN2DiTvHzRjuoZaolN54mKa3wKDhfokYJCi1jkJ9qSzdVkP4x/+Bxq/4pB6clhKIKM07OC+YeOx48nj25fuZ3tJW1mVpCjsB3hPO4NTD/Yh7e/OCftGmiOtZKxgFr6xpQV5OXBKgU7GGZsStrWbDJt//Sv/sLCOT6vVdEHv+5C9LD/dw80iKOkMHEQZJq+4qav+wIBzg+U+ZS58OfybxC/O6ULsHy6WPAMxnZecljyowrEiyO0cnHjB/uSbEh4PKs1q6AyKov5IGn5ctbEIuhw2PEeeqD5NPgGYQEpncjX23CyZR3XZK+uNT6McVScq/Uhm1EKcrqOjoQMd4HNioWEl9XYxgJNtqkj677pGwl9cpeWQG5Fc01WdwOMMR1W7QzfreHY2NSUiXOMu3TlkC3FXT4NUpw7jOm6kGf4/pE58dGPghrwMS1YnLTCY9++4hJOrgZHYKEmkIgmq3c3LESiIJ82nG12hF7oPPcAXKSt6xGHw==
   template:
     metadata:
-      creationTimestamp: null
       name: secret
       namespace: camry

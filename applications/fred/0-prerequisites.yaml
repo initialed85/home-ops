@@ -71,17 +71,15 @@ data:
     }
 ---
 # kubectl -n fred create secret generic secret --dry-run=client --from-literal='POSTGRES_PASSWORD=(redacted)' -o yaml | kubeseal --controller-name=sealed-secrets --controller-namespace=kube-system -o yaml
-# apiVersion: bitnami.com/v1alpha1
-# kind: SealedSecret
-# metadata:
-#   creationTimestamp: null
-#   name: secret
-#   namespace: fred
-# spec:
-#   encryptedData:
-#     POSTGRES_PASSWORD: AgBlf7svvrpaMY9gnwhaSQmJ57ZSz3Zba/ko2JTG/JgZPKhL+l3QoOMXWXNhzTK460U/s02CRM+TDMoT2REaAHje47vpFSlSaEEwCYtPDnkd5Ndyi2ExP8/CssUgUTDwDnf7jESyQ04mjqt4dD+9SgSpUIkqqVe2LL2riByhQNzNIRMP2vlQKTQXWO6ITJMHBaAvVKalX87zm4+HL8YZffQgFGjuvOVSwJn+Vs6s4sxSZpYwTRFAwgPpg7lVi6pP++afK6+mJy+dBflN6M8YXKA2AAcXviwZQgob413RsqGxMnZC0QK5cfOuKDr9gqmna5z+dph8JD85XPRieE43lPaIAMXDOEKgdwzWlczX0Np2Nzjzyu6h88HvSo/9ff9isF9FvjAu76iSXvIIrjsATtlRzMzPWjcvfKcW1CVQeZby8mWX9u87V9fSvMi3TKKURjxh+v041z/mCUbXLo90n+M7gs6AAnBoRr9M6iIDCb629+jgtMZd6L7uNK7/XbwE1poYmBT1KPPL0iAPaqplgclWtwjAvgblwJ8OGRMkEtXAG7wV4mMdy38pEsYVhTMDwmN8wmEbExOkfcVzp++9HT/bRQAf2Eq9y+hGseoqp2gbKtQrK+0bzFKEo4NkP6f5pcPSLQ36E+NQmD0Clj0nwmkw2MC8W0c9iYSgwmcm4uE1/S7Ku8Zr/vKIEzrEazh0CGc5rZyEhQIB
-#   template:
-#     metadata:
-#       creationTimestamp: null
-#       name: secret
-#       namespace: fred
+apiVersion: bitnami.com/v1alpha1
+kind: SealedSecret
+metadata:
+  name: secret
+  namespace: fred
+spec:
+  encryptedData:
+    POSTGRES_PASSWORD: AgDJC+yWyUJqta5LxxG54uOQq2bjC3OofvM2Gw2XdVW8NB23zpPXcWvpV6QUtIUNU6+FQAcbSV6PgdlPyOYLZogAs2LG7zA7a5WtoYxkSwc3ZNphZA/W1O/0DgzwnlVkTj4KJ3OLJeJxt+a1xuOoaVhDUE7KJgp2obYlzLMIUcNCKzPiKysMwQJpRLyLJ1zEUQNrvqPqpCyt//DwhXTkdTYtOt3oZmI23lcV6rKD6ptR6l5oVeHOV7oFplcmpQVhtl8t6sp6aUiW9cKVHHj/2BUSbEE5I5g5OBxPx/JkREX86/n5PEyLQsvXETldK7Yj7DUSrMwciV5IS38zEXWPIMnmqpxyJnzNs/H+Z3t1st9vgivvF1f+Gc8+4pr4as1Aw+BmM3PISLa+QGcBuswlMfZx328ldIqrBeM8rBuHhSkeTTS1sUo/T5kOPx152yRIXxXVEFNr+PF1aG9/oUxT5kcDYtnLd33zzcLpU0AKWBwMV6FztKkoIU/eMj/R851vpQ3c6/NPz70/TGSSPHjHYsrLNLw/4weBSY0qzKdGq+fMJ0JJQA6Eh54nGy3oSbGrlrbyo5PCzCUIYSTsPiaDG+6QT7F3F+gvh047JCY8V4sctO2pNVJ/xnkY/Plk9jYUwnV6kJPmRJ50s+PMSfK3eTyGNC8rAU+17Gcfg5t4zM81v4xC8T4z2gJSFoo4wtTDMGLCoeCGF3us
+  template:
+    metadata:
+      name: secret
+      namespace: fred
