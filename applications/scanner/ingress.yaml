@@ -1,18 +1,19 @@
 ---
-# apiVersion: bitnami.com/v1alpha1
-# kind: SealedSecret
-# metadata:
-#   name: scanner-basic-auth
-#   namespace: scanner
-# spec:
-#   encryptedData:
-#     password: AgCI/vPcQs2Euc+BeC6PU1cZTI/Zq78GE8ps9MeYjcp0/v3hkTSrPdooVQovx+A+vyVbTqV3WuGepsQVveVHoV3PJDjOOf2rVarnMLich0oClcUuYnk3wWEzO0S2i2gwL2n7PDQFMqb7GarHVsnfq9li0H4hztFrq+fkoaAzYF8q6W4G4LfxWcN0fkgo+lvMIPtqjiuJ6KsXF+PVW9YIS+PYgTJ+V4t5ELg/GPI7myG5Q/lv/qKw9E3707FM44+2/Y4rEFEYrOsH2DXziHvwFtgH4LThZeTd2ku6qhDu2U4/YVmT+9DkEImGuJsAxXEgBeVRPGpgN/awOPka9gapcI8ZDi7HezMuwV5QNd0tVtHpL9mPOaIDcneqc2rd7fSv01JKaiijnp/ag4cXbFnVJsv9665Oc/aBejPWyPqj/dsRsL66rbxaW7ayv96QYfzw2KQ6R+2fqm7uvY1AcYVj0swhn5gY2lhK8xviyDRllkVXGWMns6IHMf5vBcjbaEyOhWxVsyp3/6uZNzI/j/8qbQSMI9k6jwdnlS7ush5XdHt2jpjLOlv1CxEGTSvB41CCdKwkztNrq0ALuVsATiQsF5KgkHthRU+cE3U5YJ7M2JAA3PWYOcAYET/KIHTZm4s7xV9xjaP2NdSLPBLOgaQRKhZm80vi4CSef1S8qUzAZ6gQ14X6hy3JeaTSMi5n2NLqaC6hu27a68sh5d/WAOWI
-#     username: AgB9XYq/WUIf/mTJWdRxvD/N7PtQCTrBYdHnejGzjSek7V0tdaIAPHLcxXwYiwZeG/1XknUgs5PHCoOScmbwbJU2pn/UuOdwgcw8oS8sEJ5zednAdiJFMF/Jx6uNUbBnx1r62iLHgSUGutYF7hBJMBlb/fi/iEcpahLHzShrJOpXB5Bi5ye8l0rNFquenjh3kUKjSXSp7IivH98vijJ93vUUpVMVQjaW4SPR14/JkhX/QiS1PjxIDe1UX0QTDnZ3Dglbi0o0ZEh8GYew4etka8m2xL64dAuolVLzcv/wCaV1rmXTWIjNj4+d/naKkPVkptWzPCLR5gF/AeCqE+ohtson+oM7qJBHO2Yc/3djnQaSCfwQdz5myod53VrNfV7KtAjbHncujr95Sftu4EQOXPlRDY+SaPM2aLt+PNV3tK65GlUfNRmsooYIG0s35KaW6rzLiYzna29vkKTAGiGsogi5LSs2t4hJYdrV55+9L3iq1OqzieDP4RvcKWBrlPtcgkrqpl1iNOTuonEGTepCKeTgG1UWZ72uibwqlzQiT3pSSi8Lwf0DZWziJSyY2tnt4os+H7ln65GQGloV3+kLb1p0YoCQEeIPduBc34PG5RPkyCY7Kh4dpgW4eLCWJQQIijT0wxKIWPIL9y58H3wuk4T3b7Lf89Ty8tJy6JSWkav/Dm2LPrbzVbgC6CuYYz4WS05jGUHaI15T
-#   template:
-#     metadata:
-#       name: scanner-basic-auth
-#       namespace: scanner
-#     type: kubernetes.io/basic-auth
+# kubectl -n scanner create secret generic --type kubernetes.io/basic-auth scanner-basic-auth --dry-run=client --from-literal='username=(redacted)' --from-literal='password=(redacted)' -o yaml | kubeseal --controller-name=sealed-secrets --controller-namespace=kube-system -o yaml
+apiVersion: bitnami.com/v1alpha1
+kind: SealedSecret
+metadata:
+  name: scanner-basic-auth
+  namespace: scanner
+spec:
+  encryptedData:
+    password: AgDJ9k4P+MHHoVj3No+i0EsXVMNjJkuljQXuJsJFzT8IiRtiwkDKdRG0DLVguHnEaRBSMgaAsX/DxzzzDG226FvgCo6SOrpSosGhhJ7jOIwSBS0jfiv8kkW9r6HHSzb7sGs6KRTTtxjAgqfVyfa5a52OsHdEp4vnbaxXUu+gtBzvypVriPI+MAcVHUCk9n1EWPF/OYZIQUo8hpTtvIHkO26DDFYt4Q/qDD3lR5IiFGoeHV303yn/m9OwbU55Azcl8xTIu1+IeFPrglrYqj/2TQPm6D+h3btgrdQM0jNCm226tWNiFBaERpbdCrb9lEGLy2h2mFAw0dR7B9geMfd5x7FxVFZGNLrcxAwsrJW6fQP6nWfYWtaDcWHumi0paRADUUSWQFgYFskBvD5B+zAKc+1TpuPiVNGhH473nH1jmXxF0HaJ2iqQirjRMGv8HipPL4ReCmkvs/3TnQ905WQwKovJX4uX3HmMh8eS8g8OYGAof9zA++EAuP4QvU1fu9Jgny7wCoqdxa2lYJEHWTOiQz8S14JHDvBV2CJAsGL7/hJG01Td73aEm9BzNDKMY0KOhj2Vc7tFIq4RoPOeFLRPX9cJ6KM2j2r1dBT6pesDQ5hTFZs5bIFiCjdOn606jC57d4hcPYztEge5cwnMaDRb7O1KtP+OkFmQhTNIqVEXozuDO9rFc+yuClq59bEXC2QMjMleEA2tdFSTCXvrnawz
+    username: AgAKybUvw08XlP/5QfQRNfVqnjzkogzkAcSnQcp4cGD+4/jHlz6ZOSkrneXUyp0VHAcxP9aDLOIMFRccouc8IR2dw9+6J2uQnjkP+4IdjPlrRVokWIq0FVJ+oCn1YZ34tdbxrjr5c3imgz0k5khpGJNs8NQpUg1vKsuyOKONHUOM72iBN/HeL9HQIzA/pKkO5bIg4N8Se5sDpH3rgn2XLfKvY3ckxDS0R7hVHA8nbLzRjgRjKKoYV7Gzwrat9MUnnAmbPKHu4C7AdtYMDRf7K3iBRa05SBpJr54tLqBzNxlvZnP+5xkCWJrVoelQfpxMXqGKplhjgU3O1EWbv4VNnIiauO/WebKE9aVMYozJB3s28r19zAk/ctoBRO9hos+HZA7tkNU5IWMYGBL1+8eUeGXC/OeoRkM5/qz2WEx3Pgs9YVNgfVsCX/iBKu+QFrrcl2nRqrcMR+ESF+G3avNncpZIqY79vHKPjJplQEixJPvFqnwK6LVt0rpk6FueIdiWUfcVuhqSk4D5FEe64bspyAykWzjDydJ7FxVlyygCly/UOh/zKJarpPtn/M0aHFDRM1BkrxJo8D6yUxBGrgEkfWORRxscJkaPkB6X0leOrKUFzBKcRMztulJnOkMUg6lCjWKfV16VyPkQRFspnTGYFHCqyQgiCqGOkfzZPuIWpNSUHJEwDPXxwGgZJiHLsoLHvXpDTlEMl21n
+  template:
+    metadata:
+      name: scanner-basic-auth
+      namespace: scanner
+    type: kubernetes.io/basic-auth
 ---
 apiVersion: traefik.io/v1alpha1
 kind: Middleware

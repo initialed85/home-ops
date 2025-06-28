@@ -19,17 +19,17 @@ spec:
       storage: 16G
   storageClassName: nfs-ssd
   volumeMode: Filesystem
-# ---
+---
 # kubectl -n minecraft create secret generic minecraft-secret --dry-run=client --from-literal='rcon-password=(some password)' -o yaml | kubeseal --controller-name=sealed-secrets --controller-namespace=kube-system -o yaml
-# apiVersion: bitnami.com/v1alpha1
-# kind: SealedSecret
-# metadata:
-#   name: minecraft-secret
-#   namespace: minecraft
-# spec:
-#   encryptedData:
-#     rcon-password: AgA8oy7anUQ0gX8Bw6aMdwV2ksqFZlFFui+SuCJftmXwlSo9EZ8o8HgGV0YVO2cU4PSgfSWOxfoeCHcZOcG/tx+CAeQY58n4DionLeTi8gxnDGJ0jOaK9Te6n/Zyn5RsU0NojktTy+TYeq0ul2DCPXf2RiyXyNvErDGbm4CNHNFpJ4C1xjcfqjsNxkJA4d0LvK9A/hwXZf5m/z4LvA73uEvxKshn4fpXeSPf6P62I1X2pnHqEzb0tpzZjyeT2M6d9sv9HyDjxBDlwxuS53KFuPyszLe322DIpte0FR7AYAAbGbWxBJzbk1r/Lils38IykpknnG/If0SDQEAdiYYpzFO5oA8TTXU5Rk/c8dp8vDX3fCqLX2v8tn0R0veYEB43sir+1tIudssqquhqrPFYtETudEzBlYs3Xz3zsTwHblkPXoKrwo36XysuRhf4PTD4mLcXeG5Yn6FId7MLkiCGkcMCjZYKctULVbvJtHDXWDZgWvTus0SZr0Jk8OIHTOGJDEuRvuJqe5IH3KPWHxwfZPI5UEBwUL/OM6Lkvh6871CbibT+XAugnC4b//MV9vKeTOuJUmFzFuJrIOQRFEvqZFhfU6ta1WdDOCOlquUIHc6QFoLAnqdfHAM9TrHTvYVDCuUUNX0wMLycvC2mCM8RwI83abe51UcQ9PtvqdJP1GMPps8Xf+dbylpJcIYLQPcM7wGnP3kWM12w0Uk=
-#   template:
-#     metadata:
-#       name: minecraft-secret
-#       namespace: minecraft
+apiVersion: bitnami.com/v1alpha1
+kind: SealedSecret
+metadata:
+  name: minecraft-secret
+  namespace: minecraft
+spec:
+  encryptedData:
+    rcon-password: AgBiq5rkH1U+oleP9aFNQtLi870xcwJ5lS5ZKBnEDUgq0Z0XqaiPO1nlscrDiCZBU7NK2tPMZjDeWdaX2XPqBEkpnT5uewMAh3FdHXrwajvHpoyYWIBXBpDFUIeDcRXdNvtszWe0BPiR+KaAJjBkh7CSFbXkKz5gUzhreLi2m5gwp5vVjXs4/bi4Pp/KSyOQVbYCyWOuqopJKrho4atDQUwk2yj/u1A8snFv+1UYycRnp9Eo8dx+oevzmmPgmXXd6FQcJqpggNr71GCIkCag3SrzpSDEO26kQu3oRT2QOKtosJ5tI/B2iGQOEfXcbBQIdy5Nc5R8qBF+b4BzjpZNsfVzrIWRnF+9iJmKY9BeHQcuqqdOlpT+Xya8GIWafOJvHH/pd0TIy5tLBxw8YH2sfotYOJbGPmw4ifTY6dWGoQho7aV61KJIDMz02wVoMYFSzW9MbXLtolAfNQcQasMf3JZrhYL0CoK8MmLQGhRxE4MlP37HugehV2CeWXOqSbfwrwaK9wyPyhenJtxckK52C3MnDakCCNvwb3ANC21uk8S1qTZMsbDoEd5ennVlrYZE4vh1O77tprpVE6icu5fYhkY31WNUevNY4cq54tNJps39C1Jf+4RrjwegsveQ2dVCsjkR8HwEotmGQ5fTeWrtxDJFdM3VO1n7Ajbpz+Qjl0U0/RpF//gADhEZMr+ZzDQR+KmHjKwQlPh3pOk=
+  template:
+    metadata:
+      name: minecraft-secret
+      namespace: minecraft

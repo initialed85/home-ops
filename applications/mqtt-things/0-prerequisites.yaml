@@ -7,15 +7,15 @@ metadata:
     name: mqtt-things
 ---
 # kubectl -n mqtt-things create secret generic mqtt-things --dry-run=client --from-literal='hue-api-key=(redacted)' -o yaml | kubeseal --controller-name=sealed-secrets --controller-namespace=kube-system -o yaml
-# apiVersion: bitnami.com/v1alpha1
-# kind: SealedSecret
-# metadata:
-#   name: mqtt-things
-#   namespace: mqtt-things
-# spec:
-#   encryptedData:
-#     hue-api-key: AgBgeAKb+K8tQEbjVXFuGp398TqD5wjNe/20VUfTlFw/QMWTs3+CK48RNkxBPFLLDMMc7usPxiU4YEGqoUCP9URJon8E62yXYKVuY7B7+yeSZqGNj/BC4mZJhDE2wY81DGjOiJPITAqgStTFyVnfpL8zU/xgUY5MVqk5pyAOFfaZ12rf0894YZamwF1kwCZt2cOOh22AwIB4WRGvBXkx160UsVUIpilOH/CdRU1v7Moul+tR2IZnaVU/Cfj5r8X4dtjKeNXlqgyB5RQllqD4eya6CeIlWgCoFsv3iqxwZJ7Qq4p70F1A50uKP179j4Tqrg+7zqOhKaz4OIYJAXg3hfPVemI3zZgjwWBzPbsZo+oAHoOOZhnp7ox8f1bIzG12VnnkNHrSsfrVT5iobj2tuRK9CVUbZ4RWjDbx6IH+rTj2ZWrVb0jrQxX2UlzA6yWV1gVSmZcz48iAw5tJ5y6/mc5jC6OoxTNabmnvNdDm//4bCY99aBvbmF449g9MgL5R1YOZNFXHRRaWTEifHLlAS9NDGvafuoeKrA7H8S45nyp8HeFDhO0nyfri0LZNy3AWcIDNqfPpUwjLohiUrtiIsqXo5kAZ38mK6xhVcF9mg7LrxNvsEYfQdMm1RfJ2r33cQtO/uggHlKG2UwVQsYp/mVdfw0z7ImF6R9WN8R6BogtqKhsPLZjTy8u2r9ZeTp+bwkXGaPtHCt8KjMQAMlxZIN5T9Mm69pIIPmm4yKQw5qp1Og8kUVllSfGg
-#   template:
-#     metadata:
-#       name: mqtt-things
-#       namespace: mqtt-things
+apiVersion: bitnami.com/v1alpha1
+kind: SealedSecret
+metadata:
+  name: mqtt-things
+  namespace: mqtt-things
+spec:
+  encryptedData:
+    hue-api-key: AgC+j9S9bOAG2tTqXae0e/+eVPJkwG9KowugIi/uEROSSk2xO+/9uIzW+V2LIz3Rh9skzsdgUX48xJMfpZCzZ9W6SNz7j9jDwd/bsDXjYEIdVR8OuW5UyESjFbp1ondHsP5hqKprg5HfALCJzRS+wPOs3uGo/PtRS4Ca1sQLZGbTZ5d+l5vIhjYOQOVQ9EXM+VW94X2Svewuvg2TZysbsjg23eMRHHDydmrXjf4fIxr5z8/K7Q/X/Ql5o5sq5B440SmG63VtH8TE1qKaTA1Xdzv/waamGAQZxherAHhbIrMdpXF7umC2JK2BxP5XfUvxK+HDYAH5n0zLtd4FU2bDFouUL5chaOPPP84hd9LvlmFAHqwImwfPEc0mMW5s9K7FIwwirqZOMxS2HCP1x0FBYSnLXXiutOkP2ofL7pF7Z+ss/KgpS5f8K3eo2L8Mmejvp7B9f2A5JPmy1f5kNeJEFpi1ZOgesKc5kY0FtxdpGvO664zcaPfA5p8WdqldTP0bDKpX8rzHwlmq++i4R7xMcTTn0jjTJUw+NJ1rHx/C0LLh+GKR2RooRbwYtFH0OIVfa7ddKhfoIiu305fO8klWKyN/UfBfkhI2Zt5eLrEPXgTiWzpwBg9atT4OwMCpfy9Rejfn3BKv5XTLt/YK0cR3UUlRtQXFUk4KJX15imaG0en9Sfrp9nC/cTuqrfzUHrWYIP4hHaDI4vF7LHZa4WztZ1T6UZN8ZRW4FtlyTkHEydSwjwfD3mkMkvic
+  template:
+    metadata:
+      name: mqtt-things
+      namespace: mqtt-things
