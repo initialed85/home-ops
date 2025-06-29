@@ -947,13 +947,13 @@ spec:
             # Note that Grafana will need internet access to install the datasource plugin.
             # Uncomment the block below, if you want to enable VictoriaMetrics Datasource in Grafana:
             plugins:
-              - victoriametrics-datasource
-              # - victoriametrics-logs-datasource
+            - victoriametrics-metrics-datasource
+            - victoriametrics-logs-datasource
+
             grafana.ini:
               plugins:
                 #    # Why VictoriaMetrics datasource is unsigned: https://github.com/VictoriaMetrics/grafana-datasource/blob/main/README.md#why-victoriametrics-datasource-is-unsigned
-                # allow_loading_unsigned_plugins: victoriametrics-datasource,victoriametrics-logs-datasource
-                allow_loading_unsigned_plugins: victoriametrics-datasource
+                allow_loading_unsigned_plugins: victoriametrics-metrics-datasource,victoriametrics-logs-datasource
 
             # Change datasource type in dashboards from Prometheus to VictoriaMetrics.
             # you can use `victoriametrics-datasource` instead of `prometheus` if enabled VictoriaMetrics Datasource above
