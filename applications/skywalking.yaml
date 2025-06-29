@@ -20,7 +20,7 @@ spec:
     # oci://registry-1.docker.io/apache/skywalking-helm
     - chart: skywalking-helm
       repoURL: registry-1.docker.io/apache
-      targetRevision: 15.9.0
+      targetRevision: 4.7.0
       helm:
         releaseName: skywalking
         parameters:
