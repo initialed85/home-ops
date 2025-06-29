@@ -27,13 +27,9 @@ spec:
           - name: "oap.image.tag"
             value: 10.1.0
           - name: "oap.storageType"
-            value: banyandb
+            value: "elasticsearch"
           - name: "ui.image.tag"
             value: 10.1.0
-          - name: "elasticsearch.enabled"
-            value: "false"
-          - name: "banyandb.enabled"
-            value: "true"
         valuesObject:
           # Licensed to the Apache Software Foundation (ASF) under one or more
           # contributor license agreements.  See the NOTICE file distributed with
