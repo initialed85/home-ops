@@ -17,9 +17,9 @@ spec:
       - CreateNamespace=true
       - ServerSideApply=false
   sources:
+    # oci://registry-1.docker.io/apache/skywalking-helm
     - chart: skywalking-helm
-      # lack of https:// implies oci://
-      repoURL: registry-1.docker.io/apache/skywalking-helm
+      repoURL: registry-1.docker.io/apache
       targetRevision: 15.9.0
       helm:
         releaseName: skywalking
