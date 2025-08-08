@@ -33,7 +33,7 @@ spec:
                 kubernetes.io/arch: amd64
             containers:
                 - name: mediamtx
-                  image: bluenviron/mediamtx:1.9.0-ffmpeg
+                  image: bluenviron/mediamtx:1.13.1-ffmpeg
                   imagePullPolicy: Always
                   securityContext:
                       privileged: true
