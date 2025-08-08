@@ -1,2 +1,4 @@
+applications/_kubevirt/
 applications/kubevirt/
+applications/virtink
 __secret
