@@ -10,7 +10,7 @@ metadata:
         system: camry
 spec:
     serviceName: stream-producer
-    replicas: 4
+    replicas: 3
     selector:
         matchLabels:
             app: stream-producer
