@@ -50,6 +50,11 @@ metadata:
     labels:
         prometheus: system-monitoring-prometheus
 spec:
+    path: /api/prometheus
+    # kubectl -n monitoring create secret generic home-assistant --from-literal=token=...
+    bearerTokenSecret:
+      key: home-assistant
+      name: token
     staticConfigs:
         - labels:
               job: prometheus
