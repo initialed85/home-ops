@@ -54,4 +54,4 @@ spec:
         - labels:
               job: prometheus
           targets:
-              - home-assistant.home-assistant.svc.cluster.local:8123
+              - 192.168.137.251:8123
